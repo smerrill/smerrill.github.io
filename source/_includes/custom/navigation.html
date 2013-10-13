@@ -6,7 +6,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ root_url }}/">{{ site.title }}</a>
+            <strong>
+              <a class="navbar-brand" href="{{ root_url }}/">{{ site.title }}</a>
+            </strong>
         </div>
 
         <div class="navbar-collapse collapse">
@@ -16,6 +18,9 @@
                 </li>
                 <li {% if page.navbar == 'Archives' %}class="active"{% endif %}>
                     <a href="{{ root_url }}/blog/archives">Archives</a>
+                </li>
+                <li {% if page.navbar == 'About' %}class="active"{% endif %}>
+                    <a href="{{ root_url }}/about-site/">About this Site</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
