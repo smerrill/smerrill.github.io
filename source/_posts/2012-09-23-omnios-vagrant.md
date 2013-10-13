@@ -18,6 +18,8 @@ My data's backed up on an 8 TB FreeNAS, but there's also an amazing trend of Ill
 
 OmniTI also makes a larger set of packages that their Managed Services team uses at [http://pkg.omniti.com/omniti-ms/en/index.shtml](http://pkg.omniti.com/omniti-ms/en/index.shtml).
 
+<!--more-->
+
 ### KVM? Not today.
 
 But at the end of the day, [Vagrant](http://vagrantup.com/) is still the platform I use to run applications with the correct operating system, software versions, and production configurations, so I need Vagrant (and thus [VirtualBox](https://www.virtualbox.org/)) to run on my workstation.
