@@ -15,7 +15,7 @@ I'm a big guy. I'm currently around 280 pounds, and yet when I ride I tend to be
 
 I shot down the Greenway, passing cyclists and genuinely enjoying the cool breeze and the fresh smell of the Hudson River.  My unknown cycling companion was generally only one or two bike lengths behind me. As much as I love to bike, I do not take it to the level that some folks in New York City do. I don't have a set of "real" biking shorts or a real biking jersey, nor do I have a super-expensive road bike. My anonymous companion, however, did appear to have all these trappings: a bike that looked like it could have been made of carbon fiber and a set of biking shorts and a jersey from some race or event.
 
-<!-- break -->
+<!--more-->
 
 Around 110th Street, the Greenway cleared out ahead of us. No pedestrians were in sight for quite a ways. The other cyclist pulled up beside me. He caught my attention and in an accent that sounded vaguely Eastern European, he called to me, saying, **"You're amazing!"**
 

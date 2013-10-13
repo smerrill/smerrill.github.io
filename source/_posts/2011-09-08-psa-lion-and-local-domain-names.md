@@ -15,7 +15,7 @@ I found [this Stack Exchange question](http://stackoverflow.com/questions/684142
 
 Instead, I switched all of my local dev sites from $DOMAIN.local to $DOMAIN.dev. The results are staggering.
 
-<!-- break -->
+<!--more-->
 
 Since switching all my development sites to end in .dev, requests for them happen several orders of magnitude faster, which is a welcome change. Here are two examples of an Apache 404 page (such that the DNS resolution time is the only appreciable time spent in delivering a response to **curl**.)
 

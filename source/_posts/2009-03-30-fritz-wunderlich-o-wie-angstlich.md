@@ -7,5 +7,5 @@ categories:
 - opera
 - singing
 ---
-<!-- break -->
+<!--more-->
 <p>One of the greatest singers of German music of the last century, doing what he did best.</p>

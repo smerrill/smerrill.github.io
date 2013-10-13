@@ -14,7 +14,7 @@ I've been working on making [space-efficient CentOS 5.6 and 6 images](https://gi
 
 The CentOS 5.6 images I made worked like a charm, but ran into a problem wherein the _VBoxHeadless_ process that hosted my CentOS 6 image would always use 25% CPU on my MacBook Air (one full core) despite the guest OS showing between 98% and 100% idle.
 
-<!-- break -->
+<!--more-->
 
 I read through a number of suggestions that applied to CentOS 5.6, which involved [setting ```divider="10"```](http://tiebing.blogspot.com/2011/08/virtualbox-vboxheadless-high-cpu-usage.html) in the kernel parameters, but these have no effect under CentOS 6, which uses a tickless kernel.
 

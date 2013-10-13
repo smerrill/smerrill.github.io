@@ -12,7 +12,7 @@ When Firefox 4 came out, I switched to it. I was mainly impressed by its speed (
 Several weeks later, I abandoned it for the stable build of Chrome. There were several things that contributed to its downfall in my eyes. Chief among them was its effect on my battery life on my MacBook Pro. Despite being nearly as fast as Chrome in user-perceived speed, Firefox generally used more CPU. There was also a [very annoying bug](https://bugzilla.mozilla.org/show_bug.cgi?id=567552) that resulted in a ton of modal popups.
 
 About a month back, I switched from the Chrome stable released to the Chrome dev channel and I've been in general very pleased. There's one feature that has been slowly gnawing away at my sanity, however, and it's gotten serious enough that I'm switching back to Firefox 5 to see if my complaints about Firefox 4 have been addressed.
-<!-- break -->
+<!--more-->
 
 ## Advantage: Firefox
 

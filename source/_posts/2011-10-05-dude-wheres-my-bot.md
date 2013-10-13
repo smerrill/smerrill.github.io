@@ -15,7 +15,7 @@ I accepted that challenge, and 10 minutes later, the bot was done.
 
 The code is an example of how to build a bot that accepts environmental variables for configuration and otherwise does a pretty silly task.
 
-<!-- break -->
+<!--more-->
 All in all, node makes this *really* simple.
 
 {% highlight javascript %}

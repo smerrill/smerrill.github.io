@@ -18,7 +18,7 @@ I forgot that since switching to the Mac Pro, I had reassigned the Mac Pro's IP 
 
 I was about to break out my keyboard, mouse, and monitor when I thought I'd give Bonjour a try.
 
-<!-- break -->
+<!--more-->
 
 ## Saying ' _Bonjour!_ ' sans IP address
 
