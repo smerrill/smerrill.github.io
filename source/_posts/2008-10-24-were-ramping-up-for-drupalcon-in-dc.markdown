@@ -11,10 +11,6 @@ excerpt: <p>We're proud to announce that Tree House Agency is a gold sponsor of 
   DrupalCon DC!">Washington, D.C., DrupalCon in 2009</a>.</p>
 wordpress_id: 1186
 wordpress_url: http://www.phase2technology.com/were-ramping-up-for-drupalcon-in-dc/
-date: !binary |-
-  MjAwOC0xMC0yNCAxNDoxNjo0MSAtMDQwMA==
-date_gmt: !binary |-
-  MjAwOC0xMC0yNCAxOToxNjo0MSAtMDQwMA==
 categories:
 - Uncategorized
 tags:

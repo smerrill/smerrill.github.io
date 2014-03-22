@@ -9,8 +9,6 @@ author_email: "info@phase2technology.com"
 excerpt: "<p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they're used to while still getting the benefits of running the full production stack.</p>"
 wordpress_id: 1084
 wordpress_url: "http://www.phase2technology.com/vagrant-and-nfs/"
-date: MjAxMS0xMS0xNyAxMTowMDo1MyAtMDUwMA==
-date_gmt: MjAxMS0xMS0xNyAxNjowMDo1MyAtMDUwMA==
 categories: 
   - Development
 tags: 

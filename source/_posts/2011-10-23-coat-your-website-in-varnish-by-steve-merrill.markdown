@@ -9,10 +9,6 @@ author_email: info@phase2technology.com
 excerpt: <p>The full presentation is embedded below.</p>
 wordpress_id: 1112
 wordpress_url: http://www.phase2technology.com/coat-your-website-in-varnish-by-steve-merrill/
-date: !binary |-
-  MjAxMS0xMC0yMyAxMToxMzoyNyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxMS0xMC0yMyAxNjoxMzoyNyAtMDQwMA==
 categories:
 - Uncategorized
 tags: []

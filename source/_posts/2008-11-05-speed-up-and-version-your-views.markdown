@@ -42,10 +42,6 @@ excerpt: ! '<p>Since getting started with Drupal over two years ago, the sites I
   </ol>'
 wordpress_id: 1184
 wordpress_url: http://www.phase2technology.com/speed-up-and-version-your-views/
-date: !binary |-
-  MjAwOC0xMS0wNSAxNTowNToxOSAtMDUwMA==
-date_gmt: !binary |-
-  MjAwOC0xMS0wNSAyMDowNToxOSAtMDUwMA==
 categories:
 - Uncategorized
 tags:

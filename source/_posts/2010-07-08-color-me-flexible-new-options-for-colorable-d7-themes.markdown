@@ -13,10 +13,6 @@ excerpt: ! '<p>In case you haven''t heard: the <a href="http://drupal.org/projec
   from around the world.</p>'
 wordpress_id: 1165
 wordpress_url: http://www.phase2technology.com/color-me-flexible-new-options-for-colorable-d7-themes/
-date: !binary |-
-  MjAxMC0wNy0wOCAwMDoyMjozNyAtMDQwMA==
-date_gmt: !binary |-
-  MjAxMC0wNy0wOCAwNToyMjozNyAtMDQwMA==
 categories:
 - Uncategorized
 tags:

@@ -11,10 +11,6 @@ excerpt: <p>I gave a 5-minute lightning presentation at the October 2011 <a href
   plugin for drush</a>.</p>
 wordpress_id: 1085
 wordpress_url: http://www.phase2technology.com/drush-phpsh-integration-demonstration/
-date: !binary |-
-  MjAxMS0xMS0xNCAxNjo0MDo0NyAtMDUwMA==
-date_gmt: !binary |-
-  MjAxMS0xMS0xNCAyMTo0MDo0NyAtMDUwMA==
 categories:
 - Development
 - Drupal

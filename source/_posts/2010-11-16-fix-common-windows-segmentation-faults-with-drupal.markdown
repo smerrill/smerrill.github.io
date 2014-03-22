@@ -13,10 +13,6 @@ excerpt: <p>At Treehouse Agency, we often work with internal development teams, 
   debugging when something doesn't quite work right on Windows.</p>
 wordpress_id: 1157
 wordpress_url: http://www.phase2technology.com/fix-common-windows-segmentation-faults-with-drupal/
-date: !binary |-
-  MjAxMC0xMS0xNiAxMjozNzozNyAtMDUwMA==
-date_gmt: !binary |-
-  MjAxMC0xMS0xNiAxNzozNzozNyAtMDUwMA==
 categories:
 - Uncategorized
 tags:

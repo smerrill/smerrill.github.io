@@ -16,10 +16,6 @@ excerpt: ! '<p>The Drupal community is exploding! I''ve had the pleasure to spea
   of headers and caching.</p>'
 wordpress_id: 1063
 wordpress_url: http://www.phase2technology.com/coat-your-website-with-varnish-at-drupalcamp-md/
-date: !binary |-
-  MjAxMi0wMi0xMCAxNTowNDo1NCAtMDUwMA==
-date_gmt: !binary |-
-  MjAxMi0wMi0xMCAyMDowNDo1NCAtMDUwMA==
 categories:
 - Development
 - Drupal

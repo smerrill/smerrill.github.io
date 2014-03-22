@@ -11,10 +11,6 @@ excerpt: <p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC 
   proxy cache</a>.</p>
 wordpress_id: 1131
 wordpress_url: http://www.phase2technology.com/coat-your-website-in-varnish/
-date: !binary |-
-  MjAxMS0wNy0xMyAxNDoyNzowNiAtMDQwMA==
-date_gmt: !binary |-
-  MjAxMS0wNy0xMyAxOToyNzowNiAtMDQwMA==
 categories:
 - Uncategorized
 tags:

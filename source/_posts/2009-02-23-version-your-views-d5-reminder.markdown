@@ -21,10 +21,6 @@ excerpt: ! '<p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/1
   module provide default views in code: hook_views_api() and hook_views_default_views().</p>'
 wordpress_id: 1181
 wordpress_url: http://www.phase2technology.com/version-your-views-d5-reminder/
-date: !binary |-
-  MjAwOS0wMi0yMyAxNzowNTo0MCAtMDUwMA==
-date_gmt: !binary |-
-  MjAwOS0wMi0yMyAyMjowNTo0MCAtMDUwMA==
 categories:
 - Uncategorized
 tags:

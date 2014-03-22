@@ -15,10 +15,6 @@ excerpt: ! '<p>If you got to our talk at Web 2.0 Expo today, or even if you didn
   title="http://en.oreilly.com/webexny2008/public/schedule/stype/bof">http://en.oreilly.com/webexny2008/public/schedule/stype/bof</a>.</p>'
 wordpress_id: 1191
 wordpress_url: http://www.phase2technology.com/theming-discussion-tonight/
-date: !binary |-
-  MjAwOC0wOS0xOCAxMzozNzoyNSAtMDQwMA==
-date_gmt: !binary |-
-  MjAwOC0wOS0xOCAxODozNzoyNSAtMDQwMA==
 categories:
 - Uncategorized
 tags:

@@ -13,10 +13,6 @@ excerpt: <p>The fine folks at ComputerMinds recently posted <a href="http://www.
   SimpleTests in your project.</p>
 wordpress_id: 1174
 wordpress_url: http://www.phase2technology.com/updated-simpletest-hudson-script-for-simpletest-6-x-2-9/
-date: !binary |-
-  MjAwOS0xMC0wNSAxODowMzowNCAtMDQwMA==
-date_gmt: !binary |-
-  MjAwOS0xMC0wNSAyMzowMzowNCAtMDQwMA==
 categories:
 - Uncategorized
 tags:

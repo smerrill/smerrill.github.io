@@ -35,10 +35,6 @@ excerpt: ! '<p>Thanks to all those that braved the early morning to attend our s
   </div>'
 wordpress_id: 1179
 wordpress_url: http://www.phase2technology.com/scaling-drupal-not-if-how/
-date: !binary |-
-  MjAwOS0wMy0xMiAxODozMTozNiAtMDQwMA==
-date_gmt: !binary |-
-  MjAwOS0wMy0xMiAyMzozMTozNiAtMDQwMA==
 categories:
 - Uncategorized
 tags:

@@ -14,10 +14,6 @@ excerpt: ! "<p>This weekend marked the second annual <a href=\"http://www.drupal
   and gave some demos of each. The slides are embedded below.</p>\r\n"
 wordpress_id: 1215
 wordpress_url: http://www.phase2technology.com/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/
-date: !binary |-
-  MjAxMy0wMi0wNCAxNDozNjoxMSAtMDUwMA==
-date_gmt: !binary |-
-  MjAxMy0wMi0wNCAxOTozNjoxMSAtMDUwMA==
 categories:
 - Development
 - Drupal
