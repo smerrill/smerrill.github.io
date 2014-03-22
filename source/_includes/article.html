@@ -28,6 +28,11 @@
   <p><em><a href="{{page.wordpress_url}}">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
 </div>
 {% endif %}
+{% if post.wordpress_url %}
+<div class="entry-content clearfix">
+  <p><em><a href="{{post.wordpress_url}}">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+{% endif %}
 {% if index %}
   <div class="entry-content clearfix">{{ content | excerpt }}</div>
   {% capture excerpted %}{{ content | has_excerpt }}{% endcapture %}
