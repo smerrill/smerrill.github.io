@@ -11,7 +11,7 @@ excerpt: <p>One of the most useful features of Vagrant is that it has the abilit
   they're used to while still getting the benefits of running the full production
   stack.</p>
 wordpress_id: 1084
-wordpress_url: http://phase2technology.com/vagrant-and-nfs/
+wordpress_url: http://www.phase2technology.com/vagrant-and-nfs/
 date: !binary |-
   MjAxMS0xMS0xNyAxMTowMDo1MyAtMDUwMA==
 date_gmt: !binary |-

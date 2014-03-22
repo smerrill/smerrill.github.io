@@ -15,7 +15,7 @@ excerpt: ! '<p>The Drupal community is exploding! I''ve had the pleasure to spea
   about Drupal configuration and an overview section going over some of the basics
   of headers and caching.</p>'
 wordpress_id: 1063
-wordpress_url: http://phase2technology.com/coat-your-website-with-varnish-at-drupalcamp-md/
+wordpress_url: http://www.phase2technology.com/coat-your-website-with-varnish-at-drupalcamp-md/
 date: !binary |-
   MjAxMi0wMi0xMCAxNTowNDo1NCAtMDUwMA==
 date_gmt: !binary |-

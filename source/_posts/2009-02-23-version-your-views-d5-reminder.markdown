@@ -20,7 +20,7 @@ excerpt: ! '<p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/1
   to practice.  In Views 2 for Drupal 6, you had to implement two hooks to have a
   module provide default views in code: hook_views_api() and hook_views_default_views().</p>'
 wordpress_id: 1181
-wordpress_url: http://phase2technology.com/version-your-views-d5-reminder/
+wordpress_url: http://www.phase2technology.com/version-your-views-d5-reminder/
 date: !binary |-
   MjAwOS0wMi0yMyAxNzowNTo0MCAtMDUwMA==
 date_gmt: !binary |-

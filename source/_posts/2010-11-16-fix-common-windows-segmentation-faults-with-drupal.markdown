@@ -12,7 +12,7 @@ excerpt: <p>At Treehouse Agency, we often work with internal development teams, 
   Git on these sorts of projects) and it also occasionally necessitates some extra
   debugging when something doesn't quite work right on Windows.</p>
 wordpress_id: 1157
-wordpress_url: http://phase2technology.com/fix-common-windows-segmentation-faults-with-drupal/
+wordpress_url: http://www.phase2technology.com/fix-common-windows-segmentation-faults-with-drupal/
 date: !binary |-
   MjAxMC0xMS0xNiAxMjozNzozNyAtMDUwMA==
 date_gmt: !binary |-

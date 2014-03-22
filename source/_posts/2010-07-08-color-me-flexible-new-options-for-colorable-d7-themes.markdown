@@ -12,7 +12,7 @@ excerpt: ! '<p>In case you haven''t heard: the <a href="http://drupal.org/projec
   theme for Drupal 7</a>. This is thanks to the phenomenal effort of many contributors
   from around the world.</p>'
 wordpress_id: 1165
-wordpress_url: http://phase2technology.com/color-me-flexible-new-options-for-colorable-d7-themes/
+wordpress_url: http://www.phase2technology.com/color-me-flexible-new-options-for-colorable-d7-themes/
 date: !binary |-
   MjAxMC0wNy0wOCAwMDoyMjozNyAtMDQwMA==
 date_gmt: !binary |-

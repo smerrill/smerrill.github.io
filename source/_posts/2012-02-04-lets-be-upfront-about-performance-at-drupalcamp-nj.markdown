@@ -12,7 +12,7 @@ excerpt: ! '<p>I just presented <a href="http://www.drupalcampnj.org/sessions/le
 
   <p>My presentation is embedded below. Go forth and make fast websites!</p>'
 wordpress_id: 1066
-wordpress_url: http://phase2technology.com/lets-be-upfront-about-performance-at-drupalcamp-nj/
+wordpress_url: http://www.phase2technology.com/lets-be-upfront-about-performance-at-drupalcamp-nj/
 date: !binary |-
   MjAxMi0wMi0wNCAxNDoxMzozNyAtMDUwMA==
 date_gmt: !binary |-

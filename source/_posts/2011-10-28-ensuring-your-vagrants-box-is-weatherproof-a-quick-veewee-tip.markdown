@@ -11,7 +11,7 @@ excerpt: <p>We'll be doing a screencast series soon on using the <a href="http:/
   even Windows folks!) can do development on their local machine with the same software
   that's on your production Linux servers.</p>
 wordpress_id: 1110
-wordpress_url: http://phase2technology.com/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/
+wordpress_url: http://www.phase2technology.com/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/
 date: !binary |-
   MjAxMS0xMC0yOCAxNDoxODoxMCAtMDQwMA==
 date_gmt: !binary |-

@@ -13,7 +13,7 @@ excerpt: ! "<p>This weekend marked the second annual <a href=\"http://www.drupal
   how both CasperJS or Behat could be brought to bear to test a Drupal application
   and gave some demos of each. The slides are embedded below.</p>\r\n"
 wordpress_id: 1215
-wordpress_url: http://phase2technology.com/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/
+wordpress_url: http://www.phase2technology.com/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/
 date: !binary |-
   MjAxMy0wMi0wNCAxNDozNjoxMSAtMDUwMA==
 date_gmt: !binary |-

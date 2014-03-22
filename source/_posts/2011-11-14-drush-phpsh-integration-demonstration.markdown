@@ -10,7 +10,7 @@ excerpt: <p>I gave a 5-minute lightning presentation at the October 2011 <a href
   NYC</a> meetup about <a href="http://drupal.org/project/phpsh">Roger Lopéz's phpsh
   plugin for drush</a>.</p>
 wordpress_id: 1085
-wordpress_url: http://phase2technology.com/drush-phpsh-integration-demonstration/
+wordpress_url: http://www.phase2technology.com/drush-phpsh-integration-demonstration/
 date: !binary |-
   MjAxMS0xMS0xNCAxNjo0MDo0NyAtMDUwMA==
 date_gmt: !binary |-

@@ -12,7 +12,7 @@ excerpt: <p>The fine folks at ComputerMinds recently posted <a href="http://www.
   and output results in JUnit's XML format so that Hudson can automatically run all
   SimpleTests in your project.</p>
 wordpress_id: 1174
-wordpress_url: http://phase2technology.com/updated-simpletest-hudson-script-for-simpletest-6-x-2-9/
+wordpress_url: http://www.phase2technology.com/updated-simpletest-hudson-script-for-simpletest-6-x-2-9/
 date: !binary |-
   MjAwOS0xMC0wNSAxODowMzowNCAtMDQwMA==
 date_gmt: !binary |-

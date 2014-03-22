@@ -15,7 +15,7 @@ excerpt: ! '<p>Here at Treehouse Agency, we love IRC, as does the rest of the Dr
   <a href="http://www.bitlbee.org/">BitlBee</a>, and I wanted to hook HipChat up to
   an IRC client as well. Here''s a guide on how to do this.</p>'
 wordpress_id: 1070
-wordpress_url: http://phase2technology.com/using-hipchat-through-an-irc-client-with-bitlbee/
+wordpress_url: http://www.phase2technology.com/using-hipchat-through-an-irc-client-with-bitlbee/
 date: !binary |-
   MjAxMS0xMi0xNSAxMDoxOTo1MiAtMDUwMA==
 date_gmt: !binary |-

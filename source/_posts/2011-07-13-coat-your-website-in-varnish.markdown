@@ -10,7 +10,7 @@ excerpt: <p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC 
   I gave a presentation about <a href="http://varnish-cache.org/">the Varnish reverse
   proxy cache</a>.</p>
 wordpress_id: 1131
-wordpress_url: http://phase2technology.com/coat-your-website-in-varnish/
+wordpress_url: http://www.phase2technology.com/coat-your-website-in-varnish/
 date: !binary |-
   MjAxMS0wNy0xMyAxNDoyNzowNiAtMDQwMA==
 date_gmt: !binary |-
