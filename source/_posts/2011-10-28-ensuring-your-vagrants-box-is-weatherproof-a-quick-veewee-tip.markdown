@@ -13,8 +13,7 @@ excerpt: <p>We'll be doing a screencast series soon on using the <a href="http:/
 wordpress_id: 1110
 wordpress_url: http://www.phase2technology.com/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/
 categories:
-- Development
-tags:
+- development
 - vagrant
 - veewee
 comments: []

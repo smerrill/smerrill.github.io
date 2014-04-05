@@ -17,8 +17,9 @@ excerpt: ! '<p>The Drupal community is exploding! I''ve had the pleasure to spea
 wordpress_id: 1063
 wordpress_url: http://www.phase2technology.com/coat-your-website-with-varnish-at-drupalcamp-md/
 categories:
-- Development
-- Drupal
+- presentations
+- development
+- drupal
 tags: []
 comments: []
 ---

@@ -15,15 +15,13 @@ excerpt: ! "<p>This weekend marked the second annual <a href=\"http://www.drupal
 wordpress_id: 1215
 wordpress_url: http://www.phase2technology.com/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/
 categories:
-- Development
-- Drupal
-tags:
+- presentations
+- development
+- drupal
 - drupal
 - javascript
 - open source
-- Web Applications
 - testing
-- Solution Management
 - browsers
 - behat
 - casperjs

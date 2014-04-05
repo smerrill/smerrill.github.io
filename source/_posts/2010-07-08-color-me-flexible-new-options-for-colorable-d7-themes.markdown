@@ -14,12 +14,8 @@ excerpt: ! '<p>In case you haven''t heard: the <a href="http://drupal.org/projec
 wordpress_id: 1165
 wordpress_url: http://www.phase2technology.com/color-me-flexible-new-options-for-colorable-d7-themes/
 categories:
-- Uncategorized
-tags:
-- Bartik
-- color.module
-- drupal 7
-- drupalnyc
+- presentations
+- drupal
 - theming
 comments: []
 ---

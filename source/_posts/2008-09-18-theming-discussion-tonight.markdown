@@ -16,8 +16,6 @@ excerpt: ! '<p>If you got to our talk at Web 2.0 Expo today, or even if you didn
 wordpress_id: 1191
 wordpress_url: http://www.phase2technology.com/theming-discussion-tonight/
 categories:
-- Uncategorized
-tags:
 - conference
 - theming
 - web 2.0 expo

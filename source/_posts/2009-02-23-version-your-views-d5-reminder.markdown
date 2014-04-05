@@ -22,8 +22,6 @@ excerpt: ! '<p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/1
 wordpress_id: 1181
 wordpress_url: http://www.phase2technology.com/version-your-views-d5-reminder/
 categories:
-- Uncategorized
-tags:
 - development
 - drupal
 - views

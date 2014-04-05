@@ -27,8 +27,6 @@ excerpt: ! '<p>How many times have the following issues happened on a project yo
 wordpress_id: 1108
 wordpress_url: http://www.phase2technology.com/end-works-on-my-machine-surprises-with-vagrant/
 categories:
-- Development
-tags:
 - chef
 - drupal planet
 - hosting

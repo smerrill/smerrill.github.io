@@ -17,8 +17,7 @@ excerpt: ! '<p>Here at Treehouse Agency, we love IRC, as does the rest of the Dr
 wordpress_id: 1070
 wordpress_url: http://www.phase2technology.com/using-hipchat-through-an-irc-client-with-bitlbee/
 categories:
-- Development
-tags:
+- development
 - bitlbee
 - hipchat
 - irc

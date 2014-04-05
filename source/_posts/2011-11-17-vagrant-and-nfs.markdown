@@ -10,8 +10,6 @@ excerpt: "<p>One of the most useful features of Vagrant is that it has the abili
 wordpress_id: 1084
 wordpress_url: "http://www.phase2technology.com/vagrant-and-nfs/"
 categories: 
-  - Development
-tags: 
   - drupal planet
   - nfs
   - ops

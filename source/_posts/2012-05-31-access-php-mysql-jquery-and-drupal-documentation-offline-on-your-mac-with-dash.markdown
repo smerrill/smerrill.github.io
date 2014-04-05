@@ -17,9 +17,8 @@ excerpt: ! '<p>Wouldn''t it be great if there was an easy way to access php.net 
 wordpress_id: 562
 wordpress_url: http://www.phase2technology.com/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/
 categories:
-- Development
-- Drupal
-tags:
+- development
+- drupal
 - drupal
 - drupal planet
 - jquery

@@ -12,8 +12,6 @@ excerpt: <p>We're proud to announce that Tree House Agency is a gold sponsor of 
 wordpress_id: 1186
 wordpress_url: http://www.phase2technology.com/were-ramping-up-for-drupalcon-in-dc/
 categories:
-- Uncategorized
-tags:
 - conference
 - drupal
 - events

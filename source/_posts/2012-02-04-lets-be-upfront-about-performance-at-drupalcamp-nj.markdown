@@ -14,8 +14,8 @@ excerpt: ! '<p>I just presented <a href="http://www.drupalcampnj.org/sessions/le
 wordpress_id: 1066
 wordpress_url: http://www.phase2technology.com/lets-be-upfront-about-performance-at-drupalcamp-nj/
 categories:
-- Development
-tags:
+- presentations
+- development
 - front-end
 - performance
 - web performance optimization

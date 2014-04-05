@@ -43,8 +43,6 @@ excerpt: ! '<p>Since getting started with Drupal over two years ago, the sites I
 wordpress_id: 1184
 wordpress_url: http://www.phase2technology.com/speed-up-and-version-your-views/
 categories:
-- Uncategorized
-tags:
 - development
 - performance
 - planet drupal

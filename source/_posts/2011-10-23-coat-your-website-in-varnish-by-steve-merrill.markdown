@@ -10,7 +10,7 @@ excerpt: <p>The full presentation is embedded below.</p>
 wordpress_id: 1112
 wordpress_url: http://www.phase2technology.com/coat-your-website-in-varnish-by-steve-merrill/
 categories:
-- Uncategorized
+- presentations
 tags: []
 comments: []
 ---

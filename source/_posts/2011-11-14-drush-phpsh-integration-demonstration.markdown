@@ -12,9 +12,9 @@ excerpt: <p>I gave a 5-minute lightning presentation at the October 2011 <a href
 wordpress_id: 1085
 wordpress_url: http://www.phase2technology.com/drush-phpsh-integration-demonstration/
 categories:
-- Development
-- Drupal
-tags:
+- presentations
+- development
+- drupal
 - ctags
 - drupalnyc
 - php

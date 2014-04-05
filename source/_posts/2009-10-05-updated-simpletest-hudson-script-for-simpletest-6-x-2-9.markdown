@@ -14,8 +14,6 @@ excerpt: <p>The fine folks at ComputerMinds recently posted <a href="http://www.
 wordpress_id: 1174
 wordpress_url: http://www.phase2technology.com/updated-simpletest-hudson-script-for-simpletest-6-x-2-9/
 categories:
-- Uncategorized
-tags:
 - continuous integration
 - hudson
 - pressflow

@@ -36,11 +36,9 @@ excerpt: ! '<p>Thanks to all those that braved the early morning to attend our s
 wordpress_id: 1179
 wordpress_url: http://www.phase2technology.com/scaling-drupal-not-if-how/
 categories:
-- Uncategorized
-tags:
+- presentations
 - drupal
 - drupalcon
-- drupalcondc09
 - performance
 - scaling
 comments: []

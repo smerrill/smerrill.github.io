@@ -14,8 +14,6 @@ excerpt: <p>At Treehouse Agency, we often work with internal development teams, 
 wordpress_id: 1157
 wordpress_url: http://www.phase2technology.com/fix-common-windows-segmentation-faults-with-drupal/
 categories:
-- Uncategorized
-tags:
 - segmentation fault
 - wamp
 - windows

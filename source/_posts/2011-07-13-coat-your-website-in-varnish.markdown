@@ -12,8 +12,7 @@ excerpt: <p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC 
 wordpress_id: 1131
 wordpress_url: http://www.phase2technology.com/coat-your-website-in-varnish/
 categories:
-- Uncategorized
-tags:
+- presentations
 - caching
 - drupal
 - performance
