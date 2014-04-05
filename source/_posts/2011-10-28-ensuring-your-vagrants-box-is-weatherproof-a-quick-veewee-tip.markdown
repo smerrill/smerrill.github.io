@@ -22,7 +22,7 @@ Another useful tool in the Vagrant user's arsenal is <a href="https://github.com
 
 Nonetheless, sometimes you might want to quickly pop onto the VM that's just been built by veewee before issuing a <code>vagrant basebox export BOXNAME</code> to save it to a .box file suitable for distribution. To easily enable this, just add the following to your <code>~/.ssh/config</code> file.
 
-{% highlight shell %}
+{% highlight text %}
 # Veewee box.
 Host veewee-machine
   HostName 127.0.0.1
