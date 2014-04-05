@@ -33,7 +33,7 @@ There's a few gotchas with using NFS folders:
 
 Finally, here's some stub code for setting up a vagrant project with a docroot one level up. It takes care of dereferencing any symlinks and sharing the docroot with the guest. It will share it with NFS if the host is a Linux or Mac machine.
 
-```ruby
+{% highlight ruby %}
 # Set up some variables relating to which path Vagrant will try to share
 # with the VM.
 require 'pathname'
@@ -53,6 +53,6 @@ Vagrant::Config.run do |config|
   # Add in the rest of your config here.
   config.vm.share_folder "tha-docroot", "/tha-docroot", $docroot_path, :nfs => (RUBY_PLATFORM =~ /linux/ or RUBY_PLATFORM =~ /darwin/)
 end
-```
+{% endhighlight %}
 
 Enjoy!
