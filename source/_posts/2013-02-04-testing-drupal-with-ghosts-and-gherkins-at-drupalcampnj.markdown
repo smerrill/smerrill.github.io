@@ -25,10 +25,14 @@ categories:
 - browsers
 - behat
 - casperjs
+- phase2blog
 comments: []
 ---
 <p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p></p>
 <p>I was happy to fill in when a presenter dropped out and presented a session called "Testing Drupal with Ghosts and Gherkins". In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p></p>
+
+<!--more-->
+
 <p><iframe src="http://www.slideshare.net/slideshow/embed_code/16322739?rel=0" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe><br /></p>
 <div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/Phase2Technology/testing-withghostsandgherkins" title="Testing Drupal with Ghosts and Gherkin" target="_blank">Testing Drupal with Ghosts and Gherkin</a> </strong> from <strong><a href="http://www.slideshare.net/Phase2Technology" target="_blank">Phase2 Technology</a></strong> </div><br />
 </p>

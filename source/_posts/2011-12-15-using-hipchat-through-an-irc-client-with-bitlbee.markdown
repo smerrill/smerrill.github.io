@@ -22,11 +22,15 @@ categories:
 - hipchat
 - irc
 - jabber
+- phase2blog
 comments: []
 ---
 <p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal community. Still, IRC ports are often blocked, and not everyone is comfortable using IRC. We've recently been using <a href="http://www.hipchat.com/">HipChat</a> to set up chat rooms for certain new clients.</p></p>
 <p>I already route most of my AIM and GTalk interaction through an IRC gateway using <a href="http://www.bitlbee.org/">BitlBee</a>, and I wanted to hook HipChat up to an IRC client as well. Here's a guide on how to do this.</p></p>
 <p>(Note that I was having trouble joining channels in my LimeChat last night as I was writing this up, but I might just be missing something. Try it out!)</p></p>
+
+<!--more-->
+
 <p>All the uppercase items come from the <a href="https://www.hipchat.com/account/xmpp">XMPP Account Settings page</a> in your HipChat account.</p></p>
 <ol>
 <li>Add the account in Bitlbee.

@@ -17,11 +17,15 @@ categories:
 - segmentation fault
 - wamp
 - windows
+- phase2blog
 comments: []
 ---
 <p>At Treehouse Agency, we often work with internal development teams, and enterprise software being what it is, they often run Windows. This has been the primary driver behind some of our technology choices (using Mercurial rather than Git on these sorts of projects) and it also occasionally necessitates some extra debugging when something doesn't quite work right on Windows.</p></p>
 <p>In work on a recent project, the client developers were using WampServer, but upon the site reaching a certain size, developers on Windows noted that their Apache processes were quitting after a cache clear. We debugged and tracked the errors down to occuring during CSS preprocessing.  The Apache processes were segmentation faulting, resulting in an error dialog.</p></p>
 <p>In an initial assessment of the problem, it appeared that others were having the same problem, such as in <a href="http://drupal.org/node/424136" title="http://drupal.org/node/424136">http://drupal.org/node/424136</a>. We advised the developers to add a line to their settings.php to disable css preprocessing, like so:</p></p>
+
+<!--more-->
+
 <p>
 <div class="geshifilter">
 <div class="php geshifilter-php"><span class="re0">$conf</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><br /><br />

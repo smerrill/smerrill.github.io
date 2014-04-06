@@ -10,18 +10,21 @@ excerpt: "<p>One of the most useful features of Vagrant is that it has the abili
 wordpress_id: 1084
 wordpress_url: "http://www.phase2technology.com/vagrant-and-nfs/"
 categories: 
-  - drupal planet
-  - nfs
-  - ops
-  - ruby
-  - vagrant
-  - virtualization
+- drupal planet
+- nfs
+- ops
+- ruby
+- vagrant
+- virtualization
+- phase2blog
 comments: []
 ---
 
 One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they're used to while still getting the benefits of running the full production stack.
 
 It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox's built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox's built-in file sharing, so we probably don't want to put our docroot right in that directory.
+
+<!--more-->
 
 As a result, we usually set up our project directories to look like the following with the docroot one level up from the directory with the Vagrantfile in it. (The docroot can be a symlink or a real copy of the docroot - it is in the .gitignore file so it won't be committed.)
 

@@ -19,6 +19,7 @@ categories:
 - conference
 - theming
 - web 2.0 expo
+- phase2blog
 comments: []
 ---
 <p>If you got to our talk at Web 2.0 Expo today, or even if you didn't and still have some questions about what theming is, don't fret!  We'll be having a Birds of a Feather meeting to talk all things theming.</p></p>

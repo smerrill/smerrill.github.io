@@ -16,10 +16,14 @@ categories:
 - drupal
 - events
 - planet drupal
+- phase2blog
 comments: []
 ---
 <p>We're proud to announce that Tree House Agency is a gold sponsor of the upcoming <a href="http://dc2009.drupalcon.org/" target="_blank" title="Check out DrupalCon DC!">Washington, D.C., DrupalCon in 2009</a>. We've been working to steadily increase our involvement in sponsoring Drupal community events, from being a Bronze sponsor of DrupalCon Barcelona con to a Silver sponsor of DrupalCon Boston, and now being a gold sponsor of both <a href="/blog/michael-caccavano/2008/10/13/tree-house-bayoujoin-us-do-it-drupal" title="Tree House at Do it with Drupal">Do It With Drupal</a> and the Washington, D.C. DrupalCon.</p></p>
 <p>My name is Steven Merrill, and I'm the newest developer on board with Tree House Agency. I initially met Tree House at DrupalCon Boston, so I'll be introducing our plans for the Washington, D.C. DrupalCon. Since DrupalCon Boston, we've done quite a bit, and a lot of that will be reflecting in what we talk about in Washington, D.C.</p></p>
+
+<!--more-->
+
 <p> </p></p>
 <h3>Creating Interactive Magic</h3></p>
 <p>I'm one of several new members to join the Tree House Agency team since DrupalCon Boston, and before I joined up, I got a chance to work on a truly amazing project: <a href="http://www.bobdylan.com" target="_blank" title="Check out BobDylan.com">BobDylan.com</a>. BobDylan.com runs on Drupal, and it features a custom AJAX page-reload engine, and lots of integration with some amazing Flash pieces produced by <a href="http://www.prod4ever.com/" target="_blank" title="PROD4Ever website">PROD4Ever</a>, the Boston agency who did the Flash dev and design for the project. I was part of the implementation team due to my Flash and Service expertise. We're rallying all the BobDylan.com troops to show you how it was built in a session we proposed called <a href="http://dc2009.drupalcon.org/session/creating-interactive-magic-designing-and-building-highly-engaging-drupal-interfaces" target="_blank" title="Vote up our session!"><em>Creating Interactive Magic</em> </a>. If you'd like to hear more, vote our session up!</p></p>

@@ -41,6 +41,7 @@ categories:
 - drupalcon
 - performance
 - scaling
+- phase2blog
 comments: []
 ---
 <p>Thanks to all those that braved the early morning to attend our session at Drupalcon DC.  We think it was a good warm-up for the full track of excellent performance and scaling sessions on Thursday.  See you next year!</p></p>
@@ -54,6 +55,9 @@ What do Fast Company, The Big Money, The Onion, Lifetime Television, SonyBMG, Fl
 <p class="rteindent1">Come and hear how we scale sites like myLifetime.com, TheBigMoney.com, and DressUpChallenge.com.</p><br />
 </div><br />
 </div></p>
+
+<!--more-->
+
 <p><!--break--></p></p>
 <p><strong>Session Video</strong></p></p>
 <p><embed type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="425" height="335" src="http://www.archive.org/flow/flowplayer.commercial-3.0.5.swf" w3c="true" flashvars="config={"key":"#$b6eb72a0f2f1e29f3d4","playlist":[{"url":"http://www.archive.org/download/ScalingDrupalNotIf...how/format=Thumbnail?.jpg","autoPlay":true,"scaling":"fit"},{"url":"http://www.archive.org/download/ScalingDrupalNotIf...how/ScalingDrupalNotIfHow.mp4","accelerated":true,"scaling":"fit","autoPlay":false,"provider":"h264streaming"}],"clip":{"accelerated":true,"scaling":"fit","autoPlay":false,"provider":"h264streaming"},"canvas":{"backgroundColor":"0x000000","backgroundGradient":"none"},"plugins":{"audio":{"url":"http://www.archive.org/flow/flowplayer.audio-3.0.3-dev.swf"},"controls":{"gloss":"high","backgroundColor":"0x000000","backgroundGradient":"medium","sliderColor":"0x777777","progressColor":"0x777777","timeColor":"0xeeeeee","durationColor":"0x01DAFF","buttonColor":"0x333333","buttonOverColor":"0x505050","playlist":false,"fullscreen":true},"h264streaming":{"url":"http://www.archive.org/flow/flowplayer.h264streaming-3.0.5.swf"}},"contextMenu":[{"Item ScalingDrupalNotIf...how at archive.org":"function()"},"-","Flowplayer 3.0.5"]}"></embed></p></p>

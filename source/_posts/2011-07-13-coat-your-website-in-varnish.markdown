@@ -20,9 +20,13 @@ categories:
 - scalability
 - varnish
 - webscale
+- phase2blog
 comments: []
 ---
 <p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC meetup</a>, I gave a presentation about <a href="http://varnish-cache.org/">the Varnish reverse proxy cache</a>.</p></p>
+
+<!--more-->
+
 <p><!--break--></p></p>
 <p>If you happened to be at the meetup, I'd love your feedback on the talk. Please fill out a quick review on SpeakerRate here: <a href="http://tha.cm/varnish-talk" title="http://tha.cm/varnish-talk">http://tha.cm/varnish-talk</a></p></p>
 <p>In addition, I've <a href="http://www.drupaldelphia.com/sessions/coat-your-website-varnish">proposed a similar session</a> for <a href="http://www.drupaldelphia.com/">Drupaldelphia</a> that will take a deeper dive into Varnish and show some examples of its use, including using the command line tools and VCL configuration examples.</p></p>

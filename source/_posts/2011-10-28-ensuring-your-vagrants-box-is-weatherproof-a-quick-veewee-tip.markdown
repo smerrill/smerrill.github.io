@@ -10,15 +10,18 @@ excerpt: "<p>We'll be doing a screencast series soon on using the <a href=\"http
 wordpress_id: 1110
 wordpress_url: "http://www.phase2technology.com/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/"
 categories: 
-  - development
-  - vagrant
-  - veewee
+- development
+- vagrant
+- veewee
+- phase2blog
 comments: []
 ---
 
 We'll be doing a screencast series soon on using the <a href="http://www.vagrantup.com/">Vagrant gem</a> to distribute and manage virtual machines so that your entire team (yes, even Windows folks!) can do development on their local machine with the same software that's on your production Linux servers.
 
 Another useful tool in the Vagrant user's arsenal is <a href="https://github.com/jedi4ever/veewee">Veewee</a>. Veewee lets you automate the VirtualBox application to install a full operating system with just the packages you want and need. Veewee does have some built-in validation tools, such as <code>vagrant basebox validate BOXNAME</code>, which will run a set of Cucumber acceptance tests to ensure that the virtual machine should work properly when brought up with Vagrant, as well as with the <a href="http://www.opscode.com/chef/">Chef</a> and <a href="http://puppetlabs.com/">Puppet</a> configuration management tools.
+
+<!--more-->
 
 Nonetheless, sometimes you might want to quickly pop onto the VM that's just been built by veewee before issuing a <code>vagrant basebox export BOXNAME</code> to save it to a .box file suitable for distribution. To easily enable this, just add the following to your <code>~/.ssh/config</code> file.
 

@@ -26,10 +26,14 @@ categories:
 - documentation
 - dash
 - mysql
+- phase2blog
 comments: []
 ---
 <p>Wouldn't it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p></p>
 <p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that's one fewer step you have to perform to have all the docs that matter to you in Dash.</p></p>
+
+<!--more-->
+
 <p>There's a free as in beer application called Dash (available on the Mac App Store at <a href="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12" title="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12">http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12</a>) available for Mac OS X. Dash is a nice-looking documentation browser featuring several useful features, such as the ability to query it with a custom URL string (dash://YOURQUERY), which lends itself for use in tools like Alfred.</p></p>
 <p>Dash can also download additional documentation sets for many open source technologies, including MySQL, PHP, and jQuery. It can be handy to search through the latest PHP API documentation no matter what kind of connection you're on, like so:</p><br />
 <a href="https://skitch.com/00sven/87u7b/dash-documentation"><img src="https://img.skitch.com/20120530-ttupxms7g3b48xep9yu3qk8rs2.medium.jpg" alt="Dash - Documentation" /></a></p>

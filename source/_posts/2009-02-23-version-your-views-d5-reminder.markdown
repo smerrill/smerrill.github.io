@@ -25,9 +25,13 @@ categories:
 - development
 - drupal
 - views
+- phase2blog
 comments: []
 ---
 <p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/11/05/speed-and-version-your-views">a previous article</a> I extolled the virtues of keeping your Views in code, which lets you deploy or change them as easily as uploading or updating a module on your production site. In the article, I wrote about using Drupal 6 and Views2 to do so.</p></p>
+
+<!--more-->
+
 <h3>Drupal 5 / Views 1 Execution</h3></p>
 <p>Views 1 for Drupal 5 also has this mechanism in place, so if you're working on a Drupal 5 site, it's still worth using. It&rsquo;s how the calendar and date modules provide a default calendar view, among other things.  The method for putting default views in your modules is pretty similar, and it&rsquo;s still a great technique to practice.  In Views 2 for Drupal 6, you had to implement two hooks to have a module provide default views in code: hook_views_api() and hook_views_default_views().</p></p>
 <p>Views 1 doesn&rsquo;t have the hook_views_api(), nor will Views 1 automatically look for a MODULENAME.views.inc or a MODULENAME.views_default.inc file, so you can just put an implementation of hook_views_default_views() in your main module file.  If we were making the fictitious treehouse_utils module, the code would look exactly the same as in the previous example:</p></p>

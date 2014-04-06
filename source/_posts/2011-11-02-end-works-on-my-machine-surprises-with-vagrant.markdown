@@ -35,6 +35,7 @@ categories:
 - vagrant
 - veewee
 - virtualization
+- phase2blog
 comments: []
 ---
 <p>How many times have the following issues happened on a project you've worked on?</p></p>
@@ -45,6 +46,9 @@ comments: []
 <li>Team members didn't set up SSL or Varnish on their local machines and issues had to be caught on a dev server.</li>
 <li>A team member would like to switch to Homebrew, but can't set aside the many hours to redo their setup until a project is done.</li><br />
 </ul></p>
+
+<!--more-->
+
 <p>Tools like <a href="http://www.mamp.info/en/index.html">MAMP</a>, <a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a>, the <a href="http://network.acquia.com/downloads">Aqcuia dev desktop</a>, <a href="http://www.macports.org/">MacPorts</a> and <a href="http://mxcl.github.com/homebrew/">Homebrew</a> all make it easy to get an *AMP stack up and running on your computer, and tools like MacPorts and Homebrew even make it pretty easy to install tools like <a href="https://www.varnish-cache.org/">Varnish</a> and <a href="http://memcached.org/">memcached</a>.</p></p>
 <p>While these tools make it easy to run a very close approximation of the production hosting stack on your local machine (arguably closer if you use Macintosh or Linux,) it will still have some key differences which will ultimately contribute at some point to a "<a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html">Works on My Machine!</a>" situation in your project.</p></p>
 <p><img alt="Works On My Machine Badge" src="http://treehouseagency.com/sites/treehouseagency.com/files/worksonmymachine_0.png" style="border: medium none; display: block; float: left;" /></p></p>

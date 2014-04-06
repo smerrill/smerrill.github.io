@@ -48,10 +48,14 @@ categories:
 - planet drupal
 - tutorials
 - views
+- phase2blog
 comments: []
 ---
 <p>Since getting started with Drupal over two years ago, the sites I&rsquo;ve built with it have naturally gotten bigger and bigger in scope. As your sites get bigger and bigger, you always look for ways to keep your site running as smoothly as possible, and this usually ends up meaning getting rid of queries wherever you can.</p></p>
 <p>One feature of Views which is often used by module developers is the ability of a module to expose a set of <strong>default views</strong>. The calendar module, for example, provides a default calendar view in both its Drupal 5 and 6 versions.  This is an obvious asset for developers of contributed modules: if your module interfaces with Views, it makes sense to provide a default view that users can modify.</p></p>
+
+<!--more-->
+
 <h2>Implementation and Potential Benefits</h2></p>
 <p>The hook used to do this is <a href="http://views-help.doc.logrus.com/help/views/api-default-views">hook_views_default_views()</a>. Since most modern sites are run off of a number of Views, you can also realize several benefits by building your sites with a custom module that implements <strong>hook_views_default_views()</strong>:</p></p>
 <ol>
