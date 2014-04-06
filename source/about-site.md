@@ -16,7 +16,7 @@ This site is my personal blog. My [initial post](blog/steven/2009/01/24/back-blo
 
 You can find my work a number of other places on the web:
 
-- I write technical articles on [Phase2's blog](http://www.phase2technology.com/author/smerrill/).
+- I write technical articles on [Phase2's blog](http://www.phase2technology.com/author/smerrill/). I re-post selected articles [back on this blog](/blog/categories/phase2blog/).
 - [Brian McMurray](http://www.brianmcmurray.com/) and I wrote web development articles (often about Drupal, Flash, and the mobile web) [at cascadingStyle](http://cascadingstyle.net/).
 - I put up a personal portfolio in mid-2008, but it hasn't been updated recently.
 - My singing portfolio was a great proof-of-concept of a Drupal-driven Flash site with full Google-indexable content underneath, but has similarly been somewhat neglected.

@@ -5,12 +5,15 @@
   <div class="list-group">
     {% for category in site.categories %}
     {% capture category_count %}{{ category | last | size }}{% endcapture %}
+    {% capture category_name %}{{ category | first }}{% endcapture %}
     {% if category_count != '1' %}
+    {% if category_name != 'phase2blog' %}
     {% capture category_url %}{{ site.category_dir }}/{{ category | first | slugize | downcase | replace:' ','-' | append:'/index.html'}}{% endcapture %}
     <a class="list-group-item {% if category_url == page.url %}active{% endif %}" href="{{ root_url | append:'/' | append:category_url }}">
       <span class="badge">{{ category_count }}</span>
-      {{ category | first }}
+      {{ category_name }}
     </a>
+    {% endif %}
     {% endif %}
     {% endfor %}
   </div>
