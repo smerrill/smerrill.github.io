@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Vagrant and NFS - Grenade Sandwich</title>
+  <meta name="author" content="Steven W. Merrill">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
+
+  <!-- Fira stylesheet -->
+<link href="/assets/fonts/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="/javascripts/libs/bootstrap-3.0.0/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"> -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/readable/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<!-- Awesome font. -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <strong>
+              <a class="navbar-brand" href="/">Grenade Sandwich</a>
+            </strong>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+                <li >
+                    <a href="/about-site/">About this Site</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right visible-xs visible-md visible-lg" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:smerrill.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-17T00:00:00-05:00" pubdate data-updated="true">Nov 17<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        Vagrant and NFS
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/vagrant-and-nfs/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+
+<div class="entry-content clearfix"><p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they&rsquo;re used to while still getting the benefits of running the full production stack.</p>
+
+<p>It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox&rsquo;s built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox&rsquo;s built-in file sharing, so we probably don&rsquo;t want to put our docroot right in that directory.</p>
+
+<!--more-->
+
+
+<p>As a result, we usually set up our project directories to look like the following with the docroot one level up from the directory with the Vagrantfile in it. (The docroot can be a symlink or a real copy of the docroot &ndash; it is in the .gitignore file so it won&rsquo;t be committed.)</p>
+
+<p><img src="https://img.skitch.com/20111117-j5tdm5q6pw584sfnnafxrtawb8.jpg" alt="Vagrant setup with the treehouseagency.com folder on the same level as the folder that contains the Vagrantfile" /></p>
+
+<p>There&rsquo;s a few gotchas with using NFS folders:
+&ndash; If you try to export a symlink, <code>nfsd</code> will complain. You need to dereference any symlinks before they are put in /etc/exports. The sample code below avoids that.</li>
+&ndash; Vagrant automatically uses NFS&rsquo;s mapall to ensure that all file access on the guest maps to your user and group on the host. This will mean that the users and groups may look wrong on the VM (and and <code>chown</code> or <code>chgrp</code> commands will fail), but software on the VM will be able to write to everything in that directory.</p>
+
+<p>Finally, here&rsquo;s some stub code for setting up a vagrant project with a docroot one level up. It takes care of dereferencing any symlinks and sharing the docroot with the guest. It will share it with NFS if the host is a Linux or Mac machine.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Set up some variables relating to which path Vagrant will try to share</span>
+<span class="c1"># with the VM.</span>
+<span class="nb">require</span> <span class="s1">&#39;pathname&#39;</span>
+<span class="vg">$docroot_name</span> <span class="o">=</span> <span class="s2">&quot;treehouseagency.com&quot;</span>
+<span class="vg">$docroot_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># Test that the directory to be shared is in the right place and if it is,</span>
+<span class="c1"># calculate the fully dereferenced path (since NFS exports will fail if you</span>
+<span class="c1"># try to specify the path to a symlink.)</span>
+<span class="k">if</span> <span class="o">!</span><span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="s2">&quot;../</span><span class="si">#{</span><span class="vg">$docroot_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">then</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Please put the &#39;%s&#39; directory (or a symlink to it) in the &#39;%s/&#39; directory.&quot;</span> <span class="o">%</span>
+    <span class="o">[</span><span class="vg">$docroot_name</span><span class="p">,</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">realpath</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span>
+  <span class="nb">exit</span> <span class="mi">1</span>
+<span class="k">else</span>
+  <span class="vg">$docroot_path</span> <span class="o">=</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;../</span><span class="si">#{</span><span class="vg">$docroot_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">realpath</span><span class="o">.</span><span class="n">to_s</span>
+<span class="k">end</span>
+<span class="ss">Vagrant</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">run</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="c1"># Add in the rest of your config here.</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">share_folder</span> <span class="s2">&quot;tha-docroot&quot;</span><span class="p">,</span> <span class="s2">&quot;/tha-docroot&quot;</span><span class="p">,</span> <span class="vg">$docroot_path</span><span class="p">,</span> <span class="ss">:nfs</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/linux/</span> <span class="ow">or</span> <span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/darwin/</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+
+<p>Enjoy!</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Steven Merrill</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-17T00:00:00-05:00" pubdate data-updated="true">Nov 17<span>th</span>, 2011</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/drupal-planet/'>drupal planet</a>, <a class='category' href='/blog/categories/nfs/'>nfs</a>, <a class='category' href='/blog/categories/ops/'>ops</a>, <a class='category' href='/blog/categories/phase2blog/'>phase2blog</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs/" data-via="stevenmerrill" data-counturl="http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2011/11/14/drush-phpsh-integration-demonstration/" title="Previous Post: Drush phpsh Integration Demonstration">&laquo; Drush phpsh Integration Demonstration</a></li>
+            
+            
+            <li class="next"><a href="/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/" title="Next Post: Using HipChat through an IRC client with BitlBee">Using HipChat through an IRC client with BitlBee &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
+    
+    <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
+    
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/conference/index.html">
+      <span class="badge">2</span>
+      conference
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/theming/index.html">
+      <span class="badge">2</span>
+      theming
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal/index.html">
+      <span class="badge">15</span>
+      drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/planet-drupal/index.html">
+      <span class="badge">4</span>
+      planet drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/development/index.html">
+      <span class="badge">9</span>
+      development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/performance/index.html">
+      <span class="badge">6</span>
+      performance
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/views/index.html">
+      <span class="badge">2</span>
+      views
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/treehouse-agency/index.html">
+      <span class="badge">3</span>
+      treehouse agency
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/presentations/index.html">
+      <span class="badge">8</span>
+      presentations
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/web-development/index.html">
+      <span class="badge">2</span>
+      web development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/centos/index.html">
+      <span class="badge">2</span>
+      centos
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala/index.html">
+      <span class="badge">3</span>
+      scala
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala-2.7/index.html">
+      <span class="badge">3</span>
+      scala 2.7
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/browsers/index.html">
+      <span class="badge">2</span>
+      browsers
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/vagrant/index.html">
+      <span class="badge">5</span>
+      vagrant
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualbox/index.html">
+      <span class="badge">2</span>
+      virtualbox
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/irc/index.html">
+      <span class="badge">2</span>
+      irc
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/veewee/index.html">
+      <span class="badge">2</span>
+      veewee
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal-planet/index.html">
+      <span class="badge">3</span>
+      drupal planet
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualization/index.html">
+      <span class="badge">3</span>
+      virtualization
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/php/index.html">
+      <span class="badge">2</span>
+      php
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</section>
+
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/smerrill">@smerrill</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'smerrill',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2009 - 2014 by Steven W. Merrill<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/javascripts/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

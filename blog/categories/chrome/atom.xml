@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: chrome | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/chrome/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Be More Awesome (Please!) : A Tale of Two Browsers]]></title>
+    <link href="http://smerrill.github.io/blog/2011/06/22/be-more-awesome-please-tale-of-two-browsers/"/>
+    <updated>2011-06-22T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/06/22/be-more-awesome-please-tale-of-two-browsers</id>
+    <content type="html"><![CDATA[<p>When Firefox 4 came out, I switched to it. I was mainly impressed by its speed (relative to the stable version of Chrome at the time) and the efficacy of Firefox Sync.</p>
+
+<p>Several weeks later, I abandoned it for the stable build of Chrome. There were several things that contributed to its downfall in my eyes. Chief among them was its effect on my battery life on my MacBook Pro. Despite being nearly as fast as Chrome in user-perceived speed, Firefox generally used more CPU. There was also a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=567552">very annoying bug</a> that resulted in a ton of modal popups.</p>
+
+<p>About a month back, I switched from the Chrome stable released to the Chrome dev channel and I&rsquo;ve been in general very pleased. There&rsquo;s one feature that has been slowly gnawing away at my sanity, however, and it&rsquo;s gotten serious enough that I&rsquo;m switching back to Firefox 5 to see if my complaints about Firefox 4 have been addressed.</p>
+
+<!--more-->
+
+
+<h2>Advantage: Firefox</h2>
+
+<p>Even though Chrome has been my daily driver for several months now, I often still use Firefox in a number of cases:</p>
+
+<ul>
+<li>To use the excellent <a href="https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/">FoxyProxy extension</a> to abuse SOCKS proxies for fun and profit.</li>
+<li>To debug with the <a href="http://www.charlesproxy.com/">Charles web debugging proxy</a> without sending all of my traffic through it.</li>
+<li>To use FireCookie, YSlow!, or one of several web development tools that is just slightly better than the Chrome equivalent.</li>
+</ul>
+
+
+<br />
+
+
+<h2>Advantage: Chrome</h2>
+
+<p>That being said, I think Chrome has a leg up in a number of ways on Firefox:</p>
+
+<ul>
+<li>It has had a working Delicious extension for some time now, which was not true of Firefox 4 (and 5) until <a href="https://addons.mozilla.org/en-US/firefox/addon/delicious-extension/">just a couple of weeks ago</a>.</li>
+<li>It has a great <a href="https://chrome.google.com/webstore/detail/kcnhkahnjcbndmmehfkdnkjomaanaooo">extension to integrate with Google Voice</a>. I do nearly all my texting from Chrome thanks to this extension.</li>
+<li>It lets you do things like &ldquo;Close all tab to the right&rdquo; <a href="https://addons.mozilla.org/en-US/firefox/addon/multiple-tab-handler/">without an extension</a>.</li>
+<li>The web development tools are baked in, so you can debug something right away in any installed version of Chrome.</li>
+</ul>
+
+
+<br />
+
+
+<p>And finally, I have found ways to work around some of Firefox&rsquo;s flaws. Mostly notably, the font popup window was actually in issue with Font Book. A <a href="http://support.mozilla.com/en-US/questions/768100">workaround has been posted on the Mozilla forums</a> and it is working well.</p>
+
+<h2>Ow, My Brain.</h2>
+
+<p>The straw that broke the camel&rsquo;s back with regard to Chrome is the fact that it no longer seems to save any new URLs, or at least it never puts them in the Omnibar. It seems that <a href="http://superuser.com/questions/120885/make-chromes-omnibar-behave-more-like-the-firefox-awesomebar">I&rsquo;m not alone in wanting this, either</a> &ndash; there are <a href="http://jaygoldman.com/2010/12/how-to-get-the-firefox-awesomebar-in-google-chromes-omnibar/">several</a> <a href="http://www.chromeplugins.org/google/chrome-troubleshooting/how-can-i-make-omnibar-more-like-awesomebar-9539.html">articles</a> <a href="http://jshoer.wordpress.com/2008/10/12/make-google-chromes-omnibar-behave-more-like-firefox-3s-awesomebar/">online</a> about how to supposedly make Chrome&rsquo;s Omnibar more like the AwesomeBar in Firefox.</p>
+
+<p>Most of these articles focus on the wrong part of the part of the AwesomeBar, which is its propensity to do an &ldquo;I&rsquo;m Feeling Lucky&rdquo; search if there&rsquo;s nothing in AwesomeBar results. The single feature that, in my opinion, makes the AwesomeBar <strong>utterly awesome</strong> is the simple fact that it <em>remembers the URLs that I type on a daily basis</em>.</p>
+
+<p>I have been visiting sites that are not in Google&rsquo;s index quite a bit recently, as any web developer will do. And while it&rsquo;s kind of cute to type <a href="https://jenkins.">https://jenkins.</a>{thing}.{stuff}.{domain}.{tld}/ two or three times, it would be just dandy if Chrome would get the hint the fourth or fifth or twelfth time that I did so.</p>
+
+<p>But it doesn&rsquo;t, and it seems that as of version 12 or so, no new URLs will ever enter into the Omnibar for autocompletion as I type.</p>
+
+<p>Here is another example that shows just how frustrating this is. I&rsquo;ve recently visited the source of the <a href="https://github.com/smerrill/varnish-3-pkgbuild/blob/master/PKGBUILD">Arch Linux PKGBUILD that I made for Varnish</a> in both Firefox and Chrome. In Firefox, I can type &ldquo;var pk&rdquo; and the AwesomeBar brings up two hits that are laser-focused on what I&rsquo;m looking for. Chrome suggests that I either do a Google search for that tiny, two-word phrase or visit <a href="http://www.codinghorror.com/blog/2008/12/hardware-is-cheap-programmers-are-expensive.html">this Coding Horror article from 2008</a>, which is the only non-search item shown in the Omnibar.</p>
+
+<h2>Chrome, Y U No Awesome?</h2>
+
+<p>And believe me, I get it. Google wants me to make Google searches and to use Google Instant and/or their prediction webservices so that they get a greater quantity of searches.  When I am genuinely looking for something with an unknown URL, I will happily do that. I love Google&rsquo;s search.</p>
+
+<p>But please, Google, for the love of the sanity of web developers who routinely type long URLs that may not come up near the top of a Google search, make Chrome more <a href="http://blog.mozilla.com/blog/2008/04/21/a-little-something-awesome-about-firefox-3/">awesome</a>.</p>
+
+<p>Until then, I&rsquo;ll be trying out <a href="http://www.getfirefox.com">Firefox 5</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>

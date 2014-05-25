@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: web performance optimization | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/web-performance-optimization/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Let&#039;s Be Upfront About Performance at DrupalCamp NJ]]></title>
+    <link href="http://smerrill.github.io/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/"/>
+    <updated>2012-02-04T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj</id>
+    <content type="html"><![CDATA[<p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">"Let's Be Upfront About Performance"</a> as a session at <a href="http://www.drupalcampnj.org/">the inaugural DrupalCamp NJ</a>.</p>
+
+
+<p></p></p>
+
+<p>My presentation is embedded below. Go forth and make fast websites!</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_hmxsbzfz2shk" name="prezi_hmxsbzfz2shk" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=hmxsbzfz2shk&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_hmxsbzfz2shk" name="preziEmbed_hmxsbzfz2shk" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=hmxsbzfz2shk&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Let's Be Upfront About Performance NJ" href="http://prezi.com/hmxsbzfz2shk/lets-be-upfront-about-performance-nj/">Let's Be Upfront About Performance NJ</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+</feed>

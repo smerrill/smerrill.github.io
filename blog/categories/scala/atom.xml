@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: scala | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/scala/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Fuddled API, Verbose Workaround]]></title>
+    <link href="http://smerrill.github.io/blog/steven/2010/01/09/fuddled-api-verbose-workaround/"/>
+    <updated>2010-01-09T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/steven/2010/01/09/fuddled-api-verbose-workaround</id>
+    <content type="html"><![CDATA[<p>I've started writing some <a href="http://scala-lang.org/">Scala</a> applications (including one atop the <a href="http://liftweb.net/">Lift web framework</a>) to access <a href="http://unfuddle.com/docs/api/">Unfuddle's API</a> recently. I've mainly been building daily burndown reports for my team at <a href="http://treehouseagency.com/">Treehouse Agency</a>.  I've run into a few issues with API methods not working as advertised, and Unfuddle's been pretty good about fixing most of them.</p>
+
+
+
+
+<p>The problem <a href="http://unfuddle.com/community/forums/3/topics/816?page=1#posts-2306">I've been experiencing as of January 5th</a> is that Unfuddle has subtly broken authentication for client libraries that (wisely) wait for a 401 error with an accompanying WWW-Authenticate: Basic header before sending credentials.  (Namely, Unfuddle's API stopped sending a WWW-Authenticate header altogether.)  If need be, you can force most HTTP client libraries to send authentication on every request in one way or another, and that's what I had to do tonight with the excellent <a href="http://databinder.net/dispatch/About">Databinder Dispatch library</a>.</p>
+
+
+<!--more-->
+
+
+<p>The code to prepare a request that will send Basic credentials when the server requests them is concise:</p>
+
+
+<p><div class="highlight"><pre><code class="scala"><span class="k">import</span> <span class="nn">dispatch._&lt;/p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">val</span> <span class="n">req</span> <span class="k">=</span> <span class="o">:/(&amp;</span><span class="n">ldquo</span><span class="o">;%</span><span class="n">s</span><span class="o">.</span><span class="n">unfuddle</span><span class="o">.</span><span class="n">com</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="n">format</span> <span class="n">subdomain</span><span class="o">)</span> <span class="o">/</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="n">as</span> <span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">)</span>
+</code></pre></div></p>
+
+<p>Clean and simple, right?</p>
+
+
+
+
+<p>To force an outgoing HTTP basic auth header with the least fuss, you'll need to create it by hand by Base64 encoding a user's username and password pair.  The Apache Commons library includes a Base64 encoder and decoder, so by dipping your toes into Java-land you can construct this header.  Once the Base64 value is encoded, the <strong>&lt;:&lt;</strong> method of the <a href="http://databinder.net/sxr/dispatch-http/0.6.5/main/Http.scala.html#6742">dispatch.Request class</a> accepts a Map[String, String] and will set the corresponding headers on the outgoing web request.</p>
+
+
+
+
+<p>Here's the full workaround I came up with.</p>
+
+
+<p><div class="highlight"><pre><code class="scala"><span class="k">import</span> <span class="nn">dispatch._</span>
+<span class="k">import</span> <span class="nn">org.apache.commons.codec.binary.Base64</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">val</span> <span class="n">authString</span> <span class="k">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="nc">Basic</span> <span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="o">+</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="nc">Base64</span><span class="o">.</span><span class="n">encodeBase64</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;%</span><span class="n">s</span><span class="o">:%</span><span class="n">s</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;.</span><span class="n">format</span><span class="o">(</span><span class="n">user</span><span class="o">,</span> <span class="n">password</span><span class="o">).</span><span class="n">getBytes</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">req</span> <span class="k">=</span> <span class="o">:/(&amp;</span><span class="n">ldquo</span><span class="o">;%</span><span class="n">s</span><span class="o">.</span><span class="n">unfuddle</span><span class="o">.</span><span class="n">com</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="n">format</span> <span class="n">subdomain</span><span class="o">)</span> <span class="o">/</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">api</span><span class="o">/</span><span class="n">v1</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;:&amp;</span><span class="n">lt</span><span class="o">;</span> <span class="nc">Map</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="nc">Authorization</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="o">;&gt;</span> <span class="n">authString</span><span class="o">)</span>
+</code></pre></div></p>
+
+<p>So there you have it - a method to construct a Databinder Dispatch web request that always sends an HTTP basic auth header. Hopefully, all the web APIs that you interact with will do the right thing regarding WWW-Authenticate headers, but if not, now you'll know how to cope.</p>
+
+
+
+
+<p><strong>UPDATE:</strong> In case you're wondering if this is happening with an API that you're interacting with, the specific error that indicates that Apache HttpClient (the underlying workhorse of Databinder Dispatch) did not receive any WWW-Authenticate headers looks like this:</p>
+
+
+
+
+<p><pre><code>WARN - Authentication error: Unable to respond to any of these challenges: {}</code></pre></p>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Python to Scala 2.7: Check Your Spelling]]></title>
+    <link href="http://smerrill.github.io/blog/steven/2009/11/28/python-scala-27-check-your-spelling/"/>
+    <updated>2009-11-27T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/steven/2009/11/28/python-to-scala-2-7-check-your-spelling</id>
+    <content type="html"><![CDATA[<p><a href="http://smerrill.github.io/node/10">Last time out</a>, I talked about the benefits of <a href="http://www.scala-lang.org/">Scala</a>, and why I'm looking at Scala and <a href="http://www.liftweb.net/">Lift</a>.</p>
+
+
+
+
+<p>In that spirit, I spent some time last weekend converting Peter Norvig's <a href="http://norvig.com/spell-correct.html">simple Python spell-checker</a> to Scala.  I didn't do this conversion alone; I got some great answers from <a href="http://dcsobral.blogspot.com/">Daniel Sobral</a>, <a href="http://www.codecommit.com/blog/">Daniel Spiewak</a> and finally <A href="http://dwins.wordpress.com/">David Winslow</a> on <a href="http://stackoverflow.com/questions/1780459/how-can-i-approximate-pythons-or-operator-for-set-comparison-in-scala">Stack Overflow</a>. David provided the answer I needed for the best way to implement the matching function in Scala 2.7.</p>
+
+
+<!--more-->
+
+
+<p>Here's Peter Norvig's 21 lines (not counting blank lines) of Python 2.5 code, for comparison.</p>
+
+
+<p><div class="highlight"><pre><code class="python"><span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">collections</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">words</span><span class="p">(</span><span class="n">text</span><span class="p">):</span> <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;[</span><span class="n">a</span><span class="o">-</span><span class="n">z</span><span class="p">]</span><span class="o">+&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">features</span><span class="p">):</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">model</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+    <span class="n">model</span><span class="p">[</span><span class="n">f</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">return</span> <span class="n">model</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">NWORDS</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span><span class="n">words</span><span class="p">(</span><span class="nb">file</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">big</span><span class="o">.</span><span class="n">txt</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;)</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">alphabet</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">abcdefghijklmnopqrstuvwxyz</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">edits1</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+   <span class="n">s</span> <span class="o">=</span> <span class="p">[(</span><span class="n">word</span><span class="p">[:</span><span class="n">i</span><span class="p">],</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+   <span class="n">deletes</span>    <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">if</span> <span class="n">b</span><span class="p">]</span>
+   <span class="n">transposes</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span>
+   <span class="n">replaces</span>   <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">alphabet</span> <span class="k">if</span> <span class="n">b</span><span class="p">]</span>
+   <span class="n">inserts</span>    <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="o">+</span> <span class="n">c</span> <span class="o">+</span> <span class="n">b</span>     <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">s</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">alphabet</span><span class="p">]</span>
+   <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">deletes</span> <span class="o">+</span> <span class="n">transposes</span> <span class="o">+</span> <span class="n">replaces</span> <span class="o">+</span> <span class="n">inserts</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">known_edits2</span><span class="p">(</span><span class="n">word</span><span class="p">):</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">e2</span> <span class="k">for</span> <span class="n">e1</span> <span class="ow">in</span> <span class="n">edits1</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">edits1</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span> <span class="k">if</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">NWORDS</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">known</span><span class="p">(</span><span class="n">words</span><span class="p">):</span> <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">NWORDS</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">correct</span><span class="p">(</span><span class="n">word</span><span class="p">):</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">candidates</span> <span class="o">=</span> <span class="n">known</span><span class="p">([</span><span class="n">word</span><span class="p">])</span> <span class="ow">or</span> <span class="n">known</span><span class="p">(</span><span class="n">edits1</span><span class="p">(</span><span class="n">word</span><span class="p">))</span> <span class="ow">or</span> <span class="n">known_edits2</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="n">word</span><span class="p">]</span>
+<span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">NWORDS</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre></div></p>
+
+<p>And now, the Scala 2.7 version that I came up with. It's 24 non-whitespace lines, although the average line is longer than the Python version.</p>
+
+
+<p><div class="highlight"><pre><code class="scala"><span class="k">import</span> <span class="nn">scala.io.Source</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">val</span> <span class="n">alphabet</span> <span class="k">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">abcdefghijklmnopqrstuvwxyz</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="n">train</span><span class="o">(</span><span class="n">text</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="o">&amp;</span><span class="n">ldquo</span><span class="o">;[</span><span class="kt">a-z</span><span class="o">]+&amp;</span><span class="n">rdquo</span><span class="o">;.</span><span class="n">r</span><span class="o">.</span><span class="n">findAllIn</span><span class="o">(</span><span class="n">text</span><span class="o">).</span><span class="n">foldLeft</span><span class="o">(</span><span class="nc">Map</span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="o">&gt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Int</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">withDefaultValue</span> <span class="mi">1</span><span class="o">)&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;{(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">a</span><span class="o">(</span><span class="n">b</span><span class="o">)</span> <span class="k">=</span> <span class="n">a</span><span class="o">(</span><span class="n">b</span><span class="o">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">val</span> <span class="nc">NWORDS</span> <span class="k">=</span> <span class="n">train</span><span class="o">(</span><span class="nc">Source</span><span class="o">.</span><span class="n">fromFile</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">big</span><span class="o">.</span><span class="n">txt</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;).</span><span class="n">getLines</span><span class="o">.</span><span class="n">mkString</span><span class="o">.</span><span class="n">toLowerCase</span><span class="o">)&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="n">known</span><span class="o">(</span><span class="n">words</span><span class="k">:</span><span class="kt">Set</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=</span> <span class="o">{</span><span class="nc">Set</span><span class="o">.</span><span class="n">empty</span> <span class="o">++</span> <span class="o">(</span><span class="k">for</span><span class="o">(</span><span class="n">w</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="n">words</span> <span class="k">if</span> <span class="nc">NWORDS</span> <span class="n">contains</span> <span class="n">w</span><span class="o">)</span> <span class="k">yield</span> <span class="n">w</span><span class="o">)}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="n">edits1</span><span class="o">(</span><span class="n">word</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="nc">Set</span><span class="o">.</span><span class="n">empty</span> <span class="o">++</span> <span class="c1">// The next four are deletes, transposes, replaces and inserts, respectively.</span>
+  <span class="o">(</span><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">word</span> <span class="n">take</span> <span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="n">drop</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)))</span> <span class="o">++</span>
+  <span class="o">(</span><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="mi">1</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">word</span> <span class="n">take</span> <span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="n">word</span><span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">word</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="n">drop</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="o">)))</span> <span class="o">++</span>
+  <span class="o">(</span><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span><span class="o">;</span> <span class="n">j</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="n">alphabet</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">word</span> <span class="n">take</span> <span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="n">drop</span> <span class="o">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="o">)))</span> <span class="o">++</span>
+  <span class="o">(</span><span class="k">for</span> <span class="o">(</span><span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="mi">0</span> <span class="n">until</span> <span class="n">word</span><span class="o">.</span><span class="n">length</span><span class="o">;</span> <span class="n">j</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="n">alphabet</span><span class="o">)</span> <span class="k">yield</span> <span class="o">(</span><span class="n">word</span> <span class="n">take</span> <span class="n">i</span><span class="o">)</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="n">drop</span> <span class="n">i</span><span class="o">))</span>
+<span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="n">known_edits2</span><span class="o">(</span><span class="n">word</span><span class="k">:</span><span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span><span class="nc">Set</span><span class="o">.</span><span class="n">empty</span> <span class="o">++</span> <span class="o">(</span><span class="k">for</span>
+  <span class="o">(</span><span class="n">e1</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="n">edits1</span><span class="o">(</span><span class="n">word</span><span class="o">);</span> <span class="n">e2</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;&amp;</span><span class="n">ndash</span><span class="o">;</span> <span class="n">edits1</span><span class="o">(</span><span class="n">e1</span><span class="o">)</span> <span class="k">if</span> <span class="nc">NWORDS</span> <span class="n">contains</span> <span class="n">e2</span><span class="o">)</span> <span class="k">yield</span> <span class="n">e2</span><span class="o">)}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="n">correct</span><span class="o">(</span><span class="n">word</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="n">sets</span> <span class="k">=</span> <span class="nc">List</span><span class="o">[</span><span class="kt">String</span> <span class="k">=&gt;</span> <span class="kt">Set</span><span class="o">[</span><span class="kt">String</span><span class="o">]](&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">x</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">known</span><span class="o">(</span><span class="nc">Set</span><span class="o">(</span><span class="n">x</span><span class="o">)),</span> <span class="n">x</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">known</span><span class="o">(</span><span class="n">edits1</span><span class="o">(</span><span class="n">x</span><span class="o">)),</span> <span class="n">known_edits2</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">).</span><span class="n">elements</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">(</span><span class="n">word</span><span class="o">))&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">sets</span> <span class="n">find</span> <span class="o">{</span> <span class="o">!</span><span class="k">_</span><span class="o">.</span><span class="n">isEmpty</span> <span class="o">}</span> <span class="k">match</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">candidates</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">candidates</span><span class="o">.</span><span class="n">reduceLeft</span> <span class="o">{</span> <span class="o">(</span><span class="n">res</span><span class="o">,</span> <span class="n">n</span><span class="o">)</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="k">if</span> <span class="o">(</span><span class="nc">NWORDS</span><span class="o">(</span><span class="n">res</span><span class="o">)</span> <span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="nc">NWORDS</span><span class="o">(</span><span class="n">n</span><span class="o">))</span> <span class="n">res</span> <span class="k">else</span> <span class="n">n</span> <span class="o">}</span>
+<span class="k">case</span> <span class="nc">None</span> <span class="o">=&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">word</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></p>
+
+<p>Still, it's a pretty terse bit of code, and it works much like the Python version. Tune in a bit later for an explanation of some of the constructs at work here, and an even nicer Scala 2.8 version of the code.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Scala, Lift, and the Future]]></title>
+    <link href="http://smerrill.github.io/blog/steven/2009/11/27/scala-lift-and-future/"/>
+    <updated>2009-11-26T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/steven/2009/11/27/scala-lift-and-the-future</id>
+    <content type="html"><![CDATA[<p>I've been spending a decent amount of my after-hours time investigating a combination that I think will be part of the future of web programming: the <a href="http://www.scala-lang.org">Scala programming language</a>, and <a href="http://www.liftweb.net/">the Lift web framework</a> on top of it.</p>
+
+
+<!--more-->
+
+
+<p>A number of high-scale, distributed systems have recently adopted Scala. Twitter's messaging queues are now handled by Scala and its Actors library. Another high-scale social game, <a href="http://foursquare.com/">Foursquare</a>, uses Scala for its backend, and Lift for its web tier.  (I'm excited to see a presentation about Foursquare's use of Lift at the <a href="http://www.meetup.com/New-York-Scala-Enthusiasts/calendar/11900384/">New York Scala Enthusiasts</a> meetup this weekend.</p>
+
+
+
+
+<p><a href="http://lerdorf.com/bio.php">Rasmus Lerdorf</a> is the inventor of PHP and author of a famous presentation at OSCMS 2007 that exposed flaws in PHP CMSs (although it showed Drupal to be light-years ahead of its open-source brethren in terms of security.)  He recently cast a critical eye on Foursquare:</p>
+
+
+
+
+<p><a href="http://www.flickr.com/photos/00sven/4136785689" title="Twitter / Rasmus Lerdorf: Four stars to @foursquare ..." class="flickr-photo-img"><img src="http://farm3.static.flickr.com/2524/4136785689_fd8c6c0b69.jpg" alt="Twitter / Rasmus Lerdorf: Four stars to @foursquare ..." title="Twitter / Rasmus Lerdorf: Four stars to @foursquare ..."  class=" flickr-photo-img" height="346" width="500" /></a></p>
+
+
+
+
+<h2>Why I Like Scala</h2>
+
+
+
+
+<h3>It's got an interactive shell</h3>
+
+
+
+
+<p>Like Python, you can run commands in Scala's interactive shell, the REPL (read-eval-print-loop.)  Don't take my word for you - you can also <a href="http://www.simplyscala.com/">play with the REPL online</a>. Another benefit to this is that you can test Lift apps and interactive with its ORM from the command line through the REPL, just as you can with Django through the Python interactive shell.</p>
+
+
+
+
+<h3>Scala runs on the JVM and interoperates with Java libraries</h3>
+
+
+
+
+<p>Any of the wealth of Java libraries can be used with Scala. If you're already running SOLR on Tomcat or Jetty, you can run a Scala application.  Enterprises who already have Java infrastructure can move to Scala apps today.</p>
+
+
+
+
+<h3>You can write incredibly concise code with Scala</h3>
+
+
+
+
+<p>With its support for pattern-matching, structural types, and just through the general design of the language, you'll find that almost none of your Scala code is boilerplate. Consider the following Java:</p>
+
+
+<p><div class="highlight"><pre><code class="scala"><span class="n">public</span> <span class="k">class</span> <span class="nc">Person</span> <span class="o">{</span>
+  <span class="n">public</span> <span class="k">final</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+  <span class="n">public</span> <span class="k">final</span> <span class="n">int</span> <span class="n">age</span><span class="o">;</span>
+  <span class="nc">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span> <span class="n">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">this</span><span class="o">.</span><span class="n">name</span> <span class="k">=</span> <span class="n">name</span><span class="o">;</span>
+<span class="k">this</span><span class="o">.</span><span class="n">age</span> <span class="k">=</span> <span class="n">age</span><span class="o">;</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></p>
+
+<p>Next, the equivalent Scala.</p>
+
+
+<p><div class="highlight"><pre><code class="scala"><span class="k">class</span> <span class="nc">Person</span><span class="o">(</span><span class="k">val</span> <span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="k">val</span> <span class="n">age</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span>
+</code></pre></div></p>
+
+<p>This was taken from a presentation by David Pollak, the creator of Lift. (You can check out <a href="http://www.infoq.com/presentations/Scala-Basics-Bytecode-David-Pollak">the whole presentation</a> along with more comparisons, along with some very low-level Java bytecode.)</p>
+
+
+
+
+<h3>Scala supports functional programming techniques</h3>
+
+
+
+
+<p>Functional programming will be the way of the future in a world of decreasing processor speeds and increasing numbers of processor cores. Note that Scala merely supports functional programming; it's also entirely possible to write regular, imperative Java-style code as you get used to the functional, Scala idiom. Hey - at least your Java-in-Scala code will still be concise. Once you get used to functional style with no shared state and immutable variables, you can refactor your old code.</p>
+
+
+
+
+<p>Scala also has a built-in actors library which allows for share-nothing message passing between processes, threads or servers.  (Facebook chat uses Erlang, which has a similar actor library, to send nearly a billion messages a day.)</p>
+
+
+
+
+<h3>Lift is feature-laden and secure</h3>
+
+
+
+
+<p>Lift (like <a href="http://drupal.org/">Drupal</a>) has many layers of security built in - form tokens, explicit escaping of all values going into templates by default, and the like. See Rasmus's comment above.</p>
+
+
+
+
+<p>A common Lift demonstration is writing a Comet chat application in under 20 lines of Scala code. (Check out slides 9, 10, and 11 of <a href="http://qconlondon.com/london-2009/file?path=/qcon-london-2009/slides/DavidPollak_LiftWebFramework.pdf">one such presentation</a>.) Combined with a Java web application server like Jetty that supports continuations, actors that are handling Comet long polling can suspend without tying up a thread.</p>
+
+
+
+
+<h3>Scala uses Drupal for their site</h3>
+
+
+
+
+<p>The Scala webmasters have good taste in their choice of other open-source projects. What can I say?</p>
+
+
+
+
+<h2>The Future</h2>
+
+
+
+
+<p>So what's the point of all this?</p>
+
+
+
+
+<p>I've been looking around at frameworks as a way to broaden my horizons. I checked out Django and Python briefly, but I think that Scala and Lift could be the next great building block for high-scale social applications. I'll be posting about it as I go. Tomorrow, I'll post a conversion of <a href="http://norvig.com/spell-correct.html">Peter Norvig's 21-line python spell-checker</a> into Scala.</p>
+
+]]></content>
+  </entry>
+  
+</feed>

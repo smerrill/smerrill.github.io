@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Drupal with Ghosts and Gherkins at DrupalCampNJ]]></title>
+    <link href="http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/"/>
+    <updated>2013-02-04T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj</id>
+    <content type="html"><![CDATA[<p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>
+
+
+<p></p></p>
+
+<p>I was happy to fill in when a presenter dropped out and presented a session called &#8220;Testing Drupal with Ghosts and Gherkins&#8221;. In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><iframe src="http://www.slideshare.net/slideshow/embed_code/16322739?rel=0" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe><br /></p>
+
+
+<div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/Phase2Technology/testing-withghostsandgherkins" title="Testing Drupal with Ghosts and Gherkin" target="_blank">Testing Drupal with Ghosts and Gherkin</a> </strong> from <strong><a href="http://www.slideshare.net/Phase2Technology" target="_blank">Phase2 Technology</a></strong> </div>
+
+
+<br />
+
+
+<p></p></p>
+
+<p>Here are some links to the items demoed in the presentation so that you can give them a shot on your own sites.</p>
+
+
+<p></p></p>
+
+<p>Information about CasperJS is available at its website, <a href="http://casperjs.org/">casperjs.org</a>. You can read more about CasperJS&#8217;s parent project, PhantomJS, at <a href="http://phantomjs.org/">phantomjs.org</a>.</p>
+
+
+<p></p></p>
+
+<p>The sample CasperJS scripts adapted from our Testing with Friendly Ghosts presentation are available on GitHub at <a href="https://github.com/ericduran/friendly-ghosts-examples">github.com/ericduran/friendly-ghosts-examples</a>.</p>
+
+
+<p></p></p>
+
+<p>Similarly, documentation for both Behat and the Mink browser-testing extension is available at <a href="http://behat.org/">behat.org</a>. </p>
+
+
+<p></p></p>
+
+<p>If you&#8217;d like to try out a sample project that uses Behat and Mink and one custom Mink step definition to test some sample assertions on the Phase2 website, it&#8217;s on GitHub at <a href="https://github.com/phase2/behat-phase2tech/">github.com/phase2/behat-phase2tech/</a>.</p>
+
+
+<p></p></p>
+
+<p>Finally, our set of Drupal-based Behat and Mink step definitions are released as Open Source on GitHub at <a href="https://github.com/phase2/behat-drupal-extension">github.com/phase2/behat-drupal-extension</a>.</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OmniOS and Vagrant]]></title>
+    <link href="http://smerrill.github.io/blog/2012/09/23/omnios-vagrant/"/>
+    <updated>2012-09-23T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2012/09/23/omnios-vagrant</id>
+    <content type="html"><![CDATA[<h3>&lt;3 ZFS</h3>
+
+<p>I&rsquo;ve recently gotten religion about ZFS, and as a result, I&rsquo;ve been looking hard at the various systems that offer you the ability to use ZFS and other amazing tools from the Solaris lineage (now being developed freely under <a href="http://blog.illumos.org/">the Illumos moniker</a> after Oracle&rsquo;s unceremonious murder of OpenSolaris.)</p>
+
+<p>My data&rsquo;s backed up on an 8 TB FreeNAS, but there&rsquo;s also an amazing trend of Illumos-based distributions on offer that offer KVM virtualization, which was ported to Illumos by Joyent for <a href="http://smartos.org/">their SmartOS distribution</a>. Theo Schlossnagle recently gave a talk at the NYC DevOps meetup about <a href="http://omnios.omniti.com/">their Illumos-based OmniOS distribution</a>. OmniOS is a bit more than a JeOS &ndash; it aims to provide just enough packaged software to let you build the Illumos kernel and several other important tools like tmux and screen, and then get out of your way. Like SmartOS, it provides both lightweight zones-based virtualization and KVM for full hardware virtualization, but OmniOS is designed to be permanently installed on a machine, as opposed to SmartOS&rsquo;s focus on USB or PXE booting and ephemeral global zone configuration.</p>
+
+<p>OmniTI also makes a larger set of packages that their Managed Services team uses at <a href="http://pkg.omniti.com/omniti-ms/en/index.shtml">http://pkg.omniti.com/omniti-ms/en/index.shtml</a>.</p>
+
+<!--more-->
+
+
+<h3>KVM? Not today.</h3>
+
+<p>But at the end of the day, <a href="http://vagrantup.com/">Vagrant</a> is still the platform I use to run applications with the correct operating system, software versions, and production configurations, so I need Vagrant (and thus <a href="https://www.virtualbox.org/">VirtualBox</a>) to run on my workstation.</p>
+
+<p>I am happy to report that I was able to get VirtualBox and Vagrant to the point that they could boot a box, and use host-only networking despite being a complete UNIX and Solaris noob. (Thanks to Mitchell and the whole Vagrant community for an awesome piece of software.)</p>
+
+<h3>Get it installed</h3>
+
+<p>Here&rsquo;s the roundup on how to get it all up and running. All commands were run as root in the global zone.</p>
+
+<p>Install a few utility packages. This is not strictly necessary, but it helps.</p>
+
+<pre><code>$ pkg install terminal/tmux
+$ pkg install developer/versioning/git
+</code></pre>
+
+<p>Set up a static IP as pointed out in <a href="http://omnios.omniti.com/wiki.php/GeneralAdministration.">http://omnios.omniti.com/wiki.php/GeneralAdministration.</a> In my case, it was 192.168.0.160.</p>
+
+<p>You will also need to set up your gateway as a DNS resolver. To do so on UNIX, add at least a <em>search</em> and <em>nameserver</em> to /etc/resolv.conf. I am using the following:</p>
+
+<pre><code>search nyc.rr.com
+nameserver 192.168.0.1
+</code></pre>
+
+<p>Set up NSS to read resolv.conf.</p>
+
+<pre><code>$ cp /etc/nsswitch.{dns,conf}
+</code></pre>
+
+<p>Add the OmniTI managed services package repo to make getting a few things easier.</p>
+
+<pre><code>$ pkg set-publisher -g http://pkg.omniti.com/omniti-ms/ ms.omniti.com
+</code></pre>
+
+<p>Rebuild the package index</p>
+
+<pre><code>$ pkg rebuild-index
+</code></pre>
+
+<p>Install Ruby and gcc 4.6 to be able to build gem extensions. Also ensure libffi is there since Vagrant needs the ffi gem.</p>
+
+<pre><code>$ pkg install omniti/runtime/ruby-19
+$ pkg install developer/gcc46
+$ pkg install library/libffi
+</code></pre>
+
+<p>At this point you should be ready to install the Vagrant gem. The Ruby 1.9 executables like <code>gem</code> and <code>irb</code> get put into <code>/opt/omni/bin/</code>.</p>
+
+<pre><code>$ /opt/omni/bin/gem install vagrant
+</code></pre>
+
+<p>Run a quick <code>vagrant help</code> to ensure that everything&rsquo;s hooked up properly.</p>
+
+<pre><code>$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant help
+</code></pre>
+
+<p>Next up we need to install VirtualBox. I saw <a href="https://gist.github.com/7ddfa72c1d97198532ea">errors related to the Crossbow-based networking kernel module</a> while trying to install a variety of versions of VirtualBox, so we can <a href="http://www.virtualbox.org/manual/ch09.html#vboxbowsolaris11">force the older stream-based VirtualBox networking driver to install</a>.</p>
+
+<pre><code>$ touch /etc/vboxinst_vboxflt
+</code></pre>
+
+<p>With that in place, download and extract the VirtualBox 4.2.0 release for Solaris guests.</p>
+
+<pre><code>$ wget http://download.virtualbox.org/virtualbox/4.2.0/VirtualBox-4.2.0-80737-SunOS.tar.gz
+$ tar xzf VirtualBox-4.2.0-80737-SunOS.tar.gz
+</code></pre>
+
+<p>Next up, install the package.</p>
+
+<pre><code>$ pkgadd -d VirtualBox-4.2.0-SunOS-r80737.pkg
+</code></pre>
+
+<p>At this point you should be ready to download a Vagrantfile and go. I&rsquo;ve made <a href="https://gist.github.com/0509301bb7c62e523b49">a sample one</a> that you can try with.</p>
+
+<pre><code>$ curl https://raw.github.com/gist/0509301bb7c62e523b49/87e75688b45631ca9492123c5f160d2311e84604/gistfile1.rb &gt; Vagrantfile
+$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant up
+$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant ssh
+</code></pre>
+
+<p>And with that, the box should download and the second command should have you logged in as the <code>vagrant</code> user on your very own Ubuntu 12.04 LTS VM.</p>
+
+<h3>Host-only networking</h3>
+
+<p>There is one peculiarity to VirtualBox on OmniOS (which, granted, might be VirtualBox on Solaris/Illumos &ndash; I have no idea.) Windows, Mac, and Linux hosts all have the ability to create a host-only interface with the <code>VBoxManage hostonlyif create</code> command-line option. That option does not exist in the Solaris version of VirtualBox. In my experience from this weekend, VirtualBox will create you a <code>vboxnet0</code> interface which can be used as a host-only network. If you do wish to use host-only networking with your VM, you will have to set it up before you run <code>vagrant up</code>.</p>
+
+<p>I usually run my host-only interfaces inside of 172.16.0.0/12. For the sake of argument, let&rsquo;s say we want to give this VM a host-only address of 172.31.31.31. (The sample Vagrantfile has this configuration commented out.) By setting the IP address of <code>vboxnet0</code> to 172.31.31.1, vagrant will not try to run <code>VBoxManage hostonlyif create</code>, and host-only networking will also work. The <code>VBoxManage</code> command to do so is as follows:</p>
+
+<pre><code>$ VBoxManage hostonlyif ipconfig vboxnet0 -ip 172.31.31.1
+</code></pre>
+
+<h3>Not exhaustive</h3>
+
+<p>I haven&rsquo;t tried out a full client setup though Vagrant on OmniOS yet, and I think I&rsquo;ll still be booting my workstation into Fedora 17 for the next week to run KVM and/or VirtualBox VMs. Here are the remaining things that I&rsquo;d need to nail down before I could use OmniOS and Vagrant together:</p>
+
+<ul>
+<li>There&rsquo;s no Solaris host class in Vagrant, so the ability to export files (like your codebase) from the host to the guest via NFS won&rsquo;t work yet. That said, since ZFS has deep hooks into NFS, this might be super simple to implement assuming that you boot from ZFS.</li>
+<li>The host-only networking bit is strange, and I don&rsquo;t know enough about OmniOS or Crossbow to say what&rsquo;s going on.</li>
+<li>I haven&rsquo;t tested out applying Puppet or Chef configuration to the guest. OmniTI <a href="http://pkg.omniti.com/omniti-ms/info/0/omniti%2Fsystem%2Fmanagement%2Fchef%400.10.8%2C5.11-0.151002%3A20120501T192332Z">makes a Chef package available</a> in the managed services repository, and the Puppet and Facter gems install without issue, so this should be rather painless.</li>
+<li>VirtualBox should probably be run <a href="http://www.virtualbox.org/manual/ch02.html#idp11597936">in its own zone</a>.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash]]></title>
+    <link href="http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/"/>
+    <updated>2012-05-31T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash</id>
+    <content type="html"><![CDATA[<p>Wouldn&#8217;t it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p>
+
+
+<p></p></p>
+
+<p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that&#8217;s one fewer step you have to perform to have all the docs that matter to you in Dash.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>There&#8217;s a free as in beer application called Dash (available on the Mac App Store at <a href="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12" title="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12">http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12</a>) available for Mac OS X. Dash is a nice-looking documentation browser featuring several useful features, such as the ability to query it with a custom URL string (dash://YOURQUERY), which lends itself for use in tools like Alfred.</p>
+
+
+<p></p></p>
+
+<p>Dash can also download additional documentation sets for many open source technologies, including MySQL, PHP, and jQuery. It can be handy to search through the latest PHP API documentation no matter what kind of connection you&#8217;re on, like so:</p>
+
+
+<br />
+
+
+<p><a href="https://skitch.com/00sven/87u7b/dash-documentation"><img src="https://img.skitch.com/20120530-ttupxms7g3b48xep9yu3qk8rs2.medium.jpg" alt="Dash - Documentation" /></a></p></p>
+
+<p>In addition, Dash also has the ability to browse any API documentation that you have installed through XCode onto your system. (In fact, any files in DocSet format that are located inside the ~/Library/Developer/Shared/Documentation/DocSets directory can be read by Dash.)</p>
+
+
+<p></p></p>
+
+<p>In addition to the freely available DocSets that are available for major open-source technologies, it&#8217;s easy to make your own DocSets using doxygen. I went ahead and made a DocSet for Drupal 7.x using doxygen. Not every method that&#8217;s available at api.drupal.org is here, but it&#8217;s a great start, especially if you want a single offline app where you can query offline documentation.</p>
+
+
+<p></p></p>
+
+<p>To start using the Drupal DocSet, download the .tgz file from <a href="https://github.com/phase2/drupal-docset/zipball/master" title="https://github.com/phase2/drupal-docset/zipball/master">https://github.com/phase2/drupal-docset/zipball/master</a>. To use it:</p>
+
+
+<p></p></p>
+
+<ol>
+<li>Unzip the file</li>
+<li>Move org.drupal.docset to ~/Library/Developer/Shared/Documentation/DocSets/</li>
+<li>Launch Dash and start searching, like so.</li><br />
+</ol>
+
+
+<br />
+
+
+<p><a href="https://skitch.com/00sven/87u44/dash-documentation"><img src="https://img.skitch.com/20120530-rrgw89tfht2g7ie3ejys98xssr.medium.jpg" alt="Dash - Documentation" /></a></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Coat Your Website with Varnish at DrupalCamp MD]]></title>
+    <link href="http://smerrill.github.io/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/"/>
+    <updated>2012-02-10T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md</id>
+    <content type="html"><![CDATA[<p>The Drupal community is exploding! I&#8217;ve had the pleasure to speak at two nascent Drupal camps (<a href="http://www.drupalcampnj.org/">New Jersey</a> and <a href="http://drupalcampmd.org/">Maryland</a>) in as many weeks.</p>
+
+
+<p></p></p>
+
+<p>Today I gave a revamped version of my <a href="http://drupalcampmd.org/sessions/coat-your-website-varnish">&#8220;Coat Your Website with Varnish&#8221; session at DrupalCamp MD</a>. I updated some of the information about Drupal configuration and an overview section going over some of the basics of headers and caching.</p>
+
+
+<p></p></p>
+
+<p>The entire presentation is embedded below and is also available <a href="http://prezi.com/lgk2q71ez9iv/coat-your-website-in-varnish-maryland/">on Prezi.com</a>.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_lgk2q71ez9iv" name="prezi_lgk2q71ez9iv" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id=lgk2q71ez9iv&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"/><embed id="preziEmbed_lgk2q71ez9iv" name="preziEmbed_lgk2q71ez9iv" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=lgk2q71ez9iv&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Coat Your Website in Varnish Maryland" href="http://prezi.com/lgk2q71ez9iv/coat-your-website-in-varnish-maryland/">Coat Your Website in Varnish Maryland</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+
+<p>In addition, if you&#8217;d like to get hands-on experience with a number of techniques to make your Drupal site perform like a champion, I&#8217;m honored to be co-presenting the <a href="http://denver2012.drupal.org/content/drupal-performance-and-scalability">Drupal Performance and Scalability training</a> alongside <a href="http://denver2012.drupal.org/users/msonnabaum">Mark Sonnabaum from Acquia</a> and <a href="http://drupal.org/user/35821">Nate Haug from Lullabot</a>!</p>
+
+
+<p></p></p>
+
+<p>See you in Denver, and until then, Varnish <u>all</u> the things!</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Let&#039;s Be Upfront About Performance at DrupalCamp NJ]]></title>
+    <link href="http://smerrill.github.io/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/"/>
+    <updated>2012-02-04T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj</id>
+    <content type="html"><![CDATA[<p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">&#8220;Let&#8217;s Be Upfront About Performance&#8221;</a> as a session at <a href="http://www.drupalcampnj.org/">the inaugural DrupalCamp NJ</a>.</p>
+
+
+<p></p></p>
+
+<p>My presentation is embedded below. Go forth and make fast websites!</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_hmxsbzfz2shk" name="prezi_hmxsbzfz2shk" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=hmxsbzfz2shk&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_hmxsbzfz2shk" name="preziEmbed_hmxsbzfz2shk" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=hmxsbzfz2shk&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Let's Be Upfront About Performance NJ" href="http://prezi.com/hmxsbzfz2shk/lets-be-upfront-about-performance-nj/">Let&#8217;s Be Upfront About Performance NJ</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bonjour, mes amis!]]></title>
+    <link href="http://smerrill.github.io/blog/2012/01/16/bonjour-mes-amis/"/>
+    <updated>2012-01-16T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2012/01/16/bonjour-mes-amis</id>
+    <content type="html"><![CDATA[<p>Apple&rsquo;s <a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/10000119i">Bonjour</a> service just saved me a lot of hassle.</p>
+
+<p>I took a little time this MLK Day to get some old electronics ready for sale. One of the machines I decided to clean up was an old Mac Pro. I&rsquo;ve recently replaced it with a <a href="http://www.apple.com/macmini/server/">Mac mini</a> that positively sips power: 10 &ndash; 12 watts at idle instead of the consistent 120 watts that my old Mac Pro would draw. (I&rsquo;ll write more on cutting my setup&rsquo;s power consumption in a later blog post.)</p>
+
+<p>I hooked my Mac Pro up to my router with an Ethernet cable but didn&rsquo;t want to get out a keyboard, mouse, and monitor to do a final set of backups and deauthorize some software. Normally this wouldn&rsquo;t be a problem since the old Mac Pro was set configured to start Apple Remote Desktop at boot.</p>
+
+<p>I forgot that since switching to the Mac Pro, I had reassigned the Mac Pro&rsquo;s IP address (192.168.0.150) to the Mac mini. The Mac Pro booted, but could not get a proper IP address since the address it was configured to use was in use.</p>
+
+<p>I was about to break out my keyboard, mouse, and monitor when I thought I&rsquo;d give Bonjour a try.</p>
+
+<!--more-->
+
+
+<h2>Saying &lsquo; <em>Bonjour!</em> &rsquo; sans IP address</h2>
+
+<p>The Mac Pro in question was configured with a machine name of <code>Terawattson</code>. I knew that Bonjour would advertise <code>Terawattson.local</code> over the network to capable clients, but wasn&rsquo;t sure if that would work when the machine didn&rsquo;t have a proper IP address. On a lark, I gave it a shot, and it worked.</p>
+
+<div class="highlight"><pre><code class="text"> smerrill@Tinier-Shinier [Jan 16 12:23:22] ~
+  ssh Terawattson.local
+Last login: Mon Jan 16 12:56:57 2012
+ smerrill@Terawattson [Jan 16 12:58:22] ~
+ 
+</code></pre></div>
+
+
+<p>Even better, this meant that I could use an SSH tunnel over Bonjour networking to tunnel to port 5900 (where the Apple Remote Desktop service lives, just like VNC) and graphically access the Network control panel to switch IP addresses.</p>
+
+<div class="highlight"><pre><code class="text"> smerrill@Tinier-Shinier:1 [Jan 16 12:56:55] ~
+  ssh -N Terawattson.local -L 5901/localhost/5900
+</code></pre></div>
+
+
+<p>With that SSH tunnel in place, I went into the Finder and with a single &ldquo;Connect to Server&rdquo;, I had a session on the Mac Pro in OS X&rsquo;s Screen Sharing.app.</p>
+
+<p><img src="https://img.skitch.com/20120116-f45bhy6g7bprfjgug1818f8xn9.jpg" alt="Connecting to vnc://localhost:5901 over the SSH tunnel" /></p>
+
+<p>Using the graphical connection I set a new IP address, deauthorized Adobe CS4, iTunes, and a couple other programs, and started up an rsync backup to the new Mac mini.</p>
+
+<p>I hope this post helps you out if you ever have trouble with a headless Mac.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using HipChat through an IRC client with BitlBee]]></title>
+    <link href="http://smerrill.github.io/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/"/>
+    <updated>2011-12-15T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee</id>
+    <content type="html"><![CDATA[<p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal community. Still, IRC ports are often blocked, and not everyone is comfortable using IRC. We&#8217;ve recently been using <a href="http://www.hipchat.com/">HipChat</a> to set up chat rooms for certain new clients.</p>
+
+
+<p></p></p>
+
+<p>I already route most of my AIM and GTalk interaction through an IRC gateway using <a href="http://www.bitlbee.org/">BitlBee</a>, and I wanted to hook HipChat up to an IRC client as well. Here&#8217;s a guide on how to do this.</p>
+
+
+<p></p></p>
+
+<p>(Note that I was having trouble joining channels in my LimeChat last night as I was writing this up, but I might just be missing something. Try it out!)</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>All the uppercase items come from the <a href="https://www.hipchat.com/account/xmpp">XMPP Account Settings page</a> in your HipChat account.</p>
+
+
+<p></p></p>
+
+<ol>
+<li>Add the account in Bitlbee.
+<ul>
+<li><code>account add jabber USERNAME@chat.hipchat.com 'PASSWORD'</code></li><br />
+</ul><br />
+</li></p>
+<li>Before you connect, set it up so that folks&#8217; chat names will display properly.
+<ul>
+<li><code>account hipchat set nick_source full_name</code></li><br />
+</ul><br />
+</li></p>
+<li>To prevent being spammed with room history every time you join or change status, set your resource to &#8216;bot&#8217;.
+<ul>
+<li><code>account hipchat set resource bot</code></li><br />
+</ul><br />
+</li></p>
+<li>Connect to the account.
+<ul>
+<li><code>account hipchat on</code></li><br />
+</ul><br />
+</li></p>
+<li>At this point, you can join the &hipchat channel to see all your contacts and use /msg to start talking w/ one of them privately.
+<ul>
+<li><code>/join &hipchat</code></li><br />
+</ul><br />
+</li></p>
+<li>Now, add a chat. Note that the information on the XMPP settings pages doesn&#8217;t give you @chat.hipchat.com. You can set whatever channel name you want.
+<ul>
+<li><code>chat add hipchat JABBERNAME@chat.hipchat.com #CHANNELNAME</code></li><br />
+</ul><br />
+</li></p>
+<li>Before you can join, you must set your nick to match the <strong>Room nickname</strong> setting in your XMPP settings. You must do this for every room. Use the channel name you decided on earlier for easier access.
+<ul>
+<li><code>channel #CHANNELNAME set nick 'ROOM NICKNAME'</code></li><br />
+</ul><br />
+</li></p>
+<li>Now, join the channel.
+<ul>
+<li><code>/join #CHANNELNAME</code></li><br />
+</ul><br />
+</li></p>
+<li>Start chatting!
+<ul>
+<li><code>Hey everybody!</code></li>
+<li><code>I'm using IRC!</code></li>
+<li><code>(fry)</code></li>
+<li><code>/me likes IRC and HipChat</code></li><br />
+</ul><br />
+</li></p>
+<li>When you&#8217;re ready to sign out of HipChat, use <code>account off</code>.
+<ul>
+<li><code>account hipchat off</code></li><br />
+</ul><br />
+</li><br />
+</ol>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant and NFS]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs/"/>
+    <updated>2011-11-17T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs</id>
+    <content type="html"><![CDATA[<p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they&rsquo;re used to while still getting the benefits of running the full production stack.</p>
+
+<p>It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox&rsquo;s built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox&rsquo;s built-in file sharing, so we probably don&rsquo;t want to put our docroot right in that directory.</p>
+
+<!--more-->
+
+
+<p>As a result, we usually set up our project directories to look like the following with the docroot one level up from the directory with the Vagrantfile in it. (The docroot can be a symlink or a real copy of the docroot &ndash; it is in the .gitignore file so it won&rsquo;t be committed.)</p>
+
+<p><img src="https://img.skitch.com/20111117-j5tdm5q6pw584sfnnafxrtawb8.jpg" alt="Vagrant setup with the treehouseagency.com folder on the same level as the folder that contains the Vagrantfile" /></p>
+
+<p>There&rsquo;s a few gotchas with using NFS folders:
+&ndash; If you try to export a symlink, <code>nfsd</code> will complain. You need to dereference any symlinks before they are put in /etc/exports. The sample code below avoids that.</li>
+&ndash; Vagrant automatically uses NFS&rsquo;s mapall to ensure that all file access on the guest maps to your user and group on the host. This will mean that the users and groups may look wrong on the VM (and and <code>chown</code> or <code>chgrp</code> commands will fail), but software on the VM will be able to write to everything in that directory.</p>
+
+<p>Finally, here&rsquo;s some stub code for setting up a vagrant project with a docroot one level up. It takes care of dereferencing any symlinks and sharing the docroot with the guest. It will share it with NFS if the host is a Linux or Mac machine.</p>
+
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Set up some variables relating to which path Vagrant will try to share</span>
+<span class="c1"># with the VM.</span>
+<span class="nb">require</span> <span class="s1">&#39;pathname&#39;</span>
+<span class="vg">$docroot_name</span> <span class="o">=</span> <span class="s2">&quot;treehouseagency.com&quot;</span>
+<span class="vg">$docroot_path</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="c1"># Test that the directory to be shared is in the right place and if it is,</span>
+<span class="c1"># calculate the fully dereferenced path (since NFS exports will fail if you</span>
+<span class="c1"># try to specify the path to a symlink.)</span>
+<span class="k">if</span> <span class="o">!</span><span class="no">File</span><span class="o">.</span><span class="n">exists?</span><span class="p">(</span><span class="s2">&quot;../</span><span class="si">#{</span><span class="vg">$docroot_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">then</span>
+  <span class="nb">puts</span> <span class="s2">&quot;Please put the &#39;%s&#39; directory (or a symlink to it) in the &#39;%s/&#39; directory.&quot;</span> <span class="o">%</span>
+    <span class="o">[</span><span class="vg">$docroot_name</span><span class="p">,</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">realpath</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span>
+  <span class="nb">exit</span> <span class="mi">1</span>
+<span class="k">else</span>
+  <span class="vg">$docroot_path</span> <span class="o">=</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;../</span><span class="si">#{</span><span class="vg">$docroot_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">realpath</span><span class="o">.</span><span class="n">to_s</span>
+<span class="k">end</span>
+<span class="ss">Vagrant</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">run</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="c1"># Add in the rest of your config here.</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">share_folder</span> <span class="s2">&quot;tha-docroot&quot;</span><span class="p">,</span> <span class="s2">&quot;/tha-docroot&quot;</span><span class="p">,</span> <span class="vg">$docroot_path</span><span class="p">,</span> <span class="ss">:nfs</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/linux/</span> <span class="ow">or</span> <span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/darwin/</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Drush phpsh Integration Demonstration]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/14/drush-phpsh-integration-demonstration/"/>
+    <updated>2011-11-14T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/14/drush-phpsh-integration-demonstration</id>
+    <content type="html"><![CDATA[<p>I gave a 5-minute lightning presentation at the October 2011 <a href="http://groups.drupal.org/nyc">Drupal NYC</a> meetup about <a href="http://drupal.org/project/phpsh">Roger Lop&eacute;z&#8217;s phpsh plugin for drush</a>.</p>
+
+
+<p></p></p>
+
+<p><a href="http://phpsh.org/">phpsh</a> is a project by Facebook that provides a much more useful REPL (read-eval-print-loop) environment for PHP, similar to <a href="http://ruby-lang.org/">Ruby</a> or <a href="http://www.scala-lang.org/">Scala</a>. The Drush phpsh plugin adds an easy way to generate ctags for code completion in your phpsh (as well as <a href="http://www.vim.org">your favorite editor</a>) and a way to run a persistent PHP session with a fully bootstrapped Drupal instance. It&#8217;s really useful for testing out APIs.</p>
+
+
+<p></p></p>
+
+<p>If you missed it in person, you can watch the video embedded below.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><iframe src="http://player.vimeo.com/video/31983526?title=0&byline=0&portrait=0" width="400" height="290" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe></p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[End "Works on My Machine" Surprises with Vagrant]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/"/>
+    <updated>2011-11-02T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant</id>
+    <content type="html"><![CDATA[<p>How many times have the following issues happened on a project you&#8217;ve worked on?</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Notices (or worse) appeared on production because of a PHP version mismatch between a developer&#8217;s machine and the production web servers.</li>
+<li>A new PHP extension or PECL extension had to be installed on production because it was installed in WAMP or MAMP?</li>
+<li>A team member ran into difficult setting up their local environment and spent many hours stuck on something.</li>
+<li>Team members didn&#8217;t set up SSL or Varnish on their local machines and issues had to be caught on a dev server.</li>
+<li>A team member would like to switch to Homebrew, but can&#8217;t set aside the many hours to redo their setup until a project is done.</li><br />
+</ul>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>Tools like <a href="http://www.mamp.info/en/index.html">MAMP</a>, <a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a>, the <a href="http://network.acquia.com/downloads">Aqcuia dev desktop</a>, <a href="http://www.macports.org/">MacPorts</a> and <a href="http://mxcl.github.com/homebrew/">Homebrew</a> all make it easy to get an *AMP stack up and running on your computer, and tools like MacPorts and Homebrew even make it pretty easy to install tools like <a href="https://www.varnish-cache.org/">Varnish</a> and <a href="http://memcached.org/">memcached</a>.</p>
+
+
+<p></p></p>
+
+<p>While these tools make it easy to run a very close approximation of the production hosting stack on your local machine (arguably closer if you use Macintosh or Linux,) it will still have some key differences which will ultimately contribute at some point to a &#8221;<a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html">Works on My Machine!</a>&#8221; situation in your project.</p>
+
+
+<p></p></p>
+
+<p><img alt="Works On My Machine Badge" src="http://treehouseagency.com/sites/treehouseagency.com/files/worksonmymachine_0.png" style="border: medium none; display: block; float: left;" /></p>
+
+
+<p></p></p>
+
+<p>Luckily, virtualization has advanced to such a degree that there are cross-platform virtualization solutions such as <a href="https://www.virtualbox.org/">VirtualBox</a>, but just using a VM inside of VirtualBox doesn&#8217;t solve the whole problem. It makes acquiring the correct versions of software easy, but keeping configuration in sync can still be a challenge for users who are not deeply familiar with Linux.</p>
+
+
+<p></p></p>
+
+<p>Enter <a href="http://vagrantup.com/">Vagrant</a>.</p>
+
+
+<p></p></p>
+
+<p>Vagrant is a Ruby gem that makes working with Linux virtual machines easy. You distribute a Vagrantfile to your team, and it does the following things for you:</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Downloads and sets up virtual machines from a single .box file which it will download over HTTP or FTP.</li>
+<li>Provisions the software and configuration on the VM using your choice of Chef, Puppet, or simple shell scripts</li>
+<li>Automatically shares the directory with the Vagrantfile (and any subdirectories) to the virtual machine with Virtualbox&#8217;s built-in file sharing</li>
+<li>Forwards the SSH port (and optionally other ports) to your localhost and avoids collisions so you can always directly SSH to the machine</li>
+<li>Optionally sets up a dedicated host-only IP address that you can use to connect to all services on the VM without port forwarding</li>
+<li>Optionally shares directories to the VM over NFS from a Macintosh or Linux guest, which enables acceptable performance for a Drupal docroot</li><br />
+</ul>
+
+
+<p></p></p>
+
+<p>Since Vagrant handles the file sharing with the VM, you and your team don&#8217;t have to mess around with setting up FUSE or the like and you can continue to use the tools that you&#8217;re used to using locally, such as your text editor or garphical source control program.</p>
+
+
+<p></p></p>
+
+<p>In addition, so long as you have a single developer skilled in ops who can encapsulate the production configuration into a system like Chef or Puppet, these changes can be pushed down to the whole team. Once your ops team has a working Varnish configuration, for example, they can push that into the Vagrant repository, and then a working Varnish setup on all your developers&#8217; VMs is just a <code>git pull</code> and a <code>vagrant provision</code> away.</p>
+
+
+<p></p></p>
+
+<p>We&#8217;ve been working with Vagrant over the last few months and think it offers a number of advantages. All it takes to get started installing VirtualBox and the <strong>vagrant</strong> ruby gem. Detailed information on how to get started is available in the excellent <a href="http://vagrantup.com/docs/getting-started/index.html">Vagrant Quickstart guide</a>.</p>
+
+
+<p></p></p>
+
+<p>I&#8217;ve put together a screencast that&#8217;s just over 10 minutes long and shows the whole process of bringing up a CentOS 5.6 VM with the <a href="http://treehouseagency.com">treehouseagency.com</a> site shared from my local machine.</p>
+
+
+<p></p></p>
+
+<p><iframe src="http://player.vimeo.com/video/31494273?title=0&byline=0&portrait=0&color=ff9933" width="595" height="446" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe></p>
+
+
+<p></p></p>
+
+<p>We&#8217;ll be posting more example code over the coming weeks that will allow you to try out Drupal from your local machine on a Linux VM.</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ensuring your Vagrant's box is weatherproof: A quick Veewee tip]]></title>
+    <link href="http://smerrill.github.io/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/"/>
+    <updated>2011-10-28T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip</id>
+    <content type="html"><![CDATA[<p>We&rsquo;ll be doing a screencast series soon on using the <a href="http://www.vagrantup.com/">Vagrant gem</a> to distribute and manage virtual machines so that your entire team (yes, even Windows folks!) can do development on their local machine with the same software that&rsquo;s on your production Linux servers.</p>
+
+<p>Another useful tool in the Vagrant user&rsquo;s arsenal is <a href="https://github.com/jedi4ever/veewee">Veewee</a>. Veewee lets you automate the VirtualBox application to install a full operating system with just the packages you want and need. Veewee does have some built-in validation tools, such as <code>vagrant basebox validate BOXNAME</code>, which will run a set of Cucumber acceptance tests to ensure that the virtual machine should work properly when brought up with Vagrant, as well as with the <a href="http://www.opscode.com/chef/">Chef</a> and <a href="http://puppetlabs.com/">Puppet</a> configuration management tools.</p>
+
+<!--more-->
+
+
+<p>Nonetheless, sometimes you might want to quickly pop onto the VM that&rsquo;s just been built by veewee before issuing a <code>vagrant basebox export BOXNAME</code> to save it to a .box file suitable for distribution. To easily enable this, just add the following to your <code>~/.ssh/config</code> file.</p>
+
+<div class="highlight"><pre><code class="text"># Veewee box.
+Host veewee-machine
+  HostName 127.0.0.1
+  User vagrant
+  Port 7222
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /home/smerrill/.rvm/gems/ruby-1.9.2-p290/gems/vagrant-0.8.6/keys/vagrant
+  IdentitiesOnly yes
+</code></pre></div>
+
+
+<p>You&rsquo;ll need to change the <code>IdentityFile</code> directive to point at wherever Vagrant is installed on your machine. With the entry in your SSH config file in place, you can simply execute an <code>ssh veewee-machine</code> and kick the tires before bundling up the box.</p>
+
+<p>Now go forth and build an army of virtual machines!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Coat Your Website In Varnish, by Steve Merrill]]></title>
+    <link href="http://smerrill.github.io/blog/2011/10/23/coat-your-website-in-varnish-by-steve-merrill/"/>
+    <updated>2011-10-23T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/10/23/coat-your-website-in-varnish-by-steve-merrill</id>
+    <content type="html"><![CDATA[<p>The full presentation is embedded below.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_rz6xsgdf1tx1" name="prezi_rz6xsgdf1tx1" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=rz6xsgdf1tx1&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_rz6xsgdf1tx1" name="preziEmbed_rz6xsgdf1tx1" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=rz6xsgdf1tx1&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Information on using the Varnish reverse proxy cache to speed up your website!" href="http://prezi.com/rz6xsgdf1tx1/coat-your-website-in-varnish-badcamp-2011/">Coat Your Website in Varnish BADCamp 2011</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Dude, Where's My Bot?]]></title>
+    <link href="http://smerrill.github.io/blog/2011/10/05/dude-wheres-my-bot/"/>
+    <updated>2011-10-05T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/10/05/dude-wheres-my-bot</id>
+    <content type="html"><![CDATA[<p>Say what you will about node.js, but it is certainly an easy way to build IRC bots with the <a href="https://github.com/gf3/Jerk">Jerk library</a>.</p>
+
+<p>The PHP-based bot that runs in the <a href="http://www.treehouseagency.com">Treehouse Agency</a> IRC channels knows to respond to &ldquo;Sweet!&rdquo; with &ldquo;Dude!&rdquo; and vice versa. <a href="http://www.brianmcmurray.com">Brian McMurray</a> said that he&rsquo;d like to someday write a quick-and-dirty bot that would put our other bot into an infinite loop.</p>
+
+<p>I accepted that challenge, and 10 minutes later, the bot was done.</p>
+
+<p>The code is an example of how to build a bot that accepts environmental variables for configuration and otherwise does a pretty silly task.</p>
+
+<!--more-->
+
+
+<p>All in all, node makes this <em>really</em> simple.</p>
+
+<div class="highlight"><pre><code class="javascript"><span class="kd">var</span> <span class="nx">jerk</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jerk&#39;</span><span class="p">),</span>
+    <span class="nx">channel</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SWEETDUDEBOT_CHANNEL&#39;</span> <span class="k">in</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">)</span><span class="o">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SWEETDUDEBOT_CHANNEL</span> <span class="o">:</span> <span class="s1">&#39;#yourchannel&#39;</span><span class="p">,</span>
+    <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">server</span><span class="o">:</span> <span class="p">(</span><span class="s1">&#39;SWEETDUDEBOT_SERVER&#39;</span> <span class="k">in</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">)</span><span class="o">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SWEETDUDEBOT_SERVER</span> <span class="o">:</span> <span class="s1">&#39;chat.freenode.net&#39;</span><span class="p">,</span>
+      <span class="nx">nick</span><span class="o">:</span> <span class="p">(</span><span class="s1">&#39;SWEETDUDEBOT_NICK&#39;</span> <span class="k">in</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">)</span><span class="o">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SWEETDUDEBOT_NICK</span> <span class="o">:</span> <span class="s1">&#39;sweetdudebot&#39;</span><span class="p">,</span>
+      <span class="nx">port</span><span class="o">:</span> <span class="p">(</span><span class="s1">&#39;SWEETDUDEBOT_PORT&#39;</span> <span class="k">in</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">)</span><span class="o">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SWEETDUDEBOT_PORT</span> <span class="o">:</span> <span class="s1">&#39;6667&#39;</span><span class="p">,</span>
+      <span class="nx">flood_protection</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nx">channels</span><span class="o">:</span> <span class="p">[</span><span class="nx">channel</span><span class="p">]</span>
+    <span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">sweet_dude_bot</span> <span class="o">=</span> <span class="nx">jerk</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">j</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">j</span><span class="p">.</span><span class="nx">watch_for</span><span class="p">(</span> <span class="sr">/^(Sweet|Dude)!$/</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">message</span><span class="p">.</span><span class="nx">match_data</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">result</span><span class="p">)</span>
+      <span class="k">return</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="s2">&quot;Sweet&quot;</span><span class="o">:</span>
+        <span class="nx">message</span><span class="p">.</span><span class="nx">say</span><span class="p">(</span><span class="s2">&quot;Dude!&quot;</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="s2">&quot;Dude&quot;</span><span class="o">:</span>
+        <span class="nx">message</span><span class="p">.</span><span class="nx">say</span><span class="p">(</span><span class="s2">&quot;Sweet!&quot;</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">})</span>
+<span class="p">}).</span><span class="nx">connect</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>You can fork <a href="https://github.com/smerrill/node-sweetdudebot">node-sweetdudebot</a> or its predecessor, <a href="https://github.com/smerrill/node-sedbot">node-sedbot</a> on GitHub. Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A PSA: Lion and .local Domain Names]]></title>
+    <link href="http://smerrill.github.io/blog/2011/09/08/psa-lion-and-local-domain-names/"/>
+    <updated>2011-09-08T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/09/08/psa-lion-and-local-domain-names</id>
+    <content type="html"><![CDATA[<p>Do you enjoy your hair? Would you prefer not to pull it out while waiting for your local Apache server on Mac OS X to deliver a page to you?</p>
+
+<p>If you use Mac OS X Lion and have development sites set up at .local addresses, you should immediately move them to any other fake TLD. The .local address space is resolved for Bonjour and as a result any request to a .local name will not hit /etc/hosts first, but will search for Bonjour hosts first.</p>
+
+<p>I found <a href="http://stackoverflow.com/questions/6841421/mac-osx-lion-dns-lookup-order">this Stack Exchange question</a> on the subject tonight after getting frustrated with <strong>curl</strong> seemingly hanging for several seconds on each request.</p>
+
+<p>Instead, I switched all of my local dev sites from $DOMAIN.local to $DOMAIN.dev. The results are staggering.</p>
+
+<!--more-->
+
+
+<p>Since switching all my development sites to end in .dev, requests for them happen several orders of magnitude faster, which is a welcome change. Here are two examples of an Apache 404 page (such that the DNS resolution time is the only appreciable time spent in delivering a response to <strong>curl</strong>.)</p>
+
+<div class="highlight"><pre><code class="text"> smerrill@Tinier-Shinier:6 [Sep 07 23:43:35] ~
+  time curl http://whatever.local/ &gt; /dev/null
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    72  100    72    0     0   1217      0 --:--:-- --:--:-- --:--:--  1250
+
+real    0m5.011s
+user    0m0.006s
+sys     0m0.003s
+
+ smerrill@Tinier-Shinier:6 [Sep 07 23:43:46] ~
+  time curl http://whatever.dev/ &gt; /dev/null
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    72  100    72    0     0   1412      0 --:--:-- --:--:-- --:--:--  1440
+
+real    0m0.060s
+user    0m0.007s
+sys     0m0.004s
+</code></pre></div>
+
+
+<p>That&rsquo;s right &ndash; the request goes from a lag of almost 5 seconds to finishing in the blink of an eye. A coworker reported his times going from 12 seconds to less than a tenth of a second. It&rsquo;s amazing what a difference such a small change in DNS can make.</p>
+
+<p>I hope this speeds up your local web development!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS 6 and VirtualBox (VBoxHeadless CPU Usage Fix)]]></title>
+    <link href="http://smerrill.github.io/blog/2011/08/29/centos-6-and-virtualbox/"/>
+    <updated>2011-08-29T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/08/29/centos-6-and-virtualbox</id>
+    <content type="html"><![CDATA[<p><strong>TL;DR:</strong> Add &ldquo;noapic&rdquo; to your kernel line if your VBoxHeadless process uses far too much CPU.</p>
+
+<p>I&rsquo;ve been working on making <a href="https://github.com/smerrill/veewee-fun/">space-efficient CentOS 5.6 and 6 images</a> for <a href="http://www.virtualbox.org">VirtualBox</a> recently. I&rsquo;m building the images as part of a pilot program to start using <a href="http://vagrantup.com">the Vagrant gem</a> to allow our developers to test the Drupal code they write on the real production OS before pushing it to the dev server. (I&rsquo;m also learning Puppet, both for this project and as a way to more easily re-use tested configurations as we launch new sites.)</p>
+
+<p>The CentOS 5.6 images I made worked like a charm, but ran into a problem wherein the <em>VBoxHeadless</em> process that hosted my CentOS 6 image would always use 25% CPU on my MacBook Air (one full core) despite the guest OS showing between 98% and 100% idle.</p>
+
+<!--more-->
+
+
+<p>I read through a number of suggestions that applied to CentOS 5.6, which involved <a href="http://tiebing.blogspot.com/2011/08/virtualbox-vboxheadless-high-cpu-usage.html">setting <code>divider="10"</code></a> in the kernel parameters, but these have no effect under CentOS 6, which uses a tickless kernel.</p>
+
+<p>In reading further on the subject, I found that some other forums advocated looking at the <a href="http://www.wlug.org.nz/APIC">APIC</a> settings. Sure enough, as soon as I added the text <code>noapic</code> to the end of my <strong>kernel</strong> line in <code>/boot/grub/grub.conf</code> and restarted, the issue went away.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[What Are You Eating?]]></title>
+    <link href="http://smerrill.github.io/blog/2011/08/17/what-are-you-eating/"/>
+    <updated>2011-08-17T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/08/17/what-are-you-eating</id>
+    <content type="html"><![CDATA[<p>Biking to the George Washington Bridge was just not going to work on the day before Memorial Day. The crowds were too packed in the park on the way up to the GW Bridge, and so I turned around and decided to do a nice brisk ride along the Hudson River Greenway and through Central Park.</p>
+
+<p>I&rsquo;m a big guy. I&rsquo;m currently around 280 pounds, and yet when I ride I tend to be faster than most cyclists on the path by quite a bit. On this particular evening, I pedaled hard up the uphill entry ramp to the Greenway and saw in my rear-view mirror that I had another cyclist who was following pretty closely behind me.</p>
+
+<p>I shot down the Greenway, passing cyclists and genuinely enjoying the cool breeze and the fresh smell of the Hudson River.  My unknown cycling companion was generally only one or two bike lengths behind me. As much as I love to bike, I do not take it to the level that some folks in New York City do. I don&rsquo;t have a set of &ldquo;real&rdquo; biking shorts or a real biking jersey, nor do I have a super-expensive road bike. My anonymous companion, however, did appear to have all these trappings: a bike that looked like it could have been made of carbon fiber and a set of biking shorts and a jersey from some race or event.</p>
+
+<!--more-->
+
+
+<p>Around 110th Street, the Greenway cleared out ahead of us. No pedestrians were in sight for quite a ways. The other cyclist pulled up beside me. He caught my attention and in an accent that sounded vaguely Eastern European, he called to me, saying, <strong>&ldquo;You&rsquo;re amazing!&rdquo;</strong></p>
+
+<p>He seemed quite impressed by my speed, or more likely my speed despite my size. In retrospect, my average speed down this particular section of the Greenway averaged out to almost 17 miles per hour, and that average includes the long, slow climb up three avenues once I reached 59th Street. I was going pretty fast when he was trailing me.</p>
+
+<p>Still, I wasn&rsquo;t entirely prepared for a complement, and so I just shot back, <strong>&ldquo;Thank you!&rdquo;</strong> as we both sped down the river path.</p>
+
+<p>The gentleman in question was older &ndash; he looked like he could be in his mid-50s. His next question was even more interesting and also unexpected. <strong>&ldquo;What do you eat?&rdquo;</strong> he shouted.</p>
+
+<p>I guess he wondered if there was some secret pre-workout routine I followed, or perhaps he was just inquiring as to whether I routinely ate my spinach.
+Nonetheless, the only answer I could muster was, <strong>&ldquo;far too much.&rdquo;</strong></p>
+
+<p><em>(My relationship with food is not terrifically healthy and will assuredly be the subject of a later essay.)</em></p>
+
+<p>He offered a word of encouragement that I can&rsquo;t quite recall and then we switched places for about the next 40 blocks. He turned left before the fenced-off part of the path near the Trump Towers and I continued to shoot towards the egress at 59th Street.</p>
+
+<p>I ended up doing a complete circle around the park, biking west down 72nd Street into the sunset and heading back home through the beautiful split-lane path around 79th Street that spills back into the Greenway once more.</p>
+
+<p>The whole experience exemplifies that which I love about NYC. It is cyclist-friendly, full of nature despite its gargantuan size, and populated with of a large variety of people of all races and cultures who might just surprise you with their geniality.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Coat Your Website in Varnish]]></title>
+    <link href="http://smerrill.github.io/blog/2011/07/13/coat-your-website-in-varnish/"/>
+    <updated>2011-07-13T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/07/13/coat-your-website-in-varnish</id>
+    <content type="html"><![CDATA[<p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC meetup</a>, I gave a presentation about <a href="http://varnish-cache.org/">the Varnish reverse proxy cache</a>.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<p>If you happened to be at the meetup, I&#8217;d love your feedback on the talk. Please fill out a quick review on SpeakerRate here: <a href="http://tha.cm/varnish-talk" title="http://tha.cm/varnish-talk">http://tha.cm/varnish-talk</a></p>
+
+
+<p></p></p>
+
+<p>In addition, I&#8217;ve <a href="http://www.drupaldelphia.com/sessions/coat-your-website-varnish">proposed a similar session</a> for <a href="http://www.drupaldelphia.com/">Drupaldelphia</a> that will take a deeper dive into Varnish and show some examples of its use, including using the command line tools and VCL configuration examples.</p>
+
+
+<p></p></p>
+
+<p>The full presentation is embedded below.</p>
+
+
+<p></p></p>
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_fiifbaoxj0za" name="prezi_fiifbaoxj0za" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=fiifbaoxj0za&lock_to_path=1&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_fiifbaoxj0za" name="preziEmbed_fiifbaoxj0za" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=fiifbaoxj0za&lock_to_path=1&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Why you should consider Varnish to make your Drupal website FAST." href="http://prezi.com/fiifbaoxj0za/coat-your-website-in-varnish/">Coat Your Website in Varnish</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Be More Awesome (Please!) : A Tale of Two Browsers]]></title>
+    <link href="http://smerrill.github.io/blog/2011/06/22/be-more-awesome-please-tale-of-two-browsers/"/>
+    <updated>2011-06-22T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/06/22/be-more-awesome-please-tale-of-two-browsers</id>
+    <content type="html"><![CDATA[<p>When Firefox 4 came out, I switched to it. I was mainly impressed by its speed (relative to the stable version of Chrome at the time) and the efficacy of Firefox Sync.</p>
+
+<p>Several weeks later, I abandoned it for the stable build of Chrome. There were several things that contributed to its downfall in my eyes. Chief among them was its effect on my battery life on my MacBook Pro. Despite being nearly as fast as Chrome in user-perceived speed, Firefox generally used more CPU. There was also a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=567552">very annoying bug</a> that resulted in a ton of modal popups.</p>
+
+<p>About a month back, I switched from the Chrome stable released to the Chrome dev channel and I&rsquo;ve been in general very pleased. There&rsquo;s one feature that has been slowly gnawing away at my sanity, however, and it&rsquo;s gotten serious enough that I&rsquo;m switching back to Firefox 5 to see if my complaints about Firefox 4 have been addressed.</p>
+
+<!--more-->
+
+
+<h2>Advantage: Firefox</h2>
+
+<p>Even though Chrome has been my daily driver for several months now, I often still use Firefox in a number of cases:</p>
+
+<ul>
+<li>To use the excellent <a href="https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/">FoxyProxy extension</a> to abuse SOCKS proxies for fun and profit.</li>
+<li>To debug with the <a href="http://www.charlesproxy.com/">Charles web debugging proxy</a> without sending all of my traffic through it.</li>
+<li>To use FireCookie, YSlow!, or one of several web development tools that is just slightly better than the Chrome equivalent.</li>
+</ul>
+
+
+<br />
+
+
+<h2>Advantage: Chrome</h2>
+
+<p>That being said, I think Chrome has a leg up in a number of ways on Firefox:</p>
+
+<ul>
+<li>It has had a working Delicious extension for some time now, which was not true of Firefox 4 (and 5) until <a href="https://addons.mozilla.org/en-US/firefox/addon/delicious-extension/">just a couple of weeks ago</a>.</li>
+<li>It has a great <a href="https://chrome.google.com/webstore/detail/kcnhkahnjcbndmmehfkdnkjomaanaooo">extension to integrate with Google Voice</a>. I do nearly all my texting from Chrome thanks to this extension.</li>
+<li>It lets you do things like &ldquo;Close all tab to the right&rdquo; <a href="https://addons.mozilla.org/en-US/firefox/addon/multiple-tab-handler/">without an extension</a>.</li>
+<li>The web development tools are baked in, so you can debug something right away in any installed version of Chrome.</li>
+</ul>
+
+
+<br />
+
+
+<p>And finally, I have found ways to work around some of Firefox&rsquo;s flaws. Mostly notably, the font popup window was actually in issue with Font Book. A <a href="http://support.mozilla.com/en-US/questions/768100">workaround has been posted on the Mozilla forums</a> and it is working well.</p>
+
+<h2>Ow, My Brain.</h2>
+
+<p>The straw that broke the camel&rsquo;s back with regard to Chrome is the fact that it no longer seems to save any new URLs, or at least it never puts them in the Omnibar. It seems that <a href="http://superuser.com/questions/120885/make-chromes-omnibar-behave-more-like-the-firefox-awesomebar">I&rsquo;m not alone in wanting this, either</a> &ndash; there are <a href="http://jaygoldman.com/2010/12/how-to-get-the-firefox-awesomebar-in-google-chromes-omnibar/">several</a> <a href="http://www.chromeplugins.org/google/chrome-troubleshooting/how-can-i-make-omnibar-more-like-awesomebar-9539.html">articles</a> <a href="http://jshoer.wordpress.com/2008/10/12/make-google-chromes-omnibar-behave-more-like-firefox-3s-awesomebar/">online</a> about how to supposedly make Chrome&rsquo;s Omnibar more like the AwesomeBar in Firefox.</p>
+
+<p>Most of these articles focus on the wrong part of the part of the AwesomeBar, which is its propensity to do an &ldquo;I&rsquo;m Feeling Lucky&rdquo; search if there&rsquo;s nothing in AwesomeBar results. The single feature that, in my opinion, makes the AwesomeBar <strong>utterly awesome</strong> is the simple fact that it <em>remembers the URLs that I type on a daily basis</em>.</p>
+
+<p>I have been visiting sites that are not in Google&rsquo;s index quite a bit recently, as any web developer will do. And while it&rsquo;s kind of cute to type <a href="https://jenkins.">https://jenkins.</a>{thing}.{stuff}.{domain}.{tld}/ two or three times, it would be just dandy if Chrome would get the hint the fourth or fifth or twelfth time that I did so.</p>
+
+<p>But it doesn&rsquo;t, and it seems that as of version 12 or so, no new URLs will ever enter into the Omnibar for autocompletion as I type.</p>
+
+<p>Here is another example that shows just how frustrating this is. I&rsquo;ve recently visited the source of the <a href="https://github.com/smerrill/varnish-3-pkgbuild/blob/master/PKGBUILD">Arch Linux PKGBUILD that I made for Varnish</a> in both Firefox and Chrome. In Firefox, I can type &ldquo;var pk&rdquo; and the AwesomeBar brings up two hits that are laser-focused on what I&rsquo;m looking for. Chrome suggests that I either do a Google search for that tiny, two-word phrase or visit <a href="http://www.codinghorror.com/blog/2008/12/hardware-is-cheap-programmers-are-expensive.html">this Coding Horror article from 2008</a>, which is the only non-search item shown in the Omnibar.</p>
+
+<h2>Chrome, Y U No Awesome?</h2>
+
+<p>And believe me, I get it. Google wants me to make Google searches and to use Google Instant and/or their prediction webservices so that they get a greater quantity of searches.  When I am genuinely looking for something with an unknown URL, I will happily do that. I love Google&rsquo;s search.</p>
+
+<p>But please, Google, for the love of the sanity of web developers who routinely type long URLs that may not come up near the top of a Google search, make Chrome more <a href="http://blog.mozilla.com/blog/2008/04/21/a-little-something-awesome-about-firefox-3/">awesome</a>.</p>
+
+<p>Until then, I&rsquo;ll be trying out <a href="http://www.getfirefox.com">Firefox 5</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fix Common Windows Segmentation Faults with Drupal]]></title>
+    <link href="http://smerrill.github.io/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal/"/>
+    <updated>2010-11-16T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal</id>
+    <content type="html"><![CDATA[<p>At Treehouse Agency, we often work with internal development teams, and enterprise software being what it is, they often run Windows. This has been the primary driver behind some of our technology choices (using Mercurial rather than Git on these sorts of projects) and it also occasionally necessitates some extra debugging when something doesn&#8217;t quite work right on Windows.</p>
+
+
+<p></p></p>
+
+<p>In work on a recent project, the client developers were using WampServer, but upon the site reaching a certain size, developers on Windows noted that their Apache processes were quitting after a cache clear. We debugged and tracked the errors down to occuring during CSS preprocessing.  The Apache processes were segmentation faulting, resulting in an error dialog.</p>
+
+
+<p></p></p>
+
+<p>In an initial assessment of the problem, it appeared that others were having the same problem, such as in <a href="http://drupal.org/node/424136" title="http://drupal.org/node/424136">http://drupal.org/node/424136</a>. We advised the developers to add a line to their settings.php to disable css preprocessing, like so:</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="re0">$conf</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><br /><br />
+  <span class="st_h">&#8216;preprocess_css&#8217;</span> <span class="sy0">=></span> <span class="kw4">FALSE</span><span class="sy0">,</span><br /><br />
+<span class="br0">)</span><span class="sy0">;</span></div></div></p>
+
+
+<p></p></p>
+
+<p>This worked fine for awhile, but then the same problem came back in a different situation. Developers on Windows began to see the same segmentation faults on the main Features administration page or when reverting all Features. This led me to the real cause of these segmentation faults - stack overflows.  Both CSS preprocessing and Features reversion result in a number of recursive calls that will overflow a small stack, and therein lies a solution.</p>
+
+
+<p></p></p>
+
+<p>By default, Mac OS X allocates 8 megabytes of stack space for processes, while Windows allocates a much smaller amount (which looks to be closer to 1 megabyte.)  By changing the Apache configuration to allocate the same 8 megabytes of stack space per Apache thread, developers on Windows no longer experienced segmentation faults when optimizing CSS files or when reverting Features.</p>
+
+
+<p></p></p>
+
+<p>In order to set the stack size back up to 8 megabytes, you need to set the <code>ThreadStackSize</code> parameter in your Apache configuration files to <code>8388608</code>.  (The value is expressed in bytes.)</p>
+
+
+<p></p></p>
+
+<p>If this issue is affecting you on Windows, here are the two changes that you will need to make to your Windows configuration under WampServer.</p>
+
+
+<p></p></p>
+
+<p>In your main apache configuration file, uncomment the line that includes the httpd-mpm.conf file, like so:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="co2"># Server-pool management (MPM specific)<br /><br />
+</span><span class="kw1">Include</span> conf<span class="sy0">/</span>extra<span class="sy0">/</span>httpd<span class="sy0">-</span>mpm<span class="sy0">.</span>conf</div></div></p>
+
+
+<p></p></p>
+
+<p>And then in the httpd-mpm.conf file, add a line to set the stack size up to 8 MB (as it is on Mac and Linux Apache by default.) Specifically, add the third line in:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="sy0"><</span>IfModule mpm_winnt_module<span class="sy0">></span><br /><br />
+    ThreadsPerChild      <span class="nu0">150</span><br /><br />
+    MaxRequestsPerChild    <span class="nu0">0</span><br /><br />
+    ThreadStackSize  <span class="nu0">8388608</span><br /><br />
+<span class="sy0"></</span>IfModule<span class="sy0">></span></div></div></p>
+
+
+<p></p></p>
+
+<p>Once Apache is restarted, you should be free of segmentation faults (or at least you shouldn&#8217;t run into problems until your colleagues on Linux and Mac OS do.)</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Color Me Flexible: New options for colorable D7 themes]]></title>
+    <link href="http://smerrill.github.io/blog/2010/07/08/color-me-flexible-new-options-for-colorable-d7-themes/"/>
+    <updated>2010-07-08T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2010/07/08/color-me-flexible-new-options-for-colorable-d7-themes</id>
+    <content type="html"><![CDATA[<p>In case you haven&#8217;t heard: the <a href="http://drupal.org/project/bartik">Bartik theme</a> is now <a href="http://drupal.org/node/683026">in core</a> and, after some refinement, <a href="http://drupal.org/node/845742">will be the default theme for Drupal 7</a>. This is thanks to the phenomenal effort of many contributors from around the world.</p>
+
+
+<p></p></p>
+
+<p>I&#8217;ve been happy to help out on <a href="http://drupal.org/project/bartik">Bartik</a> over the past several months and have worked quite a bit on improving the core color module&#8217;s usefulness to themers who want recolorable themes.  Tonight I gave <a href="http://www.slideshare.net/smerrill/color-me-flexible">an impromptu talk</a> to the <a href="http://groups.drupal.org/new-york-city">NYC Drupal user group</a> about D7&#8217;s color.module and Bartik.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<div id="__ss_4705862" style="width: 425px;"><strong style="display: block; margin: 12px 0 4px;"><a href="http://www.slideshare.net/smerrill/color-me-flexible" title="Color Me Flexible">Color Me Flexible</a></strong><br />
+<object id="__sse4705862" width="425" height="355" data="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=color-module-100707224616-phpapp01&stripped_title=color-me-flexible" type="application/x-shockwave-flash"><param name="data" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=color-module-100707224616-phpapp01&stripped_title=color-me-flexible" /><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><param name="src" value="http://static.slidesharecdn.com/swf/ssplayer2.swf?doc=color-module-100707224616-phpapp01&stripped_title=color-me-flexible" /><param name="name" value="__sse4705862" /><param name="allowfullscreen" value="true" /></object>
+<div style="padding: 5px 0 12px;">View more <a href="http://www.slideshare.net/">presentations</a> from <a href="http://www.slideshare.net/smerrill">Steven Merrill</a>.</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+</feed>

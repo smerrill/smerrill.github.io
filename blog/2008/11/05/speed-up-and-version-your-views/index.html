@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Speed Up and Version Your Views - Grenade Sandwich</title>
+  <meta name="author" content="Steven W. Merrill">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
+
+  <!-- Fira stylesheet -->
+<link href="/assets/fonts/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="/javascripts/libs/bootstrap-3.0.0/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"> -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/readable/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<!-- Awesome font. -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <strong>
+              <a class="navbar-brand" href="/">Grenade Sandwich</a>
+            </strong>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+                <li >
+                    <a href="/about-site/">About this Site</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right visible-xs visible-md visible-lg" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:smerrill.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2008-11-05T00:00:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2008</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        Speed Up and Version Your Views
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/speed-up-and-version-your-views/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+
+<div class="entry-content clearfix"><p>Since getting started with Drupal over two years ago, the sites I&rsquo;ve built with it have naturally gotten bigger and bigger in scope. As your sites get bigger and bigger, you always look for ways to keep your site running as smoothly as possible, and this usually ends up meaning getting rid of queries wherever you can.</p>
+
+
+<p></p></p>
+
+<p>One feature of Views which is often used by module developers is the ability of a module to expose a set of <strong>default views</strong>. The calendar module, for example, provides a default calendar view in both its Drupal 5 and 6 versions.  This is an obvious asset for developers of contributed modules: if your module interfaces with Views, it makes sense to provide a default view that users can modify.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<h2>Implementation and Potential Benefits</h2>
+
+
+<p></p></p>
+
+<p>The hook used to do this is <a href="http://views-help.doc.logrus.com/help/views/api-default-views">hook_views_default_views()</a>. Since most modern sites are run off of a number of Views, you can also realize several benefits by building your sites with a custom module that implements <strong>hook_views_default_views()</strong>:</p>
+
+
+<p></p></p>
+
+<ol>
+<li>It improves performance. Views implemented via hook_views_default_views() do not require a database query to instantiate. You will realize an even greater performance gain if you also use an opcode caching system such as APC or XCache.</li>
+<li>Providing views in code will allow you to override the default view to make changes, and you can then choose to keep the changes in the database, update the module file to reflect the changes, or revert back to the version in your module file.</li>
+<li>Because the view (and theoretically, changes to that view) are stored in files, you can put them in version control and see how the views used in your site change over time and revert to an earlier version without having to go to a database backup.</li><br />
+</ol>
+
+
+<p></p></p>
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<h2>Views2 / Drupal 6 Implementation</h2>
+
+
+<p></p></p>
+
+<p>Here&rsquo;s how to do it in Views2 on Drupal 6. When implementing a site, we at Tree House usually end up with a utility module that will do some of the things that will need to do theming or development tweaks, like the odd hook_form_alter(), or provide a Views handler or two. I&rsquo;ll be calling this module treehouse_utils.  There&rsquo;s two steps to providing a default view in Drupal 6 and Views2: you need to tell Views2 that you implement the Views2 API, and then you have to create a file that contains the default view(s).</p>
+
+
+<p></p></p>
+
+<p>So first, in treehouse_utils.module, it&rsquo;s time to tells Views2 that we&rsquo;re implementing Views features with <strong>hook_views_api()</strong>. The implementation of the hook looks like this in our module:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="kw2">function</span> treehouse_utils_views_api<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+  <span class="kw1">return</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><br /><br />
+    <span class="st_h">&#8216;api&#8217;</span> <span class="sy0">=&</span>gt<span class="sy0">;</span> <span class="nu0">2</span><span class="sy0">,</span><br /><br />
+    <span class="st_h">&#8216;path&#8217;</span> <span class="sy0">=&</span>gt<span class="sy0">;</span> drupal_get_path<span class="br0">(</span><span class="st_h">&#8216;module&#8217;</span><span class="sy0">,</span> <span class="st_h">&#8216;treehouse_utils&#8217;</span><span class="br0">)</span><span class="sy0">,</span><br /><br />
+  <span class="br0">)</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<p>This module just tells Views2 that we&rsquo;re implementing version 2 of the Views API and that it should look for Views-related files in the directory of the <strong>treehouse_utils</strong> module. (Some other modules will make a separate directory called <em>includes</em> where its Views-related files will live.)</p>
+
+
+<p></p></p>
+
+<h2>Putting the Views in Code</h2>
+
+
+<p></p></p>
+
+<p>The other task that we need to do is to implement <strong>hook_views_default_views()</strong> and actually tell Drupal about our Views. It is possible to do this in the main treehouse_utils.module file, but the trend in Drupal 6 is towards using more files so that Drupal has less code to load and parse overall on each page request. You can implement <strong>hook_views_default_views()</strong> (as well as a smattering of other Views-related hooks) in a <em>MODULENAME.views.inc</em> file. In the case of <strong>hook_views_default_views()</strong>, you can implement that in its own file, <em>MODULENAME.views_default.inc</em>.</p>
+
+
+<p></p></p>
+
+<p>So here&rsquo;s what treehouse_utils.views_default.inc will look like:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="sy0">&</span>lt<span class="sy0">;</span>?php<br /><br />
+<br /><br />
+<span class="kw2">function</span> treehouse_utils_views_default_views<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+  <span class="re0">$views</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br /><br />
+<br /><br />
+  <span class="co1">// Start copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+  <span class="co1">// End copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+  <span class="co1">// Add view to list of views to provide.</span><br /><br />
+  <span class="re0">$views</span><span class="br0">[</span><span class="re0">$view</span><span class="sy0">-&</span>gt<span class="sy0">;</span>name<span class="br0">]</span> <span class="sy0">=</span> <span class="re0">$view</span><span class="sy0">;</span><br /><br />
+<br /><br />
+  <span class="co1">// &#8230;Repeat all of the above for each view the module should provide.</span><br /><br />
+<br /><br />
+  <span class="co1">// At the end, return array of default views.</span><br /><br />
+  <span class="kw1">return</span> <span class="re0">$views</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<p>Implementations of <strong>hook_views_default_views()</strong> are expected to return an array, so for each view that you would like to have provided by a module, go to the Views2 administrative interface, click Export, and copy and paste the PHP code between the two comments, and also be sure to include the $views[$view->name] = $view; line, where the newly-defined view object gets included in the array that will be returned.</p>
+
+
+<p></p></p>
+
+<p>Finally, when your module is enabled (or when you next visit the Views2 administration page or otherwise clear Views2&rsquo;s caches,) you&rsquo;ll see the following:</p>
+
+
+<p></p></p>
+
+<p><img src="http://img.skitch.com/20081105-tiq92fi3msh5dmf3pruy2mugxm.png" /></p>
+
+
+<p></p></p>
+
+<p>Notice that because the view which I put into the module is also in the database, Views tells us that the view is <em>overriden</em> - a default is now provided in PHP code, but our version in the database still supercedes it.  If you were to click <strong>Revert</strong>, the database entry for the view would be deleted, and Drupal would load it from your <em>MODULENAME.views_default.inc</em> file.</p>
+
+
+<p></p></p>
+
+<h2>Continuing this Workflow</h2>
+
+
+<p></p></p>
+
+<p>At this point, you can check your module into version control and have a record of your view at this point in time.  Later, you could make some more changes in the Views2 UI, hit <strong>Export</strong> again, and paste the newer version into the file, check that into version control and continue.</p>
+
+
+<p></p></p>
+
+<p>Views2 is amazing, and these techniques let you squeeze a little more performance and a lot more possibilities for revision control while building out your sites.</p>
+
+
+<p></p></p>
+
+<p>Also, be sure to vote for <a href="http://dc2009.drupalcon.org/session/scaling-drupal-not-ifhow">Thomas&rsquo;s DrupalCon session</a> if you&rsquo;d like to look at concrete techniques of all types to scale your Drupal sites!</p>
+
+
+<p></p></p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Steven Merrill</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2008-11-05T00:00:00-05:00" pubdate data-updated="true">Nov 5<span>th</span>, 2008</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/performance/'>performance</a>, <a class='category' href='/blog/categories/phase2blog/'>phase2blog</a>, <a class='category' href='/blog/categories/planet-drupal/'>planet drupal</a>, <a class='category' href='/blog/categories/tutorials/'>tutorials</a>, <a class='category' href='/blog/categories/views/'>views</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views/" data-via="stevenmerrill" data-counturl="http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2008/10/24/were-ramping-up-for-drupalcon-in-dc/" title="Previous Post: We&#039;re Ramping Up for DrupalCon in DC!">&laquo; We&#039;re Ramping Up for DrupalCon in DC!</a></li>
+            
+            
+            <li class="next"><a href="/blog/steven/2009/01/24/back-blogging/" title="Next Post: Back to Blogging">Back to Blogging &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
+    
+    <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
+    
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/conference/index.html">
+      <span class="badge">2</span>
+      conference
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/theming/index.html">
+      <span class="badge">2</span>
+      theming
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal/index.html">
+      <span class="badge">15</span>
+      drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/planet-drupal/index.html">
+      <span class="badge">4</span>
+      planet drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/development/index.html">
+      <span class="badge">9</span>
+      development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/performance/index.html">
+      <span class="badge">6</span>
+      performance
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/views/index.html">
+      <span class="badge">2</span>
+      views
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/treehouse-agency/index.html">
+      <span class="badge">3</span>
+      treehouse agency
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/presentations/index.html">
+      <span class="badge">8</span>
+      presentations
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/web-development/index.html">
+      <span class="badge">2</span>
+      web development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/centos/index.html">
+      <span class="badge">2</span>
+      centos
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala/index.html">
+      <span class="badge">3</span>
+      scala
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala-2.7/index.html">
+      <span class="badge">3</span>
+      scala 2.7
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/browsers/index.html">
+      <span class="badge">2</span>
+      browsers
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/vagrant/index.html">
+      <span class="badge">5</span>
+      vagrant
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualbox/index.html">
+      <span class="badge">2</span>
+      virtualbox
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/irc/index.html">
+      <span class="badge">2</span>
+      irc
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/veewee/index.html">
+      <span class="badge">2</span>
+      veewee
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal-planet/index.html">
+      <span class="badge">3</span>
+      drupal planet
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualization/index.html">
+      <span class="badge">3</span>
+      virtualization
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/php/index.html">
+      <span class="badge">2</span>
+      php
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</section>
+
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/smerrill">@smerrill</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'smerrill',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2009 - 2014 by Steven W. Merrill<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/javascripts/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using HipChat through an IRC client with BitlBee - Grenade Sandwich</title>
+  <meta name="author" content="Steven W. Merrill">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://smerrill.github.io/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
+
+  <!-- Fira stylesheet -->
+<link href="/assets/fonts/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="/javascripts/libs/bootstrap-3.0.0/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"> -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/readable/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<!-- Awesome font. -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <strong>
+              <a class="navbar-brand" href="/">Grenade Sandwich</a>
+            </strong>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+                <li >
+                    <a href="/about-site/">About this Site</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right visible-xs visible-md visible-lg" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:smerrill.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-12-15T00:00:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        Using HipChat Through an IRC Client With BitlBee
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/using-hipchat-through-an-irc-client-with-bitlbee/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+
+<div class="entry-content clearfix"><p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal community. Still, IRC ports are often blocked, and not everyone is comfortable using IRC. We&#8217;ve recently been using <a href="http://www.hipchat.com/">HipChat</a> to set up chat rooms for certain new clients.</p>
+
+
+<p></p></p>
+
+<p>I already route most of my AIM and GTalk interaction through an IRC gateway using <a href="http://www.bitlbee.org/">BitlBee</a>, and I wanted to hook HipChat up to an IRC client as well. Here&#8217;s a guide on how to do this.</p>
+
+
+<p></p></p>
+
+<p>(Note that I was having trouble joining channels in my LimeChat last night as I was writing this up, but I might just be missing something. Try it out!)</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>All the uppercase items come from the <a href="https://www.hipchat.com/account/xmpp">XMPP Account Settings page</a> in your HipChat account.</p>
+
+
+<p></p></p>
+
+<ol>
+<li>Add the account in Bitlbee.
+<ul>
+<li><code>account add jabber USERNAME@chat.hipchat.com 'PASSWORD'</code></li><br />
+</ul><br />
+</li></p>
+<li>Before you connect, set it up so that folks&#8217; chat names will display properly.
+<ul>
+<li><code>account hipchat set nick_source full_name</code></li><br />
+</ul><br />
+</li></p>
+<li>To prevent being spammed with room history every time you join or change status, set your resource to &#8216;bot&#8217;.
+<ul>
+<li><code>account hipchat set resource bot</code></li><br />
+</ul><br />
+</li></p>
+<li>Connect to the account.
+<ul>
+<li><code>account hipchat on</code></li><br />
+</ul><br />
+</li></p>
+<li>At this point, you can join the &hipchat channel to see all your contacts and use /msg to start talking w/ one of them privately.
+<ul>
+<li><code>/join &hipchat</code></li><br />
+</ul><br />
+</li></p>
+<li>Now, add a chat. Note that the information on the XMPP settings pages doesn&#8217;t give you @chat.hipchat.com. You can set whatever channel name you want.
+<ul>
+<li><code>chat add hipchat JABBERNAME@chat.hipchat.com #CHANNELNAME</code></li><br />
+</ul><br />
+</li></p>
+<li>Before you can join, you must set your nick to match the <strong>Room nickname</strong> setting in your XMPP settings. You must do this for every room. Use the channel name you decided on earlier for easier access.
+<ul>
+<li><code>channel #CHANNELNAME set nick 'ROOM NICKNAME'</code></li><br />
+</ul><br />
+</li></p>
+<li>Now, join the channel.
+<ul>
+<li><code>/join #CHANNELNAME</code></li><br />
+</ul><br />
+</li></p>
+<li>Start chatting!
+<ul>
+<li><code>Hey everybody!</code></li>
+<li><code>I'm using IRC!</code></li>
+<li><code>(fry)</code></li>
+<li><code>/me likes IRC and HipChat</code></li><br />
+</ul><br />
+</li></p>
+<li>When you&#8217;re ready to sign out of HipChat, use <code>account off</code>.
+<ul>
+<li><code>account hipchat off</code></li><br />
+</ul><br />
+</li><br />
+</ol>
+
+
+<p></p></p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Steven Merrill</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-12-15T00:00:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2011</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bitlbee/'>bitlbee</a>, <a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/hipchat/'>hipchat</a>, <a class='category' href='/blog/categories/irc/'>irc</a>, <a class='category' href='/blog/categories/jabber/'>jabber</a>, <a class='category' href='/blog/categories/phase2blog/'>phase2blog</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://smerrill.github.io/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/" data-via="stevenmerrill" data-counturl="http://smerrill.github.io/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2011/11/17/vagrant-and-nfs/" title="Previous Post: Vagrant and NFS">&laquo; Vagrant and NFS</a></li>
+            
+            
+            <li class="next"><a href="/blog/2012/01/16/bonjour-mes-amis/" title="Next Post: Bonjour, mes amis!">Bonjour, mes amis! &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
+    
+    <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
+    
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/conference/index.html">
+      <span class="badge">2</span>
+      conference
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/theming/index.html">
+      <span class="badge">2</span>
+      theming
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal/index.html">
+      <span class="badge">15</span>
+      drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/planet-drupal/index.html">
+      <span class="badge">4</span>
+      planet drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/development/index.html">
+      <span class="badge">9</span>
+      development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/performance/index.html">
+      <span class="badge">6</span>
+      performance
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/views/index.html">
+      <span class="badge">2</span>
+      views
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/treehouse-agency/index.html">
+      <span class="badge">3</span>
+      treehouse agency
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/presentations/index.html">
+      <span class="badge">8</span>
+      presentations
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/web-development/index.html">
+      <span class="badge">2</span>
+      web development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/centos/index.html">
+      <span class="badge">2</span>
+      centos
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala/index.html">
+      <span class="badge">3</span>
+      scala
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala-2.7/index.html">
+      <span class="badge">3</span>
+      scala 2.7
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/browsers/index.html">
+      <span class="badge">2</span>
+      browsers
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/vagrant/index.html">
+      <span class="badge">5</span>
+      vagrant
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualbox/index.html">
+      <span class="badge">2</span>
+      virtualbox
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/irc/index.html">
+      <span class="badge">2</span>
+      irc
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/veewee/index.html">
+      <span class="badge">2</span>
+      veewee
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal-planet/index.html">
+      <span class="badge">3</span>
+      drupal planet
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualization/index.html">
+      <span class="badge">3</span>
+      virtualization
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/php/index.html">
+      <span class="badge">2</span>
+      php
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</section>
+
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/smerrill">@smerrill</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'smerrill',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2009 - 2014 by Steven W. Merrill<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/javascripts/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

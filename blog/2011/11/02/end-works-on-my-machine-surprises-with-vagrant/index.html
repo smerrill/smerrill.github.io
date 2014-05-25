@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>End "Works on My Machine" Surprises with Vagrant - Grenade Sandwich</title>
+  <meta name="author" content="Steven W. Merrill">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
+
+  <!-- Fira stylesheet -->
+<link href="/assets/fonts/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="/javascripts/libs/bootstrap-3.0.0/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"> -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/readable/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<!-- Awesome font. -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <strong>
+              <a class="navbar-brand" href="/">Grenade Sandwich</a>
+            </strong>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+                <li >
+                    <a href="/about-site/">About this Site</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right visible-xs visible-md visible-lg" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:smerrill.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-02T00:00:00-04:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2011</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        End "Works on My Machine" Surprises With Vagrant
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/end-works-on-my-machine-surprises-with-vagrant/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+
+<div class="entry-content clearfix"><p>How many times have the following issues happened on a project you&#8217;ve worked on?</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Notices (or worse) appeared on production because of a PHP version mismatch between a developer&#8217;s machine and the production web servers.</li>
+<li>A new PHP extension or PECL extension had to be installed on production because it was installed in WAMP or MAMP?</li>
+<li>A team member ran into difficult setting up their local environment and spent many hours stuck on something.</li>
+<li>Team members didn&#8217;t set up SSL or Varnish on their local machines and issues had to be caught on a dev server.</li>
+<li>A team member would like to switch to Homebrew, but can&#8217;t set aside the many hours to redo their setup until a project is done.</li><br />
+</ul>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>Tools like <a href="http://www.mamp.info/en/index.html">MAMP</a>, <a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a>, the <a href="http://network.acquia.com/downloads">Aqcuia dev desktop</a>, <a href="http://www.macports.org/">MacPorts</a> and <a href="http://mxcl.github.com/homebrew/">Homebrew</a> all make it easy to get an *AMP stack up and running on your computer, and tools like MacPorts and Homebrew even make it pretty easy to install tools like <a href="https://www.varnish-cache.org/">Varnish</a> and <a href="http://memcached.org/">memcached</a>.</p>
+
+
+<p></p></p>
+
+<p>While these tools make it easy to run a very close approximation of the production hosting stack on your local machine (arguably closer if you use Macintosh or Linux,) it will still have some key differences which will ultimately contribute at some point to a &#8221;<a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html">Works on My Machine!</a>&#8221; situation in your project.</p>
+
+
+<p></p></p>
+
+<p><img alt="Works On My Machine Badge" src="http://treehouseagency.com/sites/treehouseagency.com/files/worksonmymachine_0.png" style="border: medium none; display: block; float: left;" /></p>
+
+
+<p></p></p>
+
+<p>Luckily, virtualization has advanced to such a degree that there are cross-platform virtualization solutions such as <a href="https://www.virtualbox.org/">VirtualBox</a>, but just using a VM inside of VirtualBox doesn&#8217;t solve the whole problem. It makes acquiring the correct versions of software easy, but keeping configuration in sync can still be a challenge for users who are not deeply familiar with Linux.</p>
+
+
+<p></p></p>
+
+<p>Enter <a href="http://vagrantup.com/">Vagrant</a>.</p>
+
+
+<p></p></p>
+
+<p>Vagrant is a Ruby gem that makes working with Linux virtual machines easy. You distribute a Vagrantfile to your team, and it does the following things for you:</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Downloads and sets up virtual machines from a single .box file which it will download over HTTP or FTP.</li>
+<li>Provisions the software and configuration on the VM using your choice of Chef, Puppet, or simple shell scripts</li>
+<li>Automatically shares the directory with the Vagrantfile (and any subdirectories) to the virtual machine with Virtualbox&#8217;s built-in file sharing</li>
+<li>Forwards the SSH port (and optionally other ports) to your localhost and avoids collisions so you can always directly SSH to the machine</li>
+<li>Optionally sets up a dedicated host-only IP address that you can use to connect to all services on the VM without port forwarding</li>
+<li>Optionally shares directories to the VM over NFS from a Macintosh or Linux guest, which enables acceptable performance for a Drupal docroot</li><br />
+</ul>
+
+
+<p></p></p>
+
+<p>Since Vagrant handles the file sharing with the VM, you and your team don&#8217;t have to mess around with setting up FUSE or the like and you can continue to use the tools that you&#8217;re used to using locally, such as your text editor or garphical source control program.</p>
+
+
+<p></p></p>
+
+<p>In addition, so long as you have a single developer skilled in ops who can encapsulate the production configuration into a system like Chef or Puppet, these changes can be pushed down to the whole team. Once your ops team has a working Varnish configuration, for example, they can push that into the Vagrant repository, and then a working Varnish setup on all your developers&#8217; VMs is just a <code>git pull</code> and a <code>vagrant provision</code> away.</p>
+
+
+<p></p></p>
+
+<p>We&#8217;ve been working with Vagrant over the last few months and think it offers a number of advantages. All it takes to get started installing VirtualBox and the <strong>vagrant</strong> ruby gem. Detailed information on how to get started is available in the excellent <a href="http://vagrantup.com/docs/getting-started/index.html">Vagrant Quickstart guide</a>.</p>
+
+
+<p></p></p>
+
+<p>I&#8217;ve put together a screencast that&#8217;s just over 10 minutes long and shows the whole process of bringing up a CentOS 5.6 VM with the <a href="http://treehouseagency.com">treehouseagency.com</a> site shared from my local machine.</p>
+
+
+<p></p></p>
+
+<p><iframe src="http://player.vimeo.com/video/31494273?title=0&byline=0&portrait=0&color=ff9933" width="595" height="446" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe></p>
+
+
+<p></p></p>
+
+<p>We&#8217;ll be posting more example code over the coming weeks that will allow you to try out Drupal from your local machine on a Linux VM.</p>
+
+
+<p></p></p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Steven Merrill</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-02T00:00:00-04:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2011</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/chef/'>chef</a>, <a class='category' href='/blog/categories/drupal-planet/'>drupal planet</a>, <a class='category' href='/blog/categories/hosting/'>hosting</a>, <a class='category' href='/blog/categories/phase2blog/'>phase2blog</a>, <a class='category' href='/blog/categories/planet-drupal/'>planet drupal</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>, <a class='category' href='/blog/categories/veewee/'>veewee</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/" data-via="stevenmerrill" data-counturl="http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/" title="Previous Post: Ensuring your Vagrant's box is weatherproof: A quick Veewee tip">&laquo; Ensuring your Vagrant's box is weatherproof: A quick Veewee tip</a></li>
+            
+            
+            <li class="next"><a href="/blog/2011/11/14/drush-phpsh-integration-demonstration/" title="Next Post: Drush phpsh Integration Demonstration">Drush phpsh Integration Demonstration &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
+    
+    <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
+    
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/conference/index.html">
+      <span class="badge">2</span>
+      conference
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/theming/index.html">
+      <span class="badge">2</span>
+      theming
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal/index.html">
+      <span class="badge">15</span>
+      drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/planet-drupal/index.html">
+      <span class="badge">4</span>
+      planet drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/development/index.html">
+      <span class="badge">9</span>
+      development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/performance/index.html">
+      <span class="badge">6</span>
+      performance
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/views/index.html">
+      <span class="badge">2</span>
+      views
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/treehouse-agency/index.html">
+      <span class="badge">3</span>
+      treehouse agency
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/presentations/index.html">
+      <span class="badge">8</span>
+      presentations
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/web-development/index.html">
+      <span class="badge">2</span>
+      web development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/centos/index.html">
+      <span class="badge">2</span>
+      centos
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala/index.html">
+      <span class="badge">3</span>
+      scala
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala-2.7/index.html">
+      <span class="badge">3</span>
+      scala 2.7
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/browsers/index.html">
+      <span class="badge">2</span>
+      browsers
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/vagrant/index.html">
+      <span class="badge">5</span>
+      vagrant
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualbox/index.html">
+      <span class="badge">2</span>
+      virtualbox
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/irc/index.html">
+      <span class="badge">2</span>
+      irc
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/veewee/index.html">
+      <span class="badge">2</span>
+      veewee
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal-planet/index.html">
+      <span class="badge">3</span>
+      drupal planet
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualization/index.html">
+      <span class="badge">3</span>
+      virtualization
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/php/index.html">
+      <span class="badge">2</span>
+      php
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</section>
+
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/smerrill">@smerrill</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'smerrill',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2009 - 2014 by Steven W. Merrill<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/javascripts/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

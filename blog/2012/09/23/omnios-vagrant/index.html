@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>OmniOS and Vagrant - Grenade Sandwich</title>
+  <meta name="author" content="Steven W. Merrill">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://smerrill.github.io/blog/2012/09/23/omnios-vagrant">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
+
+  <!-- Fira stylesheet -->
+<link href="/assets/fonts/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="/javascripts/libs/bootstrap-3.0.0/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"> -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/readable/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<!-- Awesome font. -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <strong>
+              <a class="navbar-brand" href="/">Grenade Sandwich</a>
+            </strong>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+                <li >
+                    <a href="/about-site/">About this Site</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right visible-xs visible-md visible-lg" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:smerrill.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-09-23T00:00:00-04:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2012</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        OmniOS and Vagrant
+        
+    </h1>
+    
+  </header>
+
+
+
+
+<div class="entry-content clearfix"><h3>&lt;3 ZFS</h3>
+
+<p>I&rsquo;ve recently gotten religion about ZFS, and as a result, I&rsquo;ve been looking hard at the various systems that offer you the ability to use ZFS and other amazing tools from the Solaris lineage (now being developed freely under <a href="http://blog.illumos.org/">the Illumos moniker</a> after Oracle&rsquo;s unceremonious murder of OpenSolaris.)</p>
+
+<p>My data&rsquo;s backed up on an 8 TB FreeNAS, but there&rsquo;s also an amazing trend of Illumos-based distributions on offer that offer KVM virtualization, which was ported to Illumos by Joyent for <a href="http://smartos.org/">their SmartOS distribution</a>. Theo Schlossnagle recently gave a talk at the NYC DevOps meetup about <a href="http://omnios.omniti.com/">their Illumos-based OmniOS distribution</a>. OmniOS is a bit more than a JeOS &ndash; it aims to provide just enough packaged software to let you build the Illumos kernel and several other important tools like tmux and screen, and then get out of your way. Like SmartOS, it provides both lightweight zones-based virtualization and KVM for full hardware virtualization, but OmniOS is designed to be permanently installed on a machine, as opposed to SmartOS&rsquo;s focus on USB or PXE booting and ephemeral global zone configuration.</p>
+
+<p>OmniTI also makes a larger set of packages that their Managed Services team uses at <a href="http://pkg.omniti.com/omniti-ms/en/index.shtml">http://pkg.omniti.com/omniti-ms/en/index.shtml</a>.</p>
+
+<!--more-->
+
+
+<h3>KVM? Not today.</h3>
+
+<p>But at the end of the day, <a href="http://vagrantup.com/">Vagrant</a> is still the platform I use to run applications with the correct operating system, software versions, and production configurations, so I need Vagrant (and thus <a href="https://www.virtualbox.org/">VirtualBox</a>) to run on my workstation.</p>
+
+<p>I am happy to report that I was able to get VirtualBox and Vagrant to the point that they could boot a box, and use host-only networking despite being a complete UNIX and Solaris noob. (Thanks to Mitchell and the whole Vagrant community for an awesome piece of software.)</p>
+
+<h3>Get it installed</h3>
+
+<p>Here&rsquo;s the roundup on how to get it all up and running. All commands were run as root in the global zone.</p>
+
+<p>Install a few utility packages. This is not strictly necessary, but it helps.</p>
+
+<pre><code>$ pkg install terminal/tmux
+$ pkg install developer/versioning/git
+</code></pre>
+
+<p>Set up a static IP as pointed out in <a href="http://omnios.omniti.com/wiki.php/GeneralAdministration.">http://omnios.omniti.com/wiki.php/GeneralAdministration.</a> In my case, it was 192.168.0.160.</p>
+
+<p>You will also need to set up your gateway as a DNS resolver. To do so on UNIX, add at least a <em>search</em> and <em>nameserver</em> to /etc/resolv.conf. I am using the following:</p>
+
+<pre><code>search nyc.rr.com
+nameserver 192.168.0.1
+</code></pre>
+
+<p>Set up NSS to read resolv.conf.</p>
+
+<pre><code>$ cp /etc/nsswitch.{dns,conf}
+</code></pre>
+
+<p>Add the OmniTI managed services package repo to make getting a few things easier.</p>
+
+<pre><code>$ pkg set-publisher -g http://pkg.omniti.com/omniti-ms/ ms.omniti.com
+</code></pre>
+
+<p>Rebuild the package index</p>
+
+<pre><code>$ pkg rebuild-index
+</code></pre>
+
+<p>Install Ruby and gcc 4.6 to be able to build gem extensions. Also ensure libffi is there since Vagrant needs the ffi gem.</p>
+
+<pre><code>$ pkg install omniti/runtime/ruby-19
+$ pkg install developer/gcc46
+$ pkg install library/libffi
+</code></pre>
+
+<p>At this point you should be ready to install the Vagrant gem. The Ruby 1.9 executables like <code>gem</code> and <code>irb</code> get put into <code>/opt/omni/bin/</code>.</p>
+
+<pre><code>$ /opt/omni/bin/gem install vagrant
+</code></pre>
+
+<p>Run a quick <code>vagrant help</code> to ensure that everything&rsquo;s hooked up properly.</p>
+
+<pre><code>$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant help
+</code></pre>
+
+<p>Next up we need to install VirtualBox. I saw <a href="https://gist.github.com/7ddfa72c1d97198532ea">errors related to the Crossbow-based networking kernel module</a> while trying to install a variety of versions of VirtualBox, so we can <a href="http://www.virtualbox.org/manual/ch09.html#vboxbowsolaris11">force the older stream-based VirtualBox networking driver to install</a>.</p>
+
+<pre><code>$ touch /etc/vboxinst_vboxflt
+</code></pre>
+
+<p>With that in place, download and extract the VirtualBox 4.2.0 release for Solaris guests.</p>
+
+<pre><code>$ wget http://download.virtualbox.org/virtualbox/4.2.0/VirtualBox-4.2.0-80737-SunOS.tar.gz
+$ tar xzf VirtualBox-4.2.0-80737-SunOS.tar.gz
+</code></pre>
+
+<p>Next up, install the package.</p>
+
+<pre><code>$ pkgadd -d VirtualBox-4.2.0-SunOS-r80737.pkg
+</code></pre>
+
+<p>At this point you should be ready to download a Vagrantfile and go. I&rsquo;ve made <a href="https://gist.github.com/0509301bb7c62e523b49">a sample one</a> that you can try with.</p>
+
+<pre><code>$ curl https://raw.github.com/gist/0509301bb7c62e523b49/87e75688b45631ca9492123c5f160d2311e84604/gistfile1.rb &gt; Vagrantfile
+$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant up
+$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant ssh
+</code></pre>
+
+<p>And with that, the box should download and the second command should have you logged in as the <code>vagrant</code> user on your very own Ubuntu 12.04 LTS VM.</p>
+
+<h3>Host-only networking</h3>
+
+<p>There is one peculiarity to VirtualBox on OmniOS (which, granted, might be VirtualBox on Solaris/Illumos &ndash; I have no idea.) Windows, Mac, and Linux hosts all have the ability to create a host-only interface with the <code>VBoxManage hostonlyif create</code> command-line option. That option does not exist in the Solaris version of VirtualBox. In my experience from this weekend, VirtualBox will create you a <code>vboxnet0</code> interface which can be used as a host-only network. If you do wish to use host-only networking with your VM, you will have to set it up before you run <code>vagrant up</code>.</p>
+
+<p>I usually run my host-only interfaces inside of 172.16.0.0/12. For the sake of argument, let&rsquo;s say we want to give this VM a host-only address of 172.31.31.31. (The sample Vagrantfile has this configuration commented out.) By setting the IP address of <code>vboxnet0</code> to 172.31.31.1, vagrant will not try to run <code>VBoxManage hostonlyif create</code>, and host-only networking will also work. The <code>VBoxManage</code> command to do so is as follows:</p>
+
+<pre><code>$ VBoxManage hostonlyif ipconfig vboxnet0 -ip 172.31.31.1
+</code></pre>
+
+<h3>Not exhaustive</h3>
+
+<p>I haven&rsquo;t tried out a full client setup though Vagrant on OmniOS yet, and I think I&rsquo;ll still be booting my workstation into Fedora 17 for the next week to run KVM and/or VirtualBox VMs. Here are the remaining things that I&rsquo;d need to nail down before I could use OmniOS and Vagrant together:</p>
+
+<ul>
+<li>There&rsquo;s no Solaris host class in Vagrant, so the ability to export files (like your codebase) from the host to the guest via NFS won&rsquo;t work yet. That said, since ZFS has deep hooks into NFS, this might be super simple to implement assuming that you boot from ZFS.</li>
+<li>The host-only networking bit is strange, and I don&rsquo;t know enough about OmniOS or Crossbow to say what&rsquo;s going on.</li>
+<li>I haven&rsquo;t tested out applying Puppet or Chef configuration to the guest. OmniTI <a href="http://pkg.omniti.com/omniti-ms/info/0/omniti%2Fsystem%2Fmanagement%2Fchef%400.10.8%2C5.11-0.151002%3A20120501T192332Z">makes a Chef package available</a> in the managed services repository, and the Puppet and Facter gems install without issue, so this should be rather painless.</li>
+<li>VirtualBox should probably be run <a href="http://www.virtualbox.org/manual/ch02.html#idp11597936">in its own zone</a>.</li>
+</ul>
+
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Steven W. Merrill</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-09-23T00:00:00-04:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2012</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/illumos/'>illumos</a>, <a class='category' href='/blog/categories/omnios/'>omnios</a>, <a class='category' href='/blog/categories/vagrant/'>vagrant</a>, <a class='category' href='/blog/categories/virtualbox/'>virtualbox</a>, <a class='category' href='/blog/categories/virtualization/'>virtualization</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://smerrill.github.io/blog/2012/09/23/omnios-vagrant/" data-via="stevenmerrill" data-counturl="http://smerrill.github.io/blog/2012/09/23/omnios-vagrant/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/" title="Previous Post: Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash">&laquo; Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash</a></li>
+            
+            
+            <li class="next"><a href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/" title="Next Post: Testing Drupal with Ghosts and Gherkins at DrupalCampNJ">Testing Drupal with Ghosts and Gherkins at DrupalCampNJ &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
+    
+    <a class="list-group-item active" href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
+    
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/conference/index.html">
+      <span class="badge">2</span>
+      conference
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/theming/index.html">
+      <span class="badge">2</span>
+      theming
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal/index.html">
+      <span class="badge">15</span>
+      drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/planet-drupal/index.html">
+      <span class="badge">4</span>
+      planet drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/development/index.html">
+      <span class="badge">9</span>
+      development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/performance/index.html">
+      <span class="badge">6</span>
+      performance
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/views/index.html">
+      <span class="badge">2</span>
+      views
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/treehouse-agency/index.html">
+      <span class="badge">3</span>
+      treehouse agency
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/presentations/index.html">
+      <span class="badge">8</span>
+      presentations
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/web-development/index.html">
+      <span class="badge">2</span>
+      web development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/centos/index.html">
+      <span class="badge">2</span>
+      centos
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala/index.html">
+      <span class="badge">3</span>
+      scala
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala-2.7/index.html">
+      <span class="badge">3</span>
+      scala 2.7
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/browsers/index.html">
+      <span class="badge">2</span>
+      browsers
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/vagrant/index.html">
+      <span class="badge">5</span>
+      vagrant
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualbox/index.html">
+      <span class="badge">2</span>
+      virtualbox
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/irc/index.html">
+      <span class="badge">2</span>
+      irc
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/veewee/index.html">
+      <span class="badge">2</span>
+      veewee
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal-planet/index.html">
+      <span class="badge">3</span>
+      drupal planet
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualization/index.html">
+      <span class="badge">3</span>
+      virtualization
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/php/index.html">
+      <span class="badge">2</span>
+      php
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</section>
+
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/smerrill">@smerrill</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'smerrill',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2009 - 2014 by Steven W. Merrill<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/javascripts/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

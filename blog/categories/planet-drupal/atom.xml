@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: planet drupal | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/planet-drupal/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[End "Works on My Machine" Surprises with Vagrant]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/"/>
+    <updated>2011-11-02T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant</id>
+    <content type="html"><![CDATA[<p>How many times have the following issues happened on a project you've worked on?</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Notices (or worse) appeared on production because of a PHP version mismatch between a developer's machine and the production web servers.</li>
+<li>A new PHP extension or PECL extension had to be installed on production because it was installed in WAMP or MAMP?</li>
+<li>A team member ran into difficult setting up their local environment and spent many hours stuck on something.</li>
+<li>Team members didn't set up SSL or Varnish on their local machines and issues had to be caught on a dev server.</li>
+<li>A team member would like to switch to Homebrew, but can't set aside the many hours to redo their setup until a project is done.</li><br />
+</ul>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>Tools like <a href="http://www.mamp.info/en/index.html">MAMP</a>, <a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a>, the <a href="http://network.acquia.com/downloads">Aqcuia dev desktop</a>, <a href="http://www.macports.org/">MacPorts</a> and <a href="http://mxcl.github.com/homebrew/">Homebrew</a> all make it easy to get an *AMP stack up and running on your computer, and tools like MacPorts and Homebrew even make it pretty easy to install tools like <a href="https://www.varnish-cache.org/">Varnish</a> and <a href="http://memcached.org/">memcached</a>.</p>
+
+
+<p></p></p>
+
+<p>While these tools make it easy to run a very close approximation of the production hosting stack on your local machine (arguably closer if you use Macintosh or Linux,) it will still have some key differences which will ultimately contribute at some point to a "<a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html">Works on My Machine!</a>" situation in your project.</p>
+
+
+<p></p></p>
+
+<p><img alt="Works On My Machine Badge" src="http://treehouseagency.com/sites/treehouseagency.com/files/worksonmymachine_0.png" style="border: medium none; display: block; float: left;" /></p>
+
+
+<p></p></p>
+
+<p>Luckily, virtualization has advanced to such a degree that there are cross-platform virtualization solutions such as <a href="https://www.virtualbox.org/">VirtualBox</a>, but just using a VM inside of VirtualBox doesn't solve the whole problem. It makes acquiring the correct versions of software easy, but keeping configuration in sync can still be a challenge for users who are not deeply familiar with Linux.</p>
+
+
+<p></p></p>
+
+<p>Enter <a href="http://vagrantup.com/">Vagrant</a>.</p>
+
+
+<p></p></p>
+
+<p>Vagrant is a Ruby gem that makes working with Linux virtual machines easy. You distribute a Vagrantfile to your team, and it does the following things for you:</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Downloads and sets up virtual machines from a single .box file which it will download over HTTP or FTP.</li>
+<li>Provisions the software and configuration on the VM using your choice of Chef, Puppet, or simple shell scripts</li>
+<li>Automatically shares the directory with the Vagrantfile (and any subdirectories) to the virtual machine with Virtualbox's built-in file sharing</li>
+<li>Forwards the SSH port (and optionally other ports) to your localhost and avoids collisions so you can always directly SSH to the machine</li>
+<li>Optionally sets up a dedicated host-only IP address that you can use to connect to all services on the VM without port forwarding</li>
+<li>Optionally shares directories to the VM over NFS from a Macintosh or Linux guest, which enables acceptable performance for a Drupal docroot</li><br />
+</ul>
+
+
+<p></p></p>
+
+<p>Since Vagrant handles the file sharing with the VM, you and your team don't have to mess around with setting up FUSE or the like and you can continue to use the tools that you're used to using locally, such as your text editor or garphical source control program.</p>
+
+
+<p></p></p>
+
+<p>In addition, so long as you have a single developer skilled in ops who can encapsulate the production configuration into a system like Chef or Puppet, these changes can be pushed down to the whole team. Once your ops team has a working Varnish configuration, for example, they can push that into the Vagrant repository, and then a working Varnish setup on all your developers' VMs is just a <code>git pull</code> and a <code>vagrant provision</code> away.</p>
+
+
+<p></p></p>
+
+<p>We've been working with Vagrant over the last few months and think it offers a number of advantages. All it takes to get started installing VirtualBox and the <strong>vagrant</strong> ruby gem. Detailed information on how to get started is available in the excellent <a href="http://vagrantup.com/docs/getting-started/index.html">Vagrant Quickstart guide</a>.</p>
+
+
+<p></p></p>
+
+<p>I've put together a screencast that's just over 10 minutes long and shows the whole process of bringing up a CentOS 5.6 VM with the <a href="http://treehouseagency.com">treehouseagency.com</a> site shared from my local machine.</p>
+
+
+<p></p></p>
+
+<p><iframe src="http://player.vimeo.com/video/31494273?title=0&byline=0&portrait=0&color=ff9933" width="595" height="446" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe></p>
+
+
+<p></p></p>
+
+<p>We'll be posting more example code over the coming weeks that will allow you to try out Drupal from your local machine on a Linux VM.</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Coat Your Website in Varnish]]></title>
+    <link href="http://smerrill.github.io/blog/2011/07/13/coat-your-website-in-varnish/"/>
+    <updated>2011-07-13T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/07/13/coat-your-website-in-varnish</id>
+    <content type="html"><![CDATA[<p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC meetup</a>, I gave a presentation about <a href="http://varnish-cache.org/">the Varnish reverse proxy cache</a>.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<p>If you happened to be at the meetup, I'd love your feedback on the talk. Please fill out a quick review on SpeakerRate here: <a href="http://tha.cm/varnish-talk" title="http://tha.cm/varnish-talk">http://tha.cm/varnish-talk</a></p>
+
+
+<p></p></p>
+
+<p>In addition, I've <a href="http://www.drupaldelphia.com/sessions/coat-your-website-varnish">proposed a similar session</a> for <a href="http://www.drupaldelphia.com/">Drupaldelphia</a> that will take a deeper dive into Varnish and show some examples of its use, including using the command line tools and VCL configuration examples.</p>
+
+
+<p></p></p>
+
+<p>The full presentation is embedded below.</p>
+
+
+<p></p></p>
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_fiifbaoxj0za" name="prezi_fiifbaoxj0za" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=fiifbaoxj0za&lock_to_path=1&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_fiifbaoxj0za" name="preziEmbed_fiifbaoxj0za" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=fiifbaoxj0za&lock_to_path=1&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Why you should consider Varnish to make your Drupal website FAST." href="http://prezi.com/fiifbaoxj0za/coat-your-website-in-varnish/">Coat Your Website in Varnish</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Speed Up and Version Your Views]]></title>
+    <link href="http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views/"/>
+    <updated>2008-11-05T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views</id>
+    <content type="html"><![CDATA[<p>Since getting started with Drupal over two years ago, the sites I&rsquo;ve built with it have naturally gotten bigger and bigger in scope. As your sites get bigger and bigger, you always look for ways to keep your site running as smoothly as possible, and this usually ends up meaning getting rid of queries wherever you can.</p>
+
+
+<p></p></p>
+
+<p>One feature of Views which is often used by module developers is the ability of a module to expose a set of <strong>default views</strong>. The calendar module, for example, provides a default calendar view in both its Drupal 5 and 6 versions.  This is an obvious asset for developers of contributed modules: if your module interfaces with Views, it makes sense to provide a default view that users can modify.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<h2>Implementation and Potential Benefits</h2>
+
+
+<p></p></p>
+
+<p>The hook used to do this is <a href="http://views-help.doc.logrus.com/help/views/api-default-views">hook_views_default_views()</a>. Since most modern sites are run off of a number of Views, you can also realize several benefits by building your sites with a custom module that implements <strong>hook_views_default_views()</strong>:</p>
+
+
+<p></p></p>
+
+<ol>
+<li>It improves performance. Views implemented via hook_views_default_views() do not require a database query to instantiate. You will realize an even greater performance gain if you also use an opcode caching system such as APC or XCache.</li>
+<li>Providing views in code will allow you to override the default view to make changes, and you can then choose to keep the changes in the database, update the module file to reflect the changes, or revert back to the version in your module file.</li>
+<li>Because the view (and theoretically, changes to that view) are stored in files, you can put them in version control and see how the views used in your site change over time and revert to an earlier version without having to go to a database backup.</li><br />
+</ol>
+
+
+<p></p></p>
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<h2>Views2 / Drupal 6 Implementation</h2>
+
+
+<p></p></p>
+
+<p>Here&rsquo;s how to do it in Views2 on Drupal 6. When implementing a site, we at Tree House usually end up with a utility module that will do some of the things that will need to do theming or development tweaks, like the odd hook_form_alter(), or provide a Views handler or two. I&rsquo;ll be calling this module treehouse_utils.  There&rsquo;s two steps to providing a default view in Drupal 6 and Views2: you need to tell Views2 that you implement the Views2 API, and then you have to create a file that contains the default view(s).</p>
+
+
+<p></p></p>
+
+<p>So first, in treehouse_utils.module, it&rsquo;s time to tells Views2 that we&rsquo;re implementing Views features with <strong>hook_views_api()</strong>. The implementation of the hook looks like this in our module:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="kw2">function</span> treehouse_utils_views_api<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+  <span class="kw1">return</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><br /><br />
+    <span class="st_h">'api'</span> <span class="sy0">=&</span>gt<span class="sy0">;</span> <span class="nu0">2</span><span class="sy0">,</span><br /><br />
+    <span class="st_h">'path'</span> <span class="sy0">=&</span>gt<span class="sy0">;</span> drupal_get_path<span class="br0">(</span><span class="st_h">'module'</span><span class="sy0">,</span> <span class="st_h">'treehouse_utils'</span><span class="br0">)</span><span class="sy0">,</span><br /><br />
+  <span class="br0">)</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<p>This module just tells Views2 that we&rsquo;re implementing version 2 of the Views API and that it should look for Views-related files in the directory of the <strong>treehouse_utils</strong> module. (Some other modules will make a separate directory called <em>includes</em> where its Views-related files will live.)</p>
+
+
+<p></p></p>
+
+<h2>Putting the Views in Code</h2>
+
+
+<p></p></p>
+
+<p>The other task that we need to do is to implement <strong>hook_views_default_views()</strong> and actually tell Drupal about our Views. It is possible to do this in the main treehouse_utils.module file, but the trend in Drupal 6 is towards using more files so that Drupal has less code to load and parse overall on each page request. You can implement <strong>hook_views_default_views()</strong> (as well as a smattering of other Views-related hooks) in a <em>MODULENAME.views.inc</em> file. In the case of <strong>hook_views_default_views()</strong>, you can implement that in its own file, <em>MODULENAME.views_default.inc</em>.</p>
+
+
+<p></p></p>
+
+<p>So here&rsquo;s what treehouse_utils.views_default.inc will look like:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="sy0">&</span>lt<span class="sy0">;</span>?php<br /><br />
+<br /><br />
+<span class="kw2">function</span> treehouse_utils_views_default_views<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+  <span class="re0">$views</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br /><br />
+<br /><br />
+  <span class="co1">// Start copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+  <span class="co1">// End copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+  <span class="co1">// Add view to list of views to provide.</span><br /><br />
+  <span class="re0">$views</span><span class="br0">[</span><span class="re0">$view</span><span class="sy0">-&</span>gt<span class="sy0">;</span>name<span class="br0">]</span> <span class="sy0">=</span> <span class="re0">$view</span><span class="sy0">;</span><br /><br />
+<br /><br />
+  <span class="co1">// ...Repeat all of the above for each view the module should provide.</span><br /><br />
+<br /><br />
+  <span class="co1">// At the end, return array of default views.</span><br /><br />
+  <span class="kw1">return</span> <span class="re0">$views</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<p>Implementations of <strong>hook_views_default_views()</strong> are expected to return an array, so for each view that you would like to have provided by a module, go to the Views2 administrative interface, click Export, and copy and paste the PHP code between the two comments, and also be sure to include the $views[$view->name] = $view; line, where the newly-defined view object gets included in the array that will be returned.</p>
+
+
+<p></p></p>
+
+<p>Finally, when your module is enabled (or when you next visit the Views2 administration page or otherwise clear Views2&rsquo;s caches,) you&rsquo;ll see the following:</p>
+
+
+<p></p></p>
+
+<p><img src="http://img.skitch.com/20081105-tiq92fi3msh5dmf3pruy2mugxm.png" /></p>
+
+
+<p></p></p>
+
+<p>Notice that because the view which I put into the module is also in the database, Views tells us that the view is <em>overriden</em> - a default is now provided in PHP code, but our version in the database still supercedes it.  If you were to click <strong>Revert</strong>, the database entry for the view would be deleted, and Drupal would load it from your <em>MODULENAME.views_default.inc</em> file.</p>
+
+
+<p></p></p>
+
+<h2>Continuing this Workflow</h2>
+
+
+<p></p></p>
+
+<p>At this point, you can check your module into version control and have a record of your view at this point in time.  Later, you could make some more changes in the Views2 UI, hit <strong>Export</strong> again, and paste the newer version into the file, check that into version control and continue.</p>
+
+
+<p></p></p>
+
+<p>Views2 is amazing, and these techniques let you squeeze a little more performance and a lot more possibilities for revision control while building out your sites.</p>
+
+
+<p></p></p>
+
+<p>Also, be sure to vote for <a href="http://dc2009.drupalcon.org/session/scaling-drupal-not-ifhow">Thomas&rsquo;s DrupalCon session</a> if you&rsquo;d like to look at concrete techniques of all types to scale your Drupal sites!</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[We&#039;re Ramping Up for DrupalCon in DC!]]></title>
+    <link href="http://smerrill.github.io/blog/2008/10/24/were-ramping-up-for-drupalcon-in-dc/"/>
+    <updated>2008-10-24T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2008/10/24/were-ramping-up-for-drupalcon-in-dc</id>
+    <content type="html"><![CDATA[<p>We're proud to announce that Tree House Agency is a gold sponsor of the upcoming <a href="http://dc2009.drupalcon.org/" target="_blank" title="Check out DrupalCon DC!">Washington, D.C., DrupalCon in 2009</a>. We've been working to steadily increase our involvement in sponsoring Drupal community events, from being a Bronze sponsor of DrupalCon Barcelona con to a Silver sponsor of DrupalCon Boston, and now being a gold sponsor of both <a href="http://smerrill.github.io/blog/michael-caccavano/2008/10/13/tree-house-bayoujoin-us-do-it-drupal" title="Tree House at Do it with Drupal">Do It With Drupal</a> and the Washington, D.C. DrupalCon.</p>
+
+
+<p></p></p>
+
+<p>My name is Steven Merrill, and I'm the newest developer on board with Tree House Agency. I initially met Tree House at DrupalCon Boston, so I'll be introducing our plans for the Washington, D.C. DrupalCon. Since DrupalCon Boston, we've done quite a bit, and a lot of that will be reflecting in what we talk about in Washington, D.C.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p> </p>
+
+
+<p></p></p>
+
+<h3>Creating Interactive Magic</h3>
+
+
+<p></p></p>
+
+<p>I'm one of several new members to join the Tree House Agency team since DrupalCon Boston, and before I joined up, I got a chance to work on a truly amazing project: <a href="http://www.bobdylan.com" target="_blank" title="Check out BobDylan.com">BobDylan.com</a>. BobDylan.com runs on Drupal, and it features a custom AJAX page-reload engine, and lots of integration with some amazing Flash pieces produced by <a href="http://www.prod4ever.com/" target="_blank" title="PROD4Ever website">PROD4Ever</a>, the Boston agency who did the Flash dev and design for the project. I was part of the implementation team due to my Flash and Service expertise. We're rallying all the BobDylan.com troops to show you how it was built in a session we proposed called <a href="http://dc2009.drupalcon.org/session/creating-interactive-magic-designing-and-building-highly-engaging-drupal-interfaces" target="_blank" title="Vote up our session!"><em>Creating Interactive Magic</em> </a>. If you'd like to hear more, vote our session up!</p>
+
+
+<p></p></p>
+
+<p> </p>
+
+
+<p></p></p>
+
+<h3>Building Complex Application and Publishing Workflows</h3>
+
+
+<p></p></p>
+
+<p>Another new face in our virtual team is Sean Buscay, who I worked closely with in implementing one of our newest client projects: <a href="http://www.thebigmoney.com" target="_blank" title="The Big Money">The Big Money</a>, for <a href="http://www.washingtonpost.com/wp-adv/media_kit/wpni/index.html" target="_blank" title="Washington Post.Newsweek Interactive">Washington Post.Newsweek Interactive</a>, which was a collaboration between Tree House Agency, <a href="http://www.lullabot.com" target="_blank" title="Lullabot">Lullabot</a>, and <a href="http://www.gortonstudios.com" target="_blank">Gorton Studios</a>. Sean's a master of Drupal development and one of his areas of expertise is in building publishing workflows for large organizations like Washington Post.Newsweek Interactive and the Orthodox Christian Archdiocese of North America. He's offered to present <a href="http://dc2009.drupalcon.org/session/building-complex-application-and-publishing-workflows" target="_blank" title="Vote us up!"><em>Building Complex Application and Publishing Workflows</em></a>. If you've ever had questions about how to get your content picture-perfect before posting, vote for his session!</p>
+
+
+<p></p></p>
+
+<p> </p>
+
+
+<p></p></p>
+
+<h3>Scaling Drupal: Not IF...HOW</h3>
+
+
+<p></p></p>
+
+<p>Tom Wysocki is Tree House's lead architect, and one of his specialities is building Drupal sites that scale. We're no strangers to high-traffic web sites: Lifetime Network's <a href="http://www.dressupchallenge.com" target="_blank" title="Dress Up Challenge">Dress Up Challenge</a> gets up to 1.5 million pageviews per day, and Lullabot helped us with a plan to build <a href="http://www.thebigmoney.com" target="_blank" title="The Big Money">The Big Money</a> so that it could withstand the force of up to 5 million visitors in a single day. Thomas provided his expertise in implementing a Content Distribution Network and refining The Big Money's code and modules to scale well with a PostgreSQL implementation. We have no doubt that Drupal can scale, and we'd love to teach you how, so vote for <a href="http://dc2009.drupalcon.org/session/scaling-drupal-not-ifhow" target="_blank" title="Vote us up!"><em>Scaling Drupal: Not IF... HOW!</em></a> .</p>
+
+
+<p></p></p>
+
+<p> </p>
+
+
+<p></p></p>
+
+<h3>A Breath of Fresh AIR for Drupal</h3>
+
+
+<p></p></p>
+
+<p>Josh Katris is another of our senior developers, and he's been doing some serious thinking about Drupal's administrative interface, an area that's often neglected in creating a site. As lead themer on sites with elaborate administrative requirements like DressUpChallenge.com, Josh has become acutely aware of the challenges the Drupal admin poses to non-technical users.  From observing client experiences, he has devised an approach leveraging AIR to create a desktop-style content administration tool for Drupal sites.  Vote for his session, <a href="http://dc2009.drupalcon.org/session/breath-fresh-air-drupal" target="_blank" title="Vote us up!"><em>A Breath of Fresh AIR for Drupal</em></a> to see why you would want such a tool, and how to create one for your own sites.</p>
+
+
+<p></p></p>
+
+<p> </p>
+
+
+<p></p></p>
+
+<h3>The Case for Drupal in the Enterprise</h3>
+
+
+<p></p></p>
+
+<p>There's no doubt that Drupal has been gaining traction on the web overall, with major musical artists, humanitarian organizations, and news organizations using it to power their sites. We're also starting to see major corporations use Drupal for internal or external sites. With Acquia's recent launch, there's now a distribution of Drupal and a support network targeted at making Drupal an easier choice for the enterprise. Even so, many large companies are still wary.  What are they worried about, and what can we do about it? We're putting together a discussion featuring our own Michael Caccavano and Lullabot's Jeff Eaton, to see what the corporate landscape is really like. Vote for <a href="http://dc2009.drupalcon.org/session/case-drupal-enterprise" target="_blank" title="Vote us up!"><em>The Case for Drupal in the Enterprise</em></a>.</p>
+
+
+<p></p></p>
+
+<p> That's what we've thought up so far. We're really excited to both sponsor DrupalCon and to share some of our collected knowledge with everyone who attends. We hope to see you this March in Washington, D.C.!</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+</feed>

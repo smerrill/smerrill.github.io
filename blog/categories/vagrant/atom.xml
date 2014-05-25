@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vagrant | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/vagrant/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[OmniOS and Vagrant]]></title>
+    <link href="http://smerrill.github.io/blog/2012/09/23/omnios-vagrant/"/>
+    <updated>2012-09-23T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2012/09/23/omnios-vagrant</id>
+    <content type="html"><![CDATA[<h3>&lt;3 ZFS</h3>
+
+<p>I&rsquo;ve recently gotten religion about ZFS, and as a result, I&rsquo;ve been looking hard at the various systems that offer you the ability to use ZFS and other amazing tools from the Solaris lineage (now being developed freely under <a href="http://blog.illumos.org/">the Illumos moniker</a> after Oracle&rsquo;s unceremonious murder of OpenSolaris.)</p>
+
+<p>My data&rsquo;s backed up on an 8 TB FreeNAS, but there&rsquo;s also an amazing trend of Illumos-based distributions on offer that offer KVM virtualization, which was ported to Illumos by Joyent for <a href="http://smartos.org/">their SmartOS distribution</a>. Theo Schlossnagle recently gave a talk at the NYC DevOps meetup about <a href="http://omnios.omniti.com/">their Illumos-based OmniOS distribution</a>. OmniOS is a bit more than a JeOS &ndash; it aims to provide just enough packaged software to let you build the Illumos kernel and several other important tools like tmux and screen, and then get out of your way. Like SmartOS, it provides both lightweight zones-based virtualization and KVM for full hardware virtualization, but OmniOS is designed to be permanently installed on a machine, as opposed to SmartOS&rsquo;s focus on USB or PXE booting and ephemeral global zone configuration.</p>
+
+<p>OmniTI also makes a larger set of packages that their Managed Services team uses at <a href="http://pkg.omniti.com/omniti-ms/en/index.shtml">http://pkg.omniti.com/omniti-ms/en/index.shtml</a>.</p>
+
+<!--more-->
+
+
+<h3>KVM? Not today.</h3>
+
+<p>But at the end of the day, <a href="http://vagrantup.com/">Vagrant</a> is still the platform I use to run applications with the correct operating system, software versions, and production configurations, so I need Vagrant (and thus <a href="https://www.virtualbox.org/">VirtualBox</a>) to run on my workstation.</p>
+
+<p>I am happy to report that I was able to get VirtualBox and Vagrant to the point that they could boot a box, and use host-only networking despite being a complete UNIX and Solaris noob. (Thanks to Mitchell and the whole Vagrant community for an awesome piece of software.)</p>
+
+<h3>Get it installed</h3>
+
+<p>Here&rsquo;s the roundup on how to get it all up and running. All commands were run as root in the global zone.</p>
+
+<p>Install a few utility packages. This is not strictly necessary, but it helps.</p>
+
+<pre><code>$ pkg install terminal/tmux
+$ pkg install developer/versioning/git
+</code></pre>
+
+<p>Set up a static IP as pointed out in <a href="http://omnios.omniti.com/wiki.php/GeneralAdministration.">http://omnios.omniti.com/wiki.php/GeneralAdministration.</a> In my case, it was 192.168.0.160.</p>
+
+<p>You will also need to set up your gateway as a DNS resolver. To do so on UNIX, add at least a <em>search</em> and <em>nameserver</em> to /etc/resolv.conf. I am using the following:</p>
+
+<pre><code>search nyc.rr.com
+nameserver 192.168.0.1
+</code></pre>
+
+<p>Set up NSS to read resolv.conf.</p>
+
+<pre><code>$ cp /etc/nsswitch.{dns,conf}
+</code></pre>
+
+<p>Add the OmniTI managed services package repo to make getting a few things easier.</p>
+
+<pre><code>$ pkg set-publisher -g http://pkg.omniti.com/omniti-ms/ ms.omniti.com
+</code></pre>
+
+<p>Rebuild the package index</p>
+
+<pre><code>$ pkg rebuild-index
+</code></pre>
+
+<p>Install Ruby and gcc 4.6 to be able to build gem extensions. Also ensure libffi is there since Vagrant needs the ffi gem.</p>
+
+<pre><code>$ pkg install omniti/runtime/ruby-19
+$ pkg install developer/gcc46
+$ pkg install library/libffi
+</code></pre>
+
+<p>At this point you should be ready to install the Vagrant gem. The Ruby 1.9 executables like <code>gem</code> and <code>irb</code> get put into <code>/opt/omni/bin/</code>.</p>
+
+<pre><code>$ /opt/omni/bin/gem install vagrant
+</code></pre>
+
+<p>Run a quick <code>vagrant help</code> to ensure that everything&rsquo;s hooked up properly.</p>
+
+<pre><code>$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant help
+</code></pre>
+
+<p>Next up we need to install VirtualBox. I saw <a href="https://gist.github.com/7ddfa72c1d97198532ea">errors related to the Crossbow-based networking kernel module</a> while trying to install a variety of versions of VirtualBox, so we can <a href="http://www.virtualbox.org/manual/ch09.html#vboxbowsolaris11">force the older stream-based VirtualBox networking driver to install</a>.</p>
+
+<pre><code>$ touch /etc/vboxinst_vboxflt
+</code></pre>
+
+<p>With that in place, download and extract the VirtualBox 4.2.0 release for Solaris guests.</p>
+
+<pre><code>$ wget http://download.virtualbox.org/virtualbox/4.2.0/VirtualBox-4.2.0-80737-SunOS.tar.gz
+$ tar xzf VirtualBox-4.2.0-80737-SunOS.tar.gz
+</code></pre>
+
+<p>Next up, install the package.</p>
+
+<pre><code>$ pkgadd -d VirtualBox-4.2.0-SunOS-r80737.pkg
+</code></pre>
+
+<p>At this point you should be ready to download a Vagrantfile and go. I&rsquo;ve made <a href="https://gist.github.com/0509301bb7c62e523b49">a sample one</a> that you can try with.</p>
+
+<pre><code>$ curl https://raw.github.com/gist/0509301bb7c62e523b49/87e75688b45631ca9492123c5f160d2311e84604/gistfile1.rb &gt; Vagrantfile
+$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant up
+$ /opt/omni/lib/ruby/gems/1.9.1/gems/vagrant-1.0.5/bin/vagrant ssh
+</code></pre>
+
+<p>And with that, the box should download and the second command should have you logged in as the <code>vagrant</code> user on your very own Ubuntu 12.04 LTS VM.</p>
+
+<h3>Host-only networking</h3>
+
+<p>There is one peculiarity to VirtualBox on OmniOS (which, granted, might be VirtualBox on Solaris/Illumos &ndash; I have no idea.) Windows, Mac, and Linux hosts all have the ability to create a host-only interface with the <code>VBoxManage hostonlyif create</code> command-line option. That option does not exist in the Solaris version of VirtualBox. In my experience from this weekend, VirtualBox will create you a <code>vboxnet0</code> interface which can be used as a host-only network. If you do wish to use host-only networking with your VM, you will have to set it up before you run <code>vagrant up</code>.</p>
+
+<p>I usually run my host-only interfaces inside of 172.16.0.0/12. For the sake of argument, let&rsquo;s say we want to give this VM a host-only address of 172.31.31.31. (The sample Vagrantfile has this configuration commented out.) By setting the IP address of <code>vboxnet0</code> to 172.31.31.1, vagrant will not try to run <code>VBoxManage hostonlyif create</code>, and host-only networking will also work. The <code>VBoxManage</code> command to do so is as follows:</p>
+
+<pre><code>$ VBoxManage hostonlyif ipconfig vboxnet0 -ip 172.31.31.1
+</code></pre>
+
+<h3>Not exhaustive</h3>
+
+<p>I haven&rsquo;t tried out a full client setup though Vagrant on OmniOS yet, and I think I&rsquo;ll still be booting my workstation into Fedora 17 for the next week to run KVM and/or VirtualBox VMs. Here are the remaining things that I&rsquo;d need to nail down before I could use OmniOS and Vagrant together:</p>
+
+<ul>
+<li>There&rsquo;s no Solaris host class in Vagrant, so the ability to export files (like your codebase) from the host to the guest via NFS won&rsquo;t work yet. That said, since ZFS has deep hooks into NFS, this might be super simple to implement assuming that you boot from ZFS.</li>
+<li>The host-only networking bit is strange, and I don&rsquo;t know enough about OmniOS or Crossbow to say what&rsquo;s going on.</li>
+<li>I haven&rsquo;t tested out applying Puppet or Chef configuration to the guest. OmniTI <a href="http://pkg.omniti.com/omniti-ms/info/0/omniti%2Fsystem%2Fmanagement%2Fchef%400.10.8%2C5.11-0.151002%3A20120501T192332Z">makes a Chef package available</a> in the managed services repository, and the Puppet and Facter gems install without issue, so this should be rather painless.</li>
+<li>VirtualBox should probably be run <a href="http://www.virtualbox.org/manual/ch02.html#idp11597936">in its own zone</a>.</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant and NFS]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs/"/>
+    <updated>2011-11-17T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs</id>
+    <content type="html"><![CDATA[<p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they&rsquo;re used to while still getting the benefits of running the full production stack.</p>
+
+<p>It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox&rsquo;s built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox&rsquo;s built-in file sharing, so we probably don&rsquo;t want to put our docroot right in that directory.</p>
+
+<!--more-->
+
+
+<p>As a result, we usually set up our project directories to look like the following with the docroot one level up from the directory with the Vagrantfile in it. (The docroot can be a symlink or a real copy of the docroot &ndash; it is in the .gitignore file so it won&rsquo;t be committed.)</p>
+
+<p><img src="https://img.skitch.com/20111117-j5tdm5q6pw584sfnnafxrtawb8.jpg" alt="Vagrant setup with the treehouseagency.com folder on the same level as the folder that contains the Vagrantfile" /></p>
+
+<p>There&rsquo;s a few gotchas with using NFS folders:
+&ndash; If you try to export a symlink, <code>nfsd</code> will complain. You need to dereference any symlinks before they are put in /etc/exports. The sample code below avoids that.</li>
+&ndash; Vagrant automatically uses NFS&rsquo;s mapall to ensure that all file access on the guest maps to your user and group on the host. This will mean that the users and groups may look wrong on the VM (and and <code>chown</code> or <code>chgrp</code> commands will fail), but software on the VM will be able to write to everything in that directory.</p>
+
+<p>Finally, here&rsquo;s some stub code for setting up a vagrant project with a docroot one level up. It takes care of dereferencing any symlinks and sharing the docroot with the guest. It will share it with NFS if the host is a Linux or Mac machine.</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;h1&gt;Set up some variables relating to which path Vagrant will try to share&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">with</span> <span class="n">the</span> <span class="no">VM</span><span class="o">.</span><span class="n">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;p&gt;require &amp;lsquo;pathname&amp;rsquo;</span>
+<span class="sr">$docroot_name = &amp;ldquo;treehouseagency.com&amp;rdquo;</span>
+<span class="sr">$docroot_path = &amp;ldquo;&amp;rdquo;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Test</span> <span class="n">that</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">to</span> <span class="n">be</span> <span class="n">shared</span> <span class="n">is</span> <span class="k">in</span> <span class="n">the</span> <span class="n">right</span> <span class="n">place</span> <span class="ow">and</span> <span class="k">if</span> <span class="n">it</span> <span class="n">is</span><span class="p">,</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;h1&gt;calculate the fully dereferenced path (since NFS exports will fail if you&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">try</span> <span class="n">to</span> <span class="n">specify</span> <span class="n">the</span> <span class="n">path</span> <span class="n">to</span> <span class="n">a</span> <span class="n">symlink</span><span class="o">.</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;p&gt;if !File.exists?(&amp;ldquo;../</span><span class="c1">#{$docroot_name}&amp;rdquo;) then</span>
+  <span class="nb">puts</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Please</span> <span class="n">put</span> <span class="n">the</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="sx">%s&amp;rsquo; directory (or a symlink to it) in the &amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="sx">%s/&amp;rsquo; directory.&amp;rdquo; %&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;[</span><span class="vg">$docroot_name</span><span class="p">,</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">realpath</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="nb">exit</span> <span class="mi">1</span>
+<span class="k">else</span>
+  <span class="vg">$docroot_path</span> <span class="o">=</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">.</span><span class="n">.</span><span class="o">/</span><span class="c1">#{$docroot_name}&amp;rdquo;).realpath.to_s</span>
+<span class="k">end</span>
+<span class="ss">Vagrant</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">run</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="c1"># Add in the rest of your config here.</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">share_folder</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">tha</span><span class="o">-</span><span class="n">docroot</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">/</span><span class="n">tha</span><span class="o">-</span><span class="n">docroot</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="vg">$docroot_path</span><span class="p">,</span> <span class="ss">:nfs</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/linux/</span> <span class="ow">or</span> <span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/darwin/</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></p>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[End "Works on My Machine" Surprises with Vagrant]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/"/>
+    <updated>2011-11-02T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant</id>
+    <content type="html"><![CDATA[<p>How many times have the following issues happened on a project you've worked on?</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Notices (or worse) appeared on production because of a PHP version mismatch between a developer's machine and the production web servers.</li>
+<li>A new PHP extension or PECL extension had to be installed on production because it was installed in WAMP or MAMP?</li>
+<li>A team member ran into difficult setting up their local environment and spent many hours stuck on something.</li>
+<li>Team members didn't set up SSL or Varnish on their local machines and issues had to be caught on a dev server.</li>
+<li>A team member would like to switch to Homebrew, but can't set aside the many hours to redo their setup until a project is done.</li><br />
+</ul>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>Tools like <a href="http://www.mamp.info/en/index.html">MAMP</a>, <a href="http://www.apachefriends.org/en/xampp.html">XAMPP</a>, the <a href="http://network.acquia.com/downloads">Aqcuia dev desktop</a>, <a href="http://www.macports.org/">MacPorts</a> and <a href="http://mxcl.github.com/homebrew/">Homebrew</a> all make it easy to get an *AMP stack up and running on your computer, and tools like MacPorts and Homebrew even make it pretty easy to install tools like <a href="https://www.varnish-cache.org/">Varnish</a> and <a href="http://memcached.org/">memcached</a>.</p>
+
+
+<p></p></p>
+
+<p>While these tools make it easy to run a very close approximation of the production hosting stack on your local machine (arguably closer if you use Macintosh or Linux,) it will still have some key differences which will ultimately contribute at some point to a "<a href="http://www.codinghorror.com/blog/2007/03/the-works-on-my-machine-certification-program.html">Works on My Machine!</a>" situation in your project.</p>
+
+
+<p></p></p>
+
+<p><img alt="Works On My Machine Badge" src="http://treehouseagency.com/sites/treehouseagency.com/files/worksonmymachine_0.png" style="border: medium none; display: block; float: left;" /></p>
+
+
+<p></p></p>
+
+<p>Luckily, virtualization has advanced to such a degree that there are cross-platform virtualization solutions such as <a href="https://www.virtualbox.org/">VirtualBox</a>, but just using a VM inside of VirtualBox doesn't solve the whole problem. It makes acquiring the correct versions of software easy, but keeping configuration in sync can still be a challenge for users who are not deeply familiar with Linux.</p>
+
+
+<p></p></p>
+
+<p>Enter <a href="http://vagrantup.com/">Vagrant</a>.</p>
+
+
+<p></p></p>
+
+<p>Vagrant is a Ruby gem that makes working with Linux virtual machines easy. You distribute a Vagrantfile to your team, and it does the following things for you:</p>
+
+
+<p></p></p>
+
+<ul>
+<li>Downloads and sets up virtual machines from a single .box file which it will download over HTTP or FTP.</li>
+<li>Provisions the software and configuration on the VM using your choice of Chef, Puppet, or simple shell scripts</li>
+<li>Automatically shares the directory with the Vagrantfile (and any subdirectories) to the virtual machine with Virtualbox's built-in file sharing</li>
+<li>Forwards the SSH port (and optionally other ports) to your localhost and avoids collisions so you can always directly SSH to the machine</li>
+<li>Optionally sets up a dedicated host-only IP address that you can use to connect to all services on the VM without port forwarding</li>
+<li>Optionally shares directories to the VM over NFS from a Macintosh or Linux guest, which enables acceptable performance for a Drupal docroot</li><br />
+</ul>
+
+
+<p></p></p>
+
+<p>Since Vagrant handles the file sharing with the VM, you and your team don't have to mess around with setting up FUSE or the like and you can continue to use the tools that you're used to using locally, such as your text editor or garphical source control program.</p>
+
+
+<p></p></p>
+
+<p>In addition, so long as you have a single developer skilled in ops who can encapsulate the production configuration into a system like Chef or Puppet, these changes can be pushed down to the whole team. Once your ops team has a working Varnish configuration, for example, they can push that into the Vagrant repository, and then a working Varnish setup on all your developers' VMs is just a <code>git pull</code> and a <code>vagrant provision</code> away.</p>
+
+
+<p></p></p>
+
+<p>We've been working with Vagrant over the last few months and think it offers a number of advantages. All it takes to get started installing VirtualBox and the <strong>vagrant</strong> ruby gem. Detailed information on how to get started is available in the excellent <a href="http://vagrantup.com/docs/getting-started/index.html">Vagrant Quickstart guide</a>.</p>
+
+
+<p></p></p>
+
+<p>I've put together a screencast that's just over 10 minutes long and shows the whole process of bringing up a CentOS 5.6 VM with the <a href="http://treehouseagency.com">treehouseagency.com</a> site shared from my local machine.</p>
+
+
+<p></p></p>
+
+<p><iframe src="http://player.vimeo.com/video/31494273?title=0&byline=0&portrait=0&color=ff9933" width="595" height="446" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe></p>
+
+
+<p></p></p>
+
+<p>We'll be posting more example code over the coming weeks that will allow you to try out Drupal from your local machine on a Linux VM.</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ensuring your Vagrant's box is weatherproof: A quick Veewee tip]]></title>
+    <link href="http://smerrill.github.io/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/"/>
+    <updated>2011-10-28T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip</id>
+    <content type="html"><![CDATA[<p>We&rsquo;ll be doing a screencast series soon on using the <a href="http://www.vagrantup.com/">Vagrant gem</a> to distribute and manage virtual machines so that your entire team (yes, even Windows folks!) can do development on their local machine with the same software that&rsquo;s on your production Linux servers.</p>
+
+<p>Another useful tool in the Vagrant user&rsquo;s arsenal is <a href="https://github.com/jedi4ever/veewee">Veewee</a>. Veewee lets you automate the VirtualBox application to install a full operating system with just the packages you want and need. Veewee does have some built-in validation tools, such as <code>vagrant basebox validate BOXNAME</code>, which will run a set of Cucumber acceptance tests to ensure that the virtual machine should work properly when brought up with Vagrant, as well as with the <a href="http://www.opscode.com/chef/">Chef</a> and <a href="http://puppetlabs.com/">Puppet</a> configuration management tools.</p>
+
+<!--more-->
+
+
+<p>Nonetheless, sometimes you might want to quickly pop onto the VM that&rsquo;s just been built by veewee before issuing a <code>vagrant basebox export BOXNAME</code> to save it to a .box file suitable for distribution. To easily enable this, just add the following to your <code>~/.ssh/config</code> file.</p>
+
+<p><div class="highlight"><pre><code class="text">&lt;/p&gt;
+
+&lt;h1&gt;Veewee box.&lt;/h1&gt;
+
+&lt;p&gt;Host veewee-machine
+  HostName 127.0.0.1
+  User vagrant
+  Port 7222
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /home/smerrill/.rvm/gems/ruby-1.9.2-p290/gems/vagrant-0.8.6/keys/vagrant
+  IdentitiesOnly yes
+</code></pre></div></p>
+
+<p>You&rsquo;ll need to change the <code>IdentityFile</code> directive to point at wherever Vagrant is installed on your machine. With the entry in your SSH config file in place, you can simply execute an <code>ssh veewee-machine</code> and kick the tires before bundling up the box.</p>
+
+<p>Now go forth and build an army of virtual machines!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS 6 and VirtualBox (VBoxHeadless CPU Usage Fix)]]></title>
+    <link href="http://smerrill.github.io/blog/2011/08/29/centos-6-and-virtualbox/"/>
+    <updated>2011-08-29T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/08/29/centos-6-and-virtualbox</id>
+    <content type="html"><![CDATA[<p><strong>TL;DR:</strong> Add &ldquo;noapic&rdquo; to your kernel line if your VBoxHeadless process uses far too much CPU.</p>
+
+<p>I&rsquo;ve been working on making <a href="https://github.com/smerrill/veewee-fun/">space-efficient CentOS 5.6 and 6 images</a> for <a href="http://www.virtualbox.org">VirtualBox</a> recently. I&rsquo;m building the images as part of a pilot program to start using <a href="http://vagrantup.com">the Vagrant gem</a> to allow our developers to test the Drupal code they write on the real production OS before pushing it to the dev server. (I&rsquo;m also learning Puppet, both for this project and as a way to more easily re-use tested configurations as we launch new sites.)</p>
+
+<p>The CentOS 5.6 images I made worked like a charm, but ran into a problem wherein the <em>VBoxHeadless</em> process that hosted my CentOS 6 image would always use 25% CPU on my MacBook Air (one full core) despite the guest OS showing between 98% and 100% idle.</p>
+
+<!--more-->
+
+
+<p>I read through a number of suggestions that applied to CentOS 5.6, which involved <a href="http://tiebing.blogspot.com/2011/08/virtualbox-vboxheadless-high-cpu-usage.html">setting <code>divider="10"</code></a> in the kernel parameters, but these have no effect under CentOS 6, which uses a tickless kernel.</p>
+
+<p>In reading further on the subject, I found that some other forums advocated looking at the <a href="http://www.wlug.org.nz/APIC">APIC</a> settings. Sure enough, as soon as I added the text <code>noapic</code> to the end of my <strong>kernel</strong> line in <code>/boot/grub/grub.conf</code> and restarted, the issue went away.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: performance | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/performance/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Let&#039;s Be Upfront About Performance at DrupalCamp NJ]]></title>
+    <link href="http://smerrill.github.io/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/"/>
+    <updated>2012-02-04T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj</id>
+    <content type="html"><![CDATA[<p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">"Let's Be Upfront About Performance"</a> as a session at <a href="http://www.drupalcampnj.org/">the inaugural DrupalCamp NJ</a>.</p>
+
+
+<p></p></p>
+
+<p>My presentation is embedded below. Go forth and make fast websites!</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_hmxsbzfz2shk" name="prezi_hmxsbzfz2shk" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=hmxsbzfz2shk&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_hmxsbzfz2shk" name="preziEmbed_hmxsbzfz2shk" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=hmxsbzfz2shk&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Let's Be Upfront About Performance NJ" href="http://prezi.com/hmxsbzfz2shk/lets-be-upfront-about-performance-nj/">Let's Be Upfront About Performance NJ</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Coat Your Website in Varnish]]></title>
+    <link href="http://smerrill.github.io/blog/2011/07/13/coat-your-website-in-varnish/"/>
+    <updated>2011-07-13T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2011/07/13/coat-your-website-in-varnish</id>
+    <content type="html"><![CDATA[<p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC meetup</a>, I gave a presentation about <a href="http://varnish-cache.org/">the Varnish reverse proxy cache</a>.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<p>If you happened to be at the meetup, I'd love your feedback on the talk. Please fill out a quick review on SpeakerRate here: <a href="http://tha.cm/varnish-talk" title="http://tha.cm/varnish-talk">http://tha.cm/varnish-talk</a></p>
+
+
+<p></p></p>
+
+<p>In addition, I've <a href="http://www.drupaldelphia.com/sessions/coat-your-website-varnish">proposed a similar session</a> for <a href="http://www.drupaldelphia.com/">Drupaldelphia</a> that will take a deeper dive into Varnish and show some examples of its use, including using the command line tools and VCL configuration examples.</p>
+
+
+<p></p></p>
+
+<p>The full presentation is embedded below.</p>
+
+
+<p></p></p>
+
+<div class="prezi-player">
+<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_fiifbaoxj0za" name="prezi_fiifbaoxj0za" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf" /><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="prezi_id=fiifbaoxj0za&lock_to_path=1&color=ffffff&autoplay=no&autohide_ctrls=0" /><embed id="preziEmbed_fiifbaoxj0za" name="preziEmbed_fiifbaoxj0za" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=fiifbaoxj0za&lock_to_path=1&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
+<div class="prezi-player-links">
+<p><a title="Why you should consider Varnish to make your Drupal website FAST." href="http://prezi.com/fiifbaoxj0za/coat-your-website-in-varnish/">Coat Your Website in Varnish</a> on <a href="http://prezi.com">Prezi</a></p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Everything Old is New Again]]></title>
+    <link href="http://smerrill.github.io/blog/steven/2009/10/12/everything-old-new-again/"/>
+    <updated>2009-10-12T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/steven/2009/10/12/everything-old-is-new-again</id>
+    <content type="html"><![CDATA[<p>It's time for my quarterly blogging drive, and to start, here's some information on my ever-increasing need to try out cool web technologies.</p>
+
+
+<!--more-->
+
+
+<h3>Server Migration</h3>
+
+
+
+
+<p>My previous server was a VPS with 1 GB RAM for an obscenely low price from Serve By Design. I'm not linking to them, because I wouldn't recommend them, as you'll see.  For the money, I didn't expect them to stay around forever, and I was right. At the end of September, I got an email saying that they had to immediately cease all hosting and that I had 10 days to move my VPS.   Not great, but I can deal with that.</p>
+
+
+
+
+<p>I've been doing some work with <a href="http://www.rackspacecloud.com/">Rackspace's cloud products</a> recently for work, so I decided to move to a Cloud Server VPS running CentOS.  I'm quite impressed with the Rackspace Cloud thus far, they have a robust backup / cloning system, and the plans are plenty cheap so long as your data transfer isn't too high.  Since I'm using <a href="http://www.simplecdn.com/">SimpleCDN</a> to handle all static content for my Drupal 6 sites, there's really nothing to worry about on the data transfer front.</p>
+
+
+
+
+<p>But why stop with a new VPS and a new provider?  I decided to switch to some of the alternate technologies that people go to for maximum throughput on a Drupal site.  In this case, I'm not yet talking about Varnish and/or Pressflow (although I am a fan and user of both those projects in production on bigger sites.)  I decided to use the alternative webserver <a href="http://wiki.nginx.org/">nginx</a> and to run PHP dameonized through <a href="http://php-fpm.org/Main_Page">PHP-FPM</a>.</p>
+
+
+
+
+<p>The installation of PHP-FPM and nginx was a snap. I initially read <a href="http://adityo.blog.binusian.org/?p=428">a great tutorial on how to do so on CentOS</a>, but then I found <a href="http://centos.alt.ru/pub/repository/centos/">the CentALT repo</a>, which has builds of nginx and PHP-FPM for your <strong>yum install</strong>ing pleasure.</p>
+
+
+
+
+<p>Thus far, nginx and php-fpm have been rock-solid and quite fast (although I'm not going to break any traffic records with my hosted sites.)  I also like the ability to reload php configuration changes just by restarting the php-fpm service, and nginx restarts in milliseconds.</p>
+
+
+
+
+<h3>Version Control</h3>
+
+
+
+
+<p>I've been flirting with DVCS systems for while now.  I've mostly been looking at <a href="http://bazaar-vcs.org/en/">bzr</a>, because it's cross-platform, easy for people familiar with svn and cvs to grok, and supposedly offers the best Windows support of the lot.  It also has a Drupal upstream branch, and <a href="https://launchpad.net/pressflow">Pressflow</a> is now being managed on Launchpad.</p>
+
+
+
+
+<p>There's now a nice <a href="http://bazaar-vcs.org/MacOSXDownloads">Snow Leopard-friendly installer</a> for bzr 2.0, and so I've been using that on my OS X boxes.</p>
+
+
+
+
+<p>One of the neat features about bzr is that it can run off of dumb servers.  All you need is an SFTP server and you can host your own bzr branches.  Nonetheless, you can save on bandwidth (and score more geek cred) if you run your own smart server, so I set out to set up bzr and some of the cooler tools from the bzr ecosystem on my CentOS box.</p>
+
+
+
+
+<p>Version 1.3 is the latest bzr version in any mainstream CentOS repo, so I built bzr 2.0 on my box.  I also got <a href="https://launchpad.net/loggerhead">Loggerhead</a> up and running for nice-looking graphical representations of my bzr branches like the one below.</p>
+
+
+
+
+<p><a href="http://www.flickr.com/photos/00sven/4004158545" title="/lift-url-shortener : revision 7" class="flickr-photo-img"><img src="http://farm3.static.flickr.com/2642/4004158545_8dfb8177a7.jpg" alt="/lift-url-shortener : revision 7" title="/lift-url-shortener : revision 7"  class=" flickr-photo-img" height="411" width="500" /></a></p>
+
+
+
+
+<p>Check back later in the week where I'll post more details about how to set up <strong>bzr serve</strong> as a CentOS service, and how to get Loggerhead via an nginx proxy to play nicely together.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Need for Speed]]></title>
+    <link href="http://smerrill.github.io/blog/steven/2009/06/27/need-speed/"/>
+    <updated>2009-06-27T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/steven/2009/06/27/need-for-speed</id>
+    <content type="html"><![CDATA[<p>I've been doing some pretty exciting things recently with website performance. I always disliked doing IT work in the past, but the challenge of setting a server up to be able to withstand crushing traffic is now quite intriguing to me.</p>
+
+
+<!--more-->
+
+
+<p>To wit, here's a funny moment from a recent experiment. I was using incrond to run a script to minify some JavaScript whenever Drupal created a new JS file. Unfortunately, my script also created a new JS file (a backup, unminified copy,) and the protection I put into place wasn't quite working correctly. I think the image below speaks for itself.</p>
+
+
+
+
+<p><a href="http://www.flickr.com/photos/00sven/3666239762" title="A Fluke&#039;s Progress" class="flickr-photo-img"><img src="http://farm4.static.flickr.com/3352/3666239762_9a642bb3a4.jpg" alt="A Fluke&#039;s Progress" title="A Fluke&#039;s Progress"  class=" flickr-photo-img" height="344" width="500" /></a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Scaling Drupal: Not IF... HOW]]></title>
+    <link href="http://smerrill.github.io/blog/2009/03/12/scaling-drupal-not-if-how/"/>
+    <updated>2009-03-12T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2009/03/12/scaling-drupal-not-if-how</id>
+    <content type="html"><![CDATA[<p>Thanks to all those that braved the early morning to attend our session at Drupalcon DC.  We think it was a good warm-up for the full track of excellent performance and scaling sessions on Thursday.  See you next year!</p>
+
+
+<p></p></p>
+
+<p class="rteindent1"><em><strong>Abstract</strong></em><br /><br />
+What do Fast Company, The Big Money, The Onion, Lifetime Television, SonyBMG, Flex.org, DressupChallenge.com, and NowPublic have in common?</p>
+
+
+<p></p></p>
+
+<div class="field-items">
+<div class="field-item odd">
+<p class="rteindent1">All are popular sites, some with traffic of a million or more pageviews a day.  But there's more.</p></p>
+<p class="rteindent1">They all run on Drupal.</p></p>
+<p class="rteindent1">Some people still ask if Drupal can scale. We say, "It's not a question of IF, but HOW".</p></p>
+<p class="rteindent1">Come and hear how we scale sites like myLifetime.com, TheBigMoney.com, and DressUpChallenge.com.</p><br />
+</div><br />
+</div>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<p><strong>Session Video</strong></p>
+
+
+<p></p></p>
+
+<p><embed type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="425" height="335" src="http://www.archive.org/flow/flowplayer.commercial-3.0.5.swf" w3c="true" flashvars="config={"key":"#$b6eb72a0f2f1e29f3d4","playlist":[{"url":"http://www.archive.org/download/ScalingDrupalNotIf...how/format=Thumbnail?.jpg","autoPlay":true,"scaling":"fit"},{"url":"http://www.archive.org/download/ScalingDrupalNotIf...how/ScalingDrupalNotIfHow.mp4","accelerated":true,"scaling":"fit","autoPlay":false,"provider":"h264streaming"}],"clip":{"accelerated":true,"scaling":"fit","autoPlay":false,"provider":"h264streaming"},"canvas":{"backgroundColor":"0x000000","backgroundGradient":"none"},"plugins":{"audio":{"url":"http://www.archive.org/flow/flowplayer.audio-3.0.3-dev.swf"},"controls":{"gloss":"high","backgroundColor":"0x000000","backgroundGradient":"medium","sliderColor":"0x777777","progressColor":"0x777777","timeColor":"0xeeeeee","durationColor":"0x01DAFF","buttonColor":"0x333333","buttonOverColor":"0x505050","playlist":false,"fullscreen":true},"h264streaming":{"url":"http://www.archive.org/flow/flowplayer.h264streaming-3.0.5.swf"}},"contextMenu":[{"Item ScalingDrupalNotIf...how at archive.org":"function()"},"-","Flowplayer 3.0.5"]}"></embed></p>
+
+
+<p></p></p>
+
+<p><strong>Session Slides</strong></p>
+
+
+<br />
+
+
+<object width="425" height="355" style="margin: 0px;"><param name="movie" value="http://static.slideshare.net/swf/ssplayer2.swf?doc=scaling-090312151011-phpapp01&stripped_title=scaling-drupal-not-if-how" /><param name="allowFullScreen" value="true" /><param name="allowScriptAccess" value="always" /><embed width="425" height="355" src="http://static.slideshare.net/swf/ssplayer2.swf?doc=scaling-090312151011-phpapp01&stripped_title=scaling-drupal-not-if-how" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true"></embed></object>
+
+
+<p></p></p>
+
+<p> </p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+</feed>

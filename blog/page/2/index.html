@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://smerrill.github.io">
+  <link rel="canonical" href="http://smerrill.github.io/blog/page/2">
   <link href="/favicon.png" type="image/png" rel="icon">
   <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
 
@@ -113,37 +113,31 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-02-04T00:00:00-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2013</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-10-28T00:00:00-04:00" pubdate data-updated="true">Oct 28<span>th</span>, 2011</time>
         
       </p>
     
     
-      <h1 class="entry-title"><a href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a></h1>
+      <h1 class="entry-title"><a href="/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/">Ensuring Your Vagrant&#8217;s Box Is Weatherproof: A Quick Veewee Tip</a></h1>
     
   </header>
 
 
 
 <div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+  <p><em><a href="http://www.phase2technology.com/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
 </div>
 
 
-  <div class="entry-content clearfix"><p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>
+  <div class="entry-content clearfix"><p>We&rsquo;ll be doing a screencast series soon on using the <a href="http://www.vagrantup.com/">Vagrant gem</a> to distribute and manage virtual machines so that your entire team (yes, even Windows folks!) can do development on their local machine with the same software that&rsquo;s on your production Linux servers.</p>
 
-
-<p></p></p>
-
-<p>I was happy to fill in when a presenter dropped out and presented a session called &#8220;Testing Drupal with Ghosts and Gherkins&#8221;. In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p>
-
-
-<p></p></p>
+<p>Another useful tool in the Vagrant user&rsquo;s arsenal is <a href="https://github.com/jedi4ever/veewee">Veewee</a>. Veewee lets you automate the VirtualBox application to install a full operating system with just the packages you want and need. Veewee does have some built-in validation tools, such as <code>vagrant basebox validate BOXNAME</code>, which will run a set of Cucumber acceptance tests to ensure that the virtual machine should work properly when brought up with Vagrant, as well as with the <a href="http://www.opscode.com/chef/">Chef</a> and <a href="http://puppetlabs.com/">Puppet</a> configuration management tools.</p>
 
 </div>
   
   
     <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Read on &rarr;</a>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/10/28/ensuring-your-vagrants-box-is-weatherproof-a-quick-veewee-tip/">Read on &rarr;</a>
     </footer>
   
 
@@ -169,78 +163,23 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-09-23T00:00:00-04:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2012</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-10-23T00:00:00-04:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2011</time>
         
       </p>
     
     
-      <h1 class="entry-title"><a href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><h3>&lt;3 ZFS</h3>
-
-<p>I&rsquo;ve recently gotten religion about ZFS, and as a result, I&rsquo;ve been looking hard at the various systems that offer you the ability to use ZFS and other amazing tools from the Solaris lineage (now being developed freely under <a href="http://blog.illumos.org/">the Illumos moniker</a> after Oracle&rsquo;s unceremonious murder of OpenSolaris.)</p>
-
-<p>My data&rsquo;s backed up on an 8 TB FreeNAS, but there&rsquo;s also an amazing trend of Illumos-based distributions on offer that offer KVM virtualization, which was ported to Illumos by Joyent for <a href="http://smartos.org/">their SmartOS distribution</a>. Theo Schlossnagle recently gave a talk at the NYC DevOps meetup about <a href="http://omnios.omniti.com/">their Illumos-based OmniOS distribution</a>. OmniOS is a bit more than a JeOS &ndash; it aims to provide just enough packaged software to let you build the Illumos kernel and several other important tools like tmux and screen, and then get out of your way. Like SmartOS, it provides both lightweight zones-based virtualization and KVM for full hardware virtualization, but OmniOS is designed to be permanently installed on a machine, as opposed to SmartOS&rsquo;s focus on USB or PXE booting and ephemeral global zone configuration.</p>
-
-<p>OmniTI also makes a larger set of packages that their Managed Services team uses at <a href="http://pkg.omniti.com/omniti-ms/en/index.shtml">http://pkg.omniti.com/omniti-ms/en/index.shtml</a>.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2012/09/23/omnios-vagrant/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-05-31T00:00:00-04:00" pubdate data-updated="true">May 31<span>st</span>, 2012</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a></h1>
+      <h1 class="entry-title"><a href="/blog/2011/10/23/coat-your-website-in-varnish-by-steve-merrill/">Coat Your Website in Varnish, by Steve Merrill</a></h1>
     
   </header>
 
 
 
 <div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+  <p><em><a href="http://www.phase2technology.com/coat-your-website-in-varnish-by-steve-merrill/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
 </div>
 
 
-  <div class="entry-content clearfix"><p>Wouldn&#8217;t it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p>
-
-
-<p></p></p>
-
-<p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that&#8217;s one fewer step you have to perform to have all the docs that matter to you in Dash.</p>
+  <div class="entry-content clearfix"><p>The full presentation is embedded below.</p>
 
 
 <p></p></p>
@@ -249,7 +188,7 @@
   
   
     <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Read on &rarr;</a>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/10/23/coat-your-website-in-varnish-by-steve-merrill/">Read on &rarr;</a>
     </footer>
   
 
@@ -275,33 +214,219 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-02-10T00:00:00-05:00" pubdate data-updated="true">Feb 10<span>th</span>, 2012</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-10-05T00:00:00-04:00" pubdate data-updated="true">Oct 5<span>th</span>, 2011</time>
         
       </p>
     
     
-      <h1 class="entry-title"><a href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a></h1>
+      <h1 class="entry-title"><a href="/blog/2011/10/05/dude-wheres-my-bot/">Dude, Where&#8217;s My Bot?</a></h1>
+    
+  </header>
+
+
+
+
+  <div class="entry-content clearfix"><p>Say what you will about node.js, but it is certainly an easy way to build IRC bots with the <a href="https://github.com/gf3/Jerk">Jerk library</a>.</p>
+
+<p>The PHP-based bot that runs in the <a href="http://www.treehouseagency.com">Treehouse Agency</a> IRC channels knows to respond to &ldquo;Sweet!&rdquo; with &ldquo;Dude!&rdquo; and vice versa. <a href="http://www.brianmcmurray.com">Brian McMurray</a> said that he&rsquo;d like to someday write a quick-and-dirty bot that would put our other bot into an infinite loop.</p>
+
+<p>I accepted that challenge, and 10 minutes later, the bot was done.</p>
+
+<p>The code is an example of how to build a bot that accepts environmental variables for configuration and otherwise does a pretty silly task.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/10/05/dude-wheres-my-bot/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-09-08T00:00:00-04:00" pubdate data-updated="true">Sep 8<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/09/08/psa-lion-and-local-domain-names/">A PSA: Lion and .local Domain Names</a></h1>
+    
+  </header>
+
+
+
+
+  <div class="entry-content clearfix"><p>Do you enjoy your hair? Would you prefer not to pull it out while waiting for your local Apache server on Mac OS X to deliver a page to you?</p>
+
+<p>If you use Mac OS X Lion and have development sites set up at .local addresses, you should immediately move them to any other fake TLD. The .local address space is resolved for Bonjour and as a result any request to a .local name will not hit /etc/hosts first, but will search for Bonjour hosts first.</p>
+
+<p>I found <a href="http://stackoverflow.com/questions/6841421/mac-osx-lion-dns-lookup-order">this Stack Exchange question</a> on the subject tonight after getting frustrated with <strong>curl</strong> seemingly hanging for several seconds on each request.</p>
+
+<p>Instead, I switched all of my local dev sites from $DOMAIN.local to $DOMAIN.dev. The results are staggering.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/09/08/psa-lion-and-local-domain-names/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-08-29T00:00:00-04:00" pubdate data-updated="true">Aug 29<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/29/centos-6-and-virtualbox/">CentOS 6 and VirtualBox (VBoxHeadless CPU Usage Fix)</a></h1>
+    
+  </header>
+
+
+
+
+  <div class="entry-content clearfix"><p><strong>TL;DR:</strong> Add &ldquo;noapic&rdquo; to your kernel line if your VBoxHeadless process uses far too much CPU.</p>
+
+<p>I&rsquo;ve been working on making <a href="https://github.com/smerrill/veewee-fun/">space-efficient CentOS 5.6 and 6 images</a> for <a href="http://www.virtualbox.org">VirtualBox</a> recently. I&rsquo;m building the images as part of a pilot program to start using <a href="http://vagrantup.com">the Vagrant gem</a> to allow our developers to test the Drupal code they write on the real production OS before pushing it to the dev server. (I&rsquo;m also learning Puppet, both for this project and as a way to more easily re-use tested configurations as we launch new sites.)</p>
+
+<p>The CentOS 5.6 images I made worked like a charm, but ran into a problem wherein the <em>VBoxHeadless</em> process that hosted my CentOS 6 image would always use 25% CPU on my MacBook Air (one full core) despite the guest OS showing between 98% and 100% idle.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/08/29/centos-6-and-virtualbox/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-08-17T00:00:00-04:00" pubdate data-updated="true">Aug 17<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/08/17/what-are-you-eating/">What Are You Eating?</a></h1>
+    
+  </header>
+
+
+
+
+  <div class="entry-content clearfix"><p>Biking to the George Washington Bridge was just not going to work on the day before Memorial Day. The crowds were too packed in the park on the way up to the GW Bridge, and so I turned around and decided to do a nice brisk ride along the Hudson River Greenway and through Central Park.</p>
+
+<p>I&rsquo;m a big guy. I&rsquo;m currently around 280 pounds, and yet when I ride I tend to be faster than most cyclists on the path by quite a bit. On this particular evening, I pedaled hard up the uphill entry ramp to the Greenway and saw in my rear-view mirror that I had another cyclist who was following pretty closely behind me.</p>
+
+<p>I shot down the Greenway, passing cyclists and genuinely enjoying the cool breeze and the fresh smell of the Hudson River.  My unknown cycling companion was generally only one or two bike lengths behind me. As much as I love to bike, I do not take it to the level that some folks in New York City do. I don&rsquo;t have a set of &ldquo;real&rdquo; biking shorts or a real biking jersey, nor do I have a super-expensive road bike. My anonymous companion, however, did appear to have all these trappings: a bike that looked like it could have been made of carbon fiber and a set of biking shorts and a jersey from some race or event.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/08/17/what-are-you-eating/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-07-13T00:00:00-04:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/07/13/coat-your-website-in-varnish/">Coat Your Website in Varnish</a></h1>
     
   </header>
 
 
 
 <div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/coat-your-website-with-varnish-at-drupalcamp-md/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+  <p><em><a href="http://www.phase2technology.com/coat-your-website-in-varnish/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
 </div>
 
 
-  <div class="entry-content clearfix"><p>The Drupal community is exploding! I&#8217;ve had the pleasure to speak at two nascent Drupal camps (<a href="http://www.drupalcampnj.org/">New Jersey</a> and <a href="http://drupalcampmd.org/">Maryland</a>) in as many weeks.</p>
-
-
-<p></p></p>
-
-<p>Today I gave a revamped version of my <a href="http://drupalcampmd.org/sessions/coat-your-website-varnish">&#8220;Coat Your Website with Varnish&#8221; session at DrupalCamp MD</a>. I updated some of the information about Drupal configuration and an overview section going over some of the basics of headers and caching.</p>
-
-
-<p></p></p>
-
-<p>The entire presentation is embedded below and is also available <a href="http://prezi.com/lgk2q71ez9iv/coat-your-website-in-varnish-maryland/">on Prezi.com</a>.</p>
+  <div class="entry-content clearfix"><p>Last week at the <a href="http://groups.drupal.org/nyc/">Drupal NYC meetup</a>, I gave a presentation about <a href="http://varnish-cache.org/">the Varnish reverse proxy cache</a>.</p>
 
 
 <p></p></p>
@@ -310,7 +435,7 @@
   
   
     <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Read on &rarr;</a>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/07/13/coat-your-website-in-varnish/">Read on &rarr;</a>
     </footer>
   
 
@@ -336,28 +461,81 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-02-04T00:00:00-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2012</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-06-22T00:00:00-04:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2011</time>
         
       </p>
     
     
-      <h1 class="entry-title"><a href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a></h1>
+      <h1 class="entry-title"><a href="/blog/2011/06/22/be-more-awesome-please-tale-of-two-browsers/">Be More Awesome (Please! ) : a Tale of Two Browsers</a></h1>
+    
+  </header>
+
+
+
+
+  <div class="entry-content clearfix"><p>When Firefox 4 came out, I switched to it. I was mainly impressed by its speed (relative to the stable version of Chrome at the time) and the efficacy of Firefox Sync.</p>
+
+<p>Several weeks later, I abandoned it for the stable build of Chrome. There were several things that contributed to its downfall in my eyes. Chief among them was its effect on my battery life on my MacBook Pro. Despite being nearly as fast as Chrome in user-perceived speed, Firefox generally used more CPU. There was also a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=567552">very annoying bug</a> that resulted in a ton of modal popups.</p>
+
+<p>About a month back, I switched from the Chrome stable released to the Chrome dev channel and I&rsquo;ve been in general very pleased. There&rsquo;s one feature that has been slowly gnawing away at my sanity, however, and it&rsquo;s gotten serious enough that I&rsquo;m switching back to Firefox 5 to see if my complaints about Firefox 4 have been addressed.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/06/22/be-more-awesome-please-tale-of-two-browsers/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2010-11-16T00:00:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2010</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal/">Fix Common Windows Segmentation Faults With Drupal</a></h1>
     
   </header>
 
 
 
 <div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/lets-be-upfront-about-performance-at-drupalcamp-nj/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+  <p><em><a href="http://www.phase2technology.com/fix-common-windows-segmentation-faults-with-drupal/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
 </div>
 
 
-  <div class="entry-content clearfix"><p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">&#8220;Let&#8217;s Be Upfront About Performance&#8221;</a> as a session at <a href="http://www.drupalcampnj.org/">the inaugural DrupalCamp NJ</a>.</p>
+  <div class="entry-content clearfix"><p>At Treehouse Agency, we often work with internal development teams, and enterprise software being what it is, they often run Windows. This has been the primary driver behind some of our technology choices (using Mercurial rather than Git on these sorts of projects) and it also occasionally necessitates some extra debugging when something doesn&#8217;t quite work right on Windows.</p>
 
 
 <p></p></p>
 
-<p>My presentation is embedded below. Go forth and make fast websites!</p>
+<p>In work on a recent project, the client developers were using WampServer, but upon the site reaching a certain size, developers on Windows noted that their Apache processes were quitting after a cache clear. We debugged and tracked the errors down to occuring during CSS preprocessing.  The Apache processes were segmentation faulting, resulting in an error dialog.</p>
+
+
+<p></p></p>
+
+<p>In an initial assessment of the problem, it appeared that others were having the same problem, such as in <a href="http://drupal.org/node/424136" title="http://drupal.org/node/424136">http://drupal.org/node/424136</a>. We advised the developers to add a line to their settings.php to disable css preprocessing, like so:</p>
 
 
 <p></p></p>
@@ -366,7 +544,7 @@
   
   
     <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Read on &rarr;</a>
+      <a class="btn btn-default" rel="full-article" href="/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal/">Read on &rarr;</a>
     </footer>
   
 
@@ -392,85 +570,28 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-01-16T00:00:00-05:00" pubdate data-updated="true">Jan 16<span>th</span>, 2012</time>
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2010-07-08T00:00:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2010</time>
         
       </p>
     
     
-      <h1 class="entry-title"><a href="/blog/2012/01/16/bonjour-mes-amis/">Bonjour, Mes Amis!</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><p>Apple&rsquo;s <a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/10000119i">Bonjour</a> service just saved me a lot of hassle.</p>
-
-<p>I took a little time this MLK Day to get some old electronics ready for sale. One of the machines I decided to clean up was an old Mac Pro. I&rsquo;ve recently replaced it with a <a href="http://www.apple.com/macmini/server/">Mac mini</a> that positively sips power: 10 &ndash; 12 watts at idle instead of the consistent 120 watts that my old Mac Pro would draw. (I&rsquo;ll write more on cutting my setup&rsquo;s power consumption in a later blog post.)</p>
-
-<p>I hooked my Mac Pro up to my router with an Ethernet cable but didn&rsquo;t want to get out a keyboard, mouse, and monitor to do a final set of backups and deauthorize some software. Normally this wouldn&rsquo;t be a problem since the old Mac Pro was set configured to start Apple Remote Desktop at boot.</p>
-
-<p>I forgot that since switching to the Mac Pro, I had reassigned the Mac Pro&rsquo;s IP address (192.168.0.150) to the Mac mini. The Mac Pro booted, but could not get a proper IP address since the address it was configured to use was in use.</p>
-
-<p>I was about to break out my keyboard, mouse, and monitor when I thought I&rsquo;d give Bonjour a try.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2012/01/16/bonjour-mes-amis/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-12-15T00:00:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2011</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/">Using HipChat Through an IRC Client With BitlBee</a></h1>
+      <h1 class="entry-title"><a href="/blog/2010/07/08/color-me-flexible-new-options-for-colorable-d7-themes/">Color Me Flexible: New Options for Colorable D7 Themes</a></h1>
     
   </header>
 
 
 
 <div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/using-hipchat-through-an-irc-client-with-bitlbee/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+  <p><em><a href="http://www.phase2technology.com/color-me-flexible-new-options-for-colorable-d7-themes/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
 </div>
 
 
-  <div class="entry-content clearfix"><p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal community. Still, IRC ports are often blocked, and not everyone is comfortable using IRC. We&#8217;ve recently been using <a href="http://www.hipchat.com/">HipChat</a> to set up chat rooms for certain new clients.</p>
+  <div class="entry-content clearfix"><p>In case you haven&#8217;t heard: the <a href="http://drupal.org/project/bartik">Bartik theme</a> is now <a href="http://drupal.org/node/683026">in core</a> and, after some refinement, <a href="http://drupal.org/node/845742">will be the default theme for Drupal 7</a>. This is thanks to the phenomenal effort of many contributors from around the world.</p>
 
 
 <p></p></p>
 
-<p>I already route most of my AIM and GTalk interaction through an IRC gateway using <a href="http://www.bitlbee.org/">BitlBee</a>, and I wanted to hook HipChat up to an IRC client as well. Here&#8217;s a guide on how to do this.</p>
-
-
-<p></p></p>
-
-<p>(Note that I was having trouble joining channels in my LimeChat last night as I was writing this up, but I might just be missing something. Try it out!)</p>
+<p>I&#8217;ve been happy to help out on <a href="http://drupal.org/project/bartik">Bartik</a> over the past several months and have worked quite a bit on improving the core color module&#8217;s usefulness to themers who want recolorable themes.  Tonight I gave <a href="http://www.slideshare.net/smerrill/color-me-flexible">an impromptu talk</a> to the <a href="http://groups.drupal.org/new-york-city">NYC Drupal user group</a> about D7&#8217;s color.module and Bartik.</p>
 
 
 <p></p></p>
@@ -479,180 +600,7 @@
   
   
     <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-17T00:00:00-05:00" pubdate data-updated="true">Nov 17<span>th</span>, 2011</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/17/vagrant-and-nfs/">Vagrant and NFS</a></h1>
-    
-  </header>
-
-
-
-<div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/vagrant-and-nfs/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
-</div>
-
-
-  <div class="entry-content clearfix"><p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they&rsquo;re used to while still getting the benefits of running the full production stack.</p>
-
-<p>It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox&rsquo;s built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox&rsquo;s built-in file sharing, so we probably don&rsquo;t want to put our docroot right in that directory.</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2011/11/17/vagrant-and-nfs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-14T00:00:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/14/drush-phpsh-integration-demonstration/">Drush Phpsh Integration Demonstration</a></h1>
-    
-  </header>
-
-
-
-<div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/drush-phpsh-integration-demonstration/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
-</div>
-
-
-  <div class="entry-content clearfix"><p>I gave a 5-minute lightning presentation at the October 2011 <a href="http://groups.drupal.org/nyc">Drupal NYC</a> meetup about <a href="http://drupal.org/project/phpsh">Roger Lop&eacute;z&#8217;s phpsh plugin for drush</a>.</p>
-
-
-<p></p></p>
-
-<p><a href="http://phpsh.org/">phpsh</a> is a project by Facebook that provides a much more useful REPL (read-eval-print-loop) environment for PHP, similar to <a href="http://ruby-lang.org/">Ruby</a> or <a href="http://www.scala-lang.org/">Scala</a>. The Drush phpsh plugin adds an easy way to generate ctags for code completion in your phpsh (as well as <a href="http://www.vim.org">your favorite editor</a>) and a way to run a persistent PHP session with a fully bootstrapped Drupal instance. It&#8217;s really useful for testing out APIs.</p>
-
-
-<p></p></p>
-
-<p>If you missed it in person, you can watch the video embedded below.</p>
-
-
-<p></p></p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2011/11/14/drush-phpsh-integration-demonstration/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-02T00:00:00-04:00" pubdate data-updated="true">Nov 2<span>nd</span>, 2011</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/">End &#8220;Works on My Machine&#8221; Surprises With Vagrant</a></h1>
-    
-  </header>
-
-
-
-<div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/end-works-on-my-machine-surprises-with-vagrant/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
-</div>
-
-
-  <div class="entry-content clearfix"><p>How many times have the following issues happened on a project you&#8217;ve worked on?</p>
-
-
-<p></p></p>
-
-<ul>
-<li>Notices (or worse) appeared on production because of a PHP version mismatch between a developer&#8217;s machine and the production web servers.</li>
-<li>A new PHP extension or PECL extension had to be installed on production because it was installed in WAMP or MAMP?</li>
-<li>A team member ran into difficult setting up their local environment and spent many hours stuck on something.</li>
-<li>Team members didn&#8217;t set up SSL or Varnish on their local machines and issues had to be caught on a dev server.</li>
-<li>A team member would like to switch to Homebrew, but can&#8217;t set aside the many hours to redo their setup until a project is done.</li><br />
-</ul>
-
-
-<p></p></p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2011/11/02/end-works-on-my-machine-surprises-with-vagrant/">Read on &rarr;</a>
+      <a class="btn btn-default" rel="full-article" href="/blog/2010/07/08/color-me-flexible-new-options-for-colorable-d7-themes/">Read on &rarr;</a>
     </footer>
   
 
@@ -663,11 +611,11 @@
 
     <ul class="pager">
       
-        <li class="previous"><a href="/blog/page/2/">&larr;&nbsp;Older</a></li>
+        <li class="previous"><a href="/blog/page/3/">&larr;&nbsp;Older</a></li>
       
       <li><a href="/blog/archives">Blog Archives</a></li>
       
-        <li class="next disabled"><a href="#">Newer&nbsp;&rarr;</a></li>
+        <li class="next"><a href="/">Newer&nbsp;&rarr;</a></li>
       
     </ul>
   </div>

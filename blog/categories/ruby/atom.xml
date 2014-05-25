@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Vagrant and NFS]]></title>
+    <link href="http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs/"/>
+    <updated>2011-11-17T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2011/11/17/vagrant-and-nfs</id>
+    <content type="html"><![CDATA[<p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they&rsquo;re used to while still getting the benefits of running the full production stack.</p>
+
+<p>It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox&rsquo;s built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox&rsquo;s built-in file sharing, so we probably don&rsquo;t want to put our docroot right in that directory.</p>
+
+<!--more-->
+
+
+<p>As a result, we usually set up our project directories to look like the following with the docroot one level up from the directory with the Vagrantfile in it. (The docroot can be a symlink or a real copy of the docroot &ndash; it is in the .gitignore file so it won&rsquo;t be committed.)</p>
+
+<p><img src="https://img.skitch.com/20111117-j5tdm5q6pw584sfnnafxrtawb8.jpg" alt="Vagrant setup with the treehouseagency.com folder on the same level as the folder that contains the Vagrantfile" /></p>
+
+<p>There&rsquo;s a few gotchas with using NFS folders:
+&ndash; If you try to export a symlink, <code>nfsd</code> will complain. You need to dereference any symlinks before they are put in /etc/exports. The sample code below avoids that.</li>
+&ndash; Vagrant automatically uses NFS&rsquo;s mapall to ensure that all file access on the guest maps to your user and group on the host. This will mean that the users and groups may look wrong on the VM (and and <code>chown</code> or <code>chgrp</code> commands will fail), but software on the VM will be able to write to everything in that directory.</p>
+
+<p>Finally, here&rsquo;s some stub code for setting up a vagrant project with a docroot one level up. It takes care of dereferencing any symlinks and sharing the docroot with the guest. It will share it with NFS if the host is a Linux or Mac machine.</p>
+
+<p><div class="highlight"><pre><code class="ruby"><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+
+<span class="sr">&lt;h1&gt;Set up some variables relating to which path Vagrant will try to share&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">with</span> <span class="n">the</span> <span class="no">VM</span><span class="o">.</span><span class="n">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;p&gt;require &amp;lsquo;pathname&amp;rsquo;</span>
+<span class="sr">$docroot_name = &amp;ldquo;treehouseagency.com&amp;rdquo;</span>
+<span class="sr">$docroot_path = &amp;ldquo;&amp;rdquo;&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="no">Test</span> <span class="n">that</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">to</span> <span class="n">be</span> <span class="n">shared</span> <span class="n">is</span> <span class="k">in</span> <span class="n">the</span> <span class="n">right</span> <span class="n">place</span> <span class="ow">and</span> <span class="k">if</span> <span class="n">it</span> <span class="n">is</span><span class="p">,</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;h1&gt;calculate the fully dereferenced path (since NFS exports will fail if you&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">try</span> <span class="n">to</span> <span class="n">specify</span> <span class="n">the</span> <span class="n">path</span> <span class="n">to</span> <span class="n">a</span> <span class="n">symlink</span><span class="o">.</span><span class="p">)</span><span class="o">&lt;</span><span class="sr">/h1&gt;</span>
+
+<span class="sr">&lt;p&gt;if !File.exists?(&amp;ldquo;../</span><span class="c1">#{$docroot_name}&amp;rdquo;) then</span>
+  <span class="nb">puts</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="no">Please</span> <span class="n">put</span> <span class="n">the</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="sx">%s&amp;rsquo; directory (or a symlink to it) in the &amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="sx">%s/&amp;rsquo; directory.&amp;rdquo; %&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;[</span><span class="vg">$docroot_name</span><span class="p">,</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;../&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">realpath</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span>
+<span class="o">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span>  <span class="nb">exit</span> <span class="mi">1</span>
+<span class="k">else</span>
+  <span class="vg">$docroot_path</span> <span class="o">=</span> <span class="no">Pathname</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">.</span><span class="n">.</span><span class="o">/</span><span class="c1">#{$docroot_name}&amp;rdquo;).realpath.to_s</span>
+<span class="k">end</span>
+<span class="ss">Vagrant</span><span class="p">:</span><span class="ss">:Config</span><span class="o">.</span><span class="n">run</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="c1"># Add in the rest of your config here.</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">share_folder</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">tha</span><span class="o">-</span><span class="n">docroot</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="o">/</span><span class="n">tha</span><span class="o">-</span><span class="n">docroot</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="vg">$docroot_path</span><span class="p">,</span> <span class="ss">:nfs</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/linux/</span> <span class="ow">or</span> <span class="no">RUBY_PLATFORM</span> <span class="o">=~</span> <span class="sr">/darwin/</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div></p>
+
+<p>Enjoy!</p>
+]]></content>
+  </entry>
+  
+</feed>

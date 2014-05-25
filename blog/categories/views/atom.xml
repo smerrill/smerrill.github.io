@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: views | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/views/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-25T11:05:14-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Version Your Views: D5 Reminder]]></title>
+    <link href="http://smerrill.github.io/blog/2009/02/23/version-your-views-d5-reminder/"/>
+    <updated>2009-02-23T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2009/02/23/version-your-views-d5-reminder</id>
+    <content type="html"><![CDATA[<p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/11/05/speed-and-version-your-views">a previous article</a> I extolled the virtues of keeping your Views in code, which lets you deploy or change them as easily as uploading or updating a module on your production site. In the article, I wrote about using Drupal 6 and Views2 to do so.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<h3>Drupal 5 / Views 1 Execution</h3>
+
+
+<p></p></p>
+
+<p>Views 1 for Drupal 5 also has this mechanism in place, so if you're working on a Drupal 5 site, it's still worth using. It&rsquo;s how the calendar and date modules provide a default calendar view, among other things.  The method for putting default views in your modules is pretty similar, and it&rsquo;s still a great technique to practice.  In Views 2 for Drupal 6, you had to implement two hooks to have a module provide default views in code: hook_views_api() and hook_views_default_views().</p>
+
+
+<p></p></p>
+
+<p>Views 1 doesn&rsquo;t have the hook_views_api(), nor will Views 1 automatically look for a MODULENAME.views.inc or a MODULENAME.views_default.inc file, so you can just put an implementation of hook_views_default_views() in your main module file.  If we were making the fictitious treehouse_utils module, the code would look exactly the same as in the previous example:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="sy0">&</span>lt<span class="sy0">;</span>?php<br /><br />
+<span class="kw2">function</span> treehouse_utils_views_default_views<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+<span class="re0">$views</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br /><br />
+<br /><br />
+<span class="co1">// Start copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+<span class="co1">// End copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+<span class="co1">// Add view to list of views to provide.</span><br /><br />
+<span class="re0">$views</span><span class="br0">[</span><span class="re0">$view</span><span class="sy0">-&</span>gt<span class="sy0">;</span>name<span class="br0">]</span> <span class="sy0">=</span> <span class="re0">$view</span><span class="sy0">;</span><br /><br />
+<br /><br />
+<span class="co1">// ...Repeat all of the above for each view the module should provide.</span><br /><br />
+<br /><br />
+<span class="co1">// At the end, return array of default views.</span><br /><br />
+<span class="kw1">return</span> <span class="re0">$views</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<h3>Activating Your Views</h3>
+
+
+<p></p></p>
+
+<p>Unlike Views2, default views are updated when a module is first enabled, so if you are adding default views to an existing module, you will have to disable and re-enable the module to get them to show up, or clear out the Views cache, which you can do by going to <a href="http://yoursite.com/admin/build/views/tools" title="http://yoursite.com/admin/build/views/tools">http://yoursite.com/admin/build/views/tools</a> and clicking the Clear Views Cache button.</p>
+
+
+<p></p></p>
+
+<p>The Clear Views Cache approach is a far cleaner one than disabling and reenabling modules. I recently put some default views for Drupal 5 in a custom module which was the backbone of our site, and disabling and re-enabling it was no easy task.</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Speed Up and Version Your Views]]></title>
+    <link href="http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views/"/>
+    <updated>2008-11-05T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2008/11/05/speed-up-and-version-your-views</id>
+    <content type="html"><![CDATA[<p>Since getting started with Drupal over two years ago, the sites I&rsquo;ve built with it have naturally gotten bigger and bigger in scope. As your sites get bigger and bigger, you always look for ways to keep your site running as smoothly as possible, and this usually ends up meaning getting rid of queries wherever you can.</p>
+
+
+<p></p></p>
+
+<p>One feature of Views which is often used by module developers is the ability of a module to expose a set of <strong>default views</strong>. The calendar module, for example, provides a default calendar view in both its Drupal 5 and 6 versions.  This is an obvious asset for developers of contributed modules: if your module interfaces with Views, it makes sense to provide a default view that users can modify.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<h2>Implementation and Potential Benefits</h2>
+
+
+<p></p></p>
+
+<p>The hook used to do this is <a href="http://views-help.doc.logrus.com/help/views/api-default-views">hook_views_default_views()</a>. Since most modern sites are run off of a number of Views, you can also realize several benefits by building your sites with a custom module that implements <strong>hook_views_default_views()</strong>:</p>
+
+
+<p></p></p>
+
+<ol>
+<li>It improves performance. Views implemented via hook_views_default_views() do not require a database query to instantiate. You will realize an even greater performance gain if you also use an opcode caching system such as APC or XCache.</li>
+<li>Providing views in code will allow you to override the default view to make changes, and you can then choose to keep the changes in the database, update the module file to reflect the changes, or revert back to the version in your module file.</li>
+<li>Because the view (and theoretically, changes to that view) are stored in files, you can put them in version control and see how the views used in your site change over time and revert to an earlier version without having to go to a database backup.</li><br />
+</ol>
+
+
+<p></p></p>
+
+<p><!--break--></p>
+
+
+<p></p></p>
+
+<h2>Views2 / Drupal 6 Implementation</h2>
+
+
+<p></p></p>
+
+<p>Here&rsquo;s how to do it in Views2 on Drupal 6. When implementing a site, we at Tree House usually end up with a utility module that will do some of the things that will need to do theming or development tweaks, like the odd hook_form_alter(), or provide a Views handler or two. I&rsquo;ll be calling this module treehouse_utils.  There&rsquo;s two steps to providing a default view in Drupal 6 and Views2: you need to tell Views2 that you implement the Views2 API, and then you have to create a file that contains the default view(s).</p>
+
+
+<p></p></p>
+
+<p>So first, in treehouse_utils.module, it&rsquo;s time to tells Views2 that we&rsquo;re implementing Views features with <strong>hook_views_api()</strong>. The implementation of the hook looks like this in our module:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="kw2">function</span> treehouse_utils_views_api<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+  <span class="kw1">return</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><br /><br />
+    <span class="st_h">'api'</span> <span class="sy0">=&</span>gt<span class="sy0">;</span> <span class="nu0">2</span><span class="sy0">,</span><br /><br />
+    <span class="st_h">'path'</span> <span class="sy0">=&</span>gt<span class="sy0">;</span> drupal_get_path<span class="br0">(</span><span class="st_h">'module'</span><span class="sy0">,</span> <span class="st_h">'treehouse_utils'</span><span class="br0">)</span><span class="sy0">,</span><br /><br />
+  <span class="br0">)</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<p>This module just tells Views2 that we&rsquo;re implementing version 2 of the Views API and that it should look for Views-related files in the directory of the <strong>treehouse_utils</strong> module. (Some other modules will make a separate directory called <em>includes</em> where its Views-related files will live.)</p>
+
+
+<p></p></p>
+
+<h2>Putting the Views in Code</h2>
+
+
+<p></p></p>
+
+<p>The other task that we need to do is to implement <strong>hook_views_default_views()</strong> and actually tell Drupal about our Views. It is possible to do this in the main treehouse_utils.module file, but the trend in Drupal 6 is towards using more files so that Drupal has less code to load and parse overall on each page request. You can implement <strong>hook_views_default_views()</strong> (as well as a smattering of other Views-related hooks) in a <em>MODULENAME.views.inc</em> file. In the case of <strong>hook_views_default_views()</strong>, you can implement that in its own file, <em>MODULENAME.views_default.inc</em>.</p>
+
+
+<p></p></p>
+
+<p>So here&rsquo;s what treehouse_utils.views_default.inc will look like:</p>
+
+
+<p></p></p>
+
+<p>
+<div class="geshifilter">
+<div class="php geshifilter-php"><span class="sy0">&</span>lt<span class="sy0">;</span>?php<br /><br />
+<br /><br />
+<span class="kw2">function</span> treehouse_utils_views_default_views<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span><br /><br />
+  <span class="re0">$views</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span><br /><br />
+<br /><br />
+  <span class="co1">// Start copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+  <span class="co1">// End copy and paste of Export tab output.</span><br /><br />
+<br /><br />
+  <span class="co1">// Add view to list of views to provide.</span><br /><br />
+  <span class="re0">$views</span><span class="br0">[</span><span class="re0">$view</span><span class="sy0">-&</span>gt<span class="sy0">;</span>name<span class="br0">]</span> <span class="sy0">=</span> <span class="re0">$view</span><span class="sy0">;</span><br /><br />
+<br /><br />
+  <span class="co1">// ...Repeat all of the above for each view the module should provide.</span><br /><br />
+<br /><br />
+  <span class="co1">// At the end, return array of default views.</span><br /><br />
+  <span class="kw1">return</span> <span class="re0">$views</span><span class="sy0">;</span><br /><br />
+<span class="br0">}</span></div></div></p>
+
+
+<p></p></p>
+
+<p>Implementations of <strong>hook_views_default_views()</strong> are expected to return an array, so for each view that you would like to have provided by a module, go to the Views2 administrative interface, click Export, and copy and paste the PHP code between the two comments, and also be sure to include the $views[$view->name] = $view; line, where the newly-defined view object gets included in the array that will be returned.</p>
+
+
+<p></p></p>
+
+<p>Finally, when your module is enabled (or when you next visit the Views2 administration page or otherwise clear Views2&rsquo;s caches,) you&rsquo;ll see the following:</p>
+
+
+<p></p></p>
+
+<p><img src="http://img.skitch.com/20081105-tiq92fi3msh5dmf3pruy2mugxm.png" /></p>
+
+
+<p></p></p>
+
+<p>Notice that because the view which I put into the module is also in the database, Views tells us that the view is <em>overriden</em> - a default is now provided in PHP code, but our version in the database still supercedes it.  If you were to click <strong>Revert</strong>, the database entry for the view would be deleted, and Drupal would load it from your <em>MODULENAME.views_default.inc</em> file.</p>
+
+
+<p></p></p>
+
+<h2>Continuing this Workflow</h2>
+
+
+<p></p></p>
+
+<p>At this point, you can check your module into version control and have a record of your view at this point in time.  Later, you could make some more changes in the Views2 UI, hit <strong>Export</strong> again, and paste the newer version into the file, check that into version control and continue.</p>
+
+
+<p></p></p>
+
+<p>Views2 is amazing, and these techniques let you squeeze a little more performance and a lot more possibilities for revision control while building out your sites.</p>
+
+
+<p></p></p>
+
+<p>Also, be sure to vote for <a href="http://dc2009.drupalcon.org/session/scaling-drupal-not-ifhow">Thomas&rsquo;s DrupalCon session</a> if you&rsquo;d like to look at concrete techniques of all types to scale your Drupal sites!</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+</feed>
