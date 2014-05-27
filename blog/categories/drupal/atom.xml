@@ -4,7 +4,7 @@
   <title><![CDATA[Category: drupal | Grenade Sandwich]]></title>
   <link href="http://smerrill.github.io/blog/categories/drupal/atom.xml" rel="self"/>
   <link href="http://smerrill.github.io/"/>
-  <updated>2014-05-27T09:21:44-04:00</updated>
+  <updated>2014-05-27T09:28:12-04:00</updated>
   <id>http://smerrill.github.io/</id>
   <author>
     <name><![CDATA[Steven W. Merrill]]></name>
@@ -20,7 +20,7 @@
     <id>http://smerrill.github.io/blog/2014/05/26/combining-tasks-with-grunt</id>
     <content type="html"><![CDATA[<p>I was recently asked to help out with a few build steps for a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make. This task in included in a file under the tasks directory in the main repository.</p>
 
-<h6>tasks/drush.js</h6>
+<h4>tasks/drush.js</h4>
 
 <p>```javascript
 module.exports = function(grunt) {</p>
@@ -46,7 +46,7 @@ module.exports = function(grunt) {</p>
 
 <p>You can see that the task contains a few instances of <em>variable interpolation</em>, such as <code>&lt;%= config.srcPaths.make %&gt;</code>. By convention, the values of these variables go in a file called <code>Gruntconfig.json</code> file and are set using the <code>grunt.initConfig</code> method. In addition, the configuration for the <strong>default</strong> task lives in a file called <code>Gruntfile.js</code>. I have put trimmed examples of each below.</p>
 
-<h6>Gruntfile.js</h6>
+<h4>Gruntfile.js</h4>
 
 <p>```javascript
 module.exports = function(grunt) {</p>
@@ -76,7 +76,7 @@ module.exports = function(grunt) {</p>
 };
 ```</p>
 
-<h6>Gruntconfig.json</h6>
+<h4>Gruntconfig.json</h4>
 
 <p>```javascript
 {
@@ -104,7 +104,7 @@ module.exports = function(grunt) {</p>
 
 <p>The setup needed to do this in Phing is configured in XML: if an index.php file exists and it is newer than the Makefile, don&rsquo;t run <code>drush make</code>. Otherwise, delete the built site and run <code>drush make</code>. The necessary configuration to do this in a Phing build.xml is below.</p>
 
-<h6>build.xml</h6>
+<h4>build.xml</h4>
 
 <p>```xml
 <target name="-drush-make-uptodate" depends="init" hidden="true">
@@ -185,164 +185,204 @@ grunt.registerTask('drushmake', 'Delete and create the site folder, run Drush ma
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Setting Up Your L(ion)AMP Stack]]></title>
-    <link href="http://smerrill.github.io/blog/2014/01/01/setting-up-your-lionamp-stack/"/>
-    <updated>2014-01-01T00:00:00-05:00</updated>
-    <id>http://smerrill.github.io/blog/2014/01/01/setting-up-your-lionamp-stack</id>
-    <content type="html"><![CDATA[<ol>
-<li>Install XCode (or just gcc)</li>
-<li>Install Homebrew</li>
-<li>Brew up some software</li>
-<li>Make the LAMP brighter</li>
-</ol>
+    <title type="html"><![CDATA[Testing Drupal with Ghosts and Gherkins at DrupalCampNJ]]></title>
+    <link href="http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/"/>
+    <updated>2013-02-04T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj</id>
+    <content type="html"><![CDATA[<p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>
 
 
-<!-- break -->
+<p></p></p>
+
+<p>I was happy to fill in when a presenter dropped out and presented a session called "Testing Drupal with Ghosts and Gherkins". In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p>
 
 
-<h2>Install XCode (or just gcc)</h2>
+<p></p></p>
 
-<h2>Install Homebrew</h2>
+<!--more-->
 
-<h2>Brew up some software</h2>
 
-<h2>Make the LAMP brighter</h2>
 
-<h3>Get MySQL configured</h3>
 
-<p>Edit /etc/my.cnf and put the following in:</p>
+<p><iframe src="http://www.slideshare.net/slideshow/embed_code/16322739?rel=0" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe><br /></p>
 
-<p>```[mysql]</p>
 
-<h1>Packets.</h1>
+<div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/Phase2Technology/testing-withghostsandgherkins" title="Testing Drupal with Ghosts and Gherkin" target="_blank">Testing Drupal with Ghosts and Gherkin</a> </strong> from <strong><a href="http://www.slideshare.net/Phase2Technology" target="_blank">Phase2 Technology</a></strong> </div>
 
-<p>max_allowed_packet=16m</p>
 
-<p>[mysqld]</p>
+<br />
 
-<h1>Packets.</h1>
 
-<p>max_allowed_packet=16m</p>
+<p></p></p>
 
-<h1>Wait timeouts.</h1>
+<p>Here are some links to the items demoed in the presentation so that you can give them a shot on your own sites.</p>
 
-<p>innodb_lock_wait_timeout=600
-wait_timeout=600
-connect_timeout=10</p>
 
-<h1>Set this as high as possible. On a dedicated server, 60% &ndash; 80% of machine RAM.</h1>
+<p></p></p>
 
-<p>innodb_buffer_pool_size=512m</p>
+<p>Information about CasperJS is available at its website, <a href="http://casperjs.org/">casperjs.org</a>. You can read more about CasperJS's parent project, PhantomJS, at <a href="http://phantomjs.org/">phantomjs.org</a>.</p>
 
-<h1>Set this to the number of logical cores you have on the database server.</h1>
 
-<p>innodb_thread_concurrency=4</p>
+<p></p></p>
 
-<h1>Turn this on dynamically with a Jenkins job.</h1>
+<p>The sample CasperJS scripts adapted from our Testing with Friendly Ghosts presentation are available on GitHub at <a href="https://github.com/ericduran/friendly-ghosts-examples">github.com/ericduran/friendly-ghosts-examples</a>.</p>
 
-<p>slow_query_log=OFF</p>
 
-<h1>Max number of connections allowed.</h1>
+<p></p></p>
 
-<p>max_connections=400</p>
+<p>Similarly, documentation for both Behat and the Mink browser-testing extension is available at <a href="http://behat.org/">behat.org</a>. </p>
 
-<h1>Don&rsquo;t run out of file descriptors!</h1>
 
-<p>open_files_limit=32768</p>
+<p></p></p>
 
-<h1>If you set the query cache too high, your server risks severly slowing down and taking tens of seconds after an INSERT due to query cache mutex contention.</h1>
+<p>If you'd like to try out a sample project that uses Behat and Mink and one custom Mink step definition to test some sample assertions on the Phase2 website, it's on GitHub at <a href="https://github.com/phase2/behat-phase2tech/">github.com/phase2/behat-phase2tech/</a>.</p>
 
-<p>query_cache_limit=1M
-query_cache_size=32M</p>
 
-<h1>This allows a long-running query to not hit the network for a while and yet not be killed by MySQL.</h1>
+<p></p></p>
 
-<p>net_read_timeout=3600
-net_write_timeout=3600</p>
+<p>Finally, our set of Drupal-based Behat and Mink step definitions are released as Open Source on GitHub at <a href="https://github.com/phase2/behat-drupal-extension">github.com/phase2/behat-drupal-extension</a>.</p>
 
-<h1>This only works with Percona but allows you to pare down which slow queries go to the log.</h1>
 
-<h1>log_slow_filter=tmp_table_on_disk,filesort_on_disk</h1>
-
-<h1>Use InnoDB as the default engine.</h1>
-
-<h1>default_storage_engine = InnoDB</h1>
-
-<h1>default_character_set = utf8</h1>
-
-<h1>collation_server = utf8_general_ci</h1>
-
-<h1>character_set_server = utf8</h1>
-
-<h1>Smaller InnoDB files mean less disk I/O when a new one is created.</h1>
-
-<p>innodb_log_file_size=512m
-innodb_log_buffer_size=64m
-innodb_file_per_table</p>
-
-<h1>Speed up write performance significantly. You risk losing at most 1 or 2 seconds of data in event of a power loss or other catastrophic failure.</h1>
-
-<p>innodb_flush_log_at_trx_commit=0</p>
-
-<h1>Max temp table size in RAM &ndash; larger can be set in application with a per-session SET.</h1>
-
-<p>max_heap_table_size=64m
-tmp_table_size=64m</p>
-
-<h1>Per-session mem settings for sorts, joins, order by etc</h1>
-
-<p>join_buffer_size=2m
-sort_buffer_size=2m
-read_rnd_buffer_size=2m
-read_buffer_size=2m</p>
-
-<h1>Block size inside query cache &ndash; reduce pruning</h1>
-
-<p>query_cache_min_res_unit=1024```</p>
+<p></p></p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Setting Up Your L(ion)AMP Stack]]></title>
-    <link href="http://smerrill.github.io/blog/2014/01/01/setting-up-a-lionamp-stack/"/>
-    <updated>2014-01-01T00:00:00-05:00</updated>
-    <id>http://smerrill.github.io/blog/2014/01/01/setting-up-a-lionamp-stack</id>
-    <content type="html"><![CDATA[<p>Let&rsquo;s say you have upgraded to OS X Lion and you want to set it up to do web development. (I&rsquo;ll assume that you want to do Drupal web development, but this will get you set up for any LAMP application.) There will be a couple of tweaks you&rsquo;ll want to make to get your Lion purring.</p>
+    <title type="html"><![CDATA[Testing Drupal with Ghosts and Gherkins at DrupalCampNJ]]></title>
+    <link href="http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/"/>
+    <updated>2013-02-04T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj</id>
+    <content type="html"><![CDATA[<p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>
 
-<p>In short, here&rsquo;s what you will need to do:</p>
+
+<p></p></p>
+
+<p>I was happy to fill in when a presenter dropped out and presented a session called "Testing Drupal with Ghosts and Gherkins". In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p><iframe src="http://www.slideshare.net/slideshow/embed_code/16322739?rel=0" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe><br /></p>
+
+
+<div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/Phase2Technology/testing-withghostsandgherkins" title="Testing Drupal with Ghosts and Gherkin" target="_blank">Testing Drupal with Ghosts and Gherkin</a> </strong> from <strong><a href="http://www.slideshare.net/Phase2Technology" target="_blank">Phase2 Technology</a></strong> </div>
+
+
+<br />
+
+
+<p></p></p>
+
+<p>Here are some links to the items demoed in the presentation so that you can give them a shot on your own sites.</p>
+
+
+<p></p></p>
+
+<p>Information about CasperJS is available at its website, <a href="http://casperjs.org/">casperjs.org</a>. You can read more about CasperJS's parent project, PhantomJS, at <a href="http://phantomjs.org/">phantomjs.org</a>.</p>
+
+
+<p></p></p>
+
+<p>The sample CasperJS scripts adapted from our Testing with Friendly Ghosts presentation are available on GitHub at <a href="https://github.com/ericduran/friendly-ghosts-examples">github.com/ericduran/friendly-ghosts-examples</a>.</p>
+
+
+<p></p></p>
+
+<p>Similarly, documentation for both Behat and the Mink browser-testing extension is available at <a href="http://behat.org/">behat.org</a>. </p>
+
+
+<p></p></p>
+
+<p>If you'd like to try out a sample project that uses Behat and Mink and one custom Mink step definition to test some sample assertions on the Phase2 website, it's on GitHub at <a href="https://github.com/phase2/behat-phase2tech/">github.com/phase2/behat-phase2tech/</a>.</p>
+
+
+<p></p></p>
+
+<p>Finally, our set of Drupal-based Behat and Mink step definitions are released as Open Source on GitHub at <a href="https://github.com/phase2/behat-drupal-extension">github.com/phase2/behat-drupal-extension</a>.</p>
+
+
+<p></p></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash]]></title>
+    <link href="http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/"/>
+    <updated>2012-05-31T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash</id>
+    <content type="html"><![CDATA[<p>Wouldn't it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p>
+
+
+<p></p></p>
+
+<p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that's one fewer step you have to perform to have all the docs that matter to you in Dash.</p>
+
+
+<p></p></p>
+
+<!--more-->
+
+
+
+
+<p>There's a free as in beer application called Dash (available on the Mac App Store at <a href="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12" title="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12">http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12</a>) available for Mac OS X. Dash is a nice-looking documentation browser featuring several useful features, such as the ability to query it with a custom URL string (dash://YOURQUERY), which lends itself for use in tools like Alfred.</p>
+
+
+<p></p></p>
+
+<p>Dash can also download additional documentation sets for many open source technologies, including MySQL, PHP, and jQuery. It can be handy to search through the latest PHP API documentation no matter what kind of connection you're on, like so:</p>
+
+
+<br />
+
+
+<p><a href="https://skitch.com/00sven/87u7b/dash-documentation"><img src="https://img.skitch.com/20120530-ttupxms7g3b48xep9yu3qk8rs2.medium.jpg" alt="Dash - Documentation" /></a></p></p>
+
+<p>In addition, Dash also has the ability to browse any API documentation that you have installed through XCode onto your system. (In fact, any files in DocSet format that are located inside the ~/Library/Developer/Shared/Documentation/DocSets directory can be read by Dash.)</p>
+
+
+<p></p></p>
+
+<p>In addition to the freely available DocSets that are available for major open-source technologies, it's easy to make your own DocSets using doxygen. I went ahead and made a DocSet for Drupal 7.x using doxygen. Not every method that's available at api.drupal.org is here, but it's a great start, especially if you want a single offline app where you can query offline documentation.</p>
+
+
+<p></p></p>
+
+<p>To start using the Drupal DocSet, download the .tgz file from <a href="https://github.com/phase2/drupal-docset/zipball/master" title="https://github.com/phase2/drupal-docset/zipball/master">https://github.com/phase2/drupal-docset/zipball/master</a>. To use it:</p>
+
+
+<p></p></p>
 
 <ol>
-<li>Install XCode (or gcc)</li>
-<li>Install Homebrew</li>
-<li>Brew Some Software</li>
-<li>Tune Apache</li>
+<li>Unzip the file</li>
+<li>Move org.drupal.docset to ~/Library/Developer/Shared/Documentation/DocSets/</li>
+<li>Launch Dash and start searching, like so.</li><br />
 </ol>
 
 
-<!-- break -->
+<br />
 
 
-<h2>Install XCode (or gcc)</h2>
-
-<h2>Install Homebrew</h2>
-
-<h2>Brew Some Software</h2>
-
-<h2>Tune Apache</h2>
+<p><a href="https://skitch.com/00sven/87u44/dash-documentation"><img src="https://img.skitch.com/20120530-rrgw89tfht2g7ie3ejys98xssr.medium.jpg" alt="Dash - Documentation" /></a></p></p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Testing Drupal with Ghosts and Gherkins at DrupalCampNJ]]></title>
-    <link href="http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/"/>
-    <updated>2013-02-04T00:00:00-05:00</updated>
-    <id>http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj</id>
-    <content type="html"><![CDATA[<p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>
+    <title type="html"><![CDATA[Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash]]></title>
+    <link href="http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/"/>
+    <updated>2012-05-31T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash</id>
+    <content type="html"><![CDATA[<p>Wouldn't it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p>
 
 
 <p></p></p>
 
-<p>I was happy to fill in when a presenter dropped out and presented a session called "Testing Drupal with Ghosts and Gherkins". In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p>
+<p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that's one fewer step you have to perform to have all the docs that matter to you in Dash.</p>
 
 
 <p></p></p>
@@ -352,109 +392,45 @@ read_buffer_size=2m</p>
 
 
 
-<p><iframe src="http://www.slideshare.net/slideshow/embed_code/16322739?rel=0" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe><br /></p>
+<p>There's a free as in beer application called Dash (available on the Mac App Store at <a href="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12" title="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12">http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12</a>) available for Mac OS X. Dash is a nice-looking documentation browser featuring several useful features, such as the ability to query it with a custom URL string (dash://YOURQUERY), which lends itself for use in tools like Alfred.</p>
 
 
-<div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/Phase2Technology/testing-withghostsandgherkins" title="Testing Drupal with Ghosts and Gherkin" target="_blank">Testing Drupal with Ghosts and Gherkin</a> </strong> from <strong><a href="http://www.slideshare.net/Phase2Technology" target="_blank">Phase2 Technology</a></strong> </div>
+<p></p></p>
+
+<p>Dash can also download additional documentation sets for many open source technologies, including MySQL, PHP, and jQuery. It can be handy to search through the latest PHP API documentation no matter what kind of connection you're on, like so:</p>
 
 
 <br />
 
 
-<p></p></p>
+<p><a href="https://skitch.com/00sven/87u7b/dash-documentation"><img src="https://img.skitch.com/20120530-ttupxms7g3b48xep9yu3qk8rs2.medium.jpg" alt="Dash - Documentation" /></a></p></p>
 
-<p>Here are some links to the items demoed in the presentation so that you can give them a shot on your own sites.</p>
-
-
-<p></p></p>
-
-<p>Information about CasperJS is available at its website, <a href="http://casperjs.org/">casperjs.org</a>. You can read more about CasperJS's parent project, PhantomJS, at <a href="http://phantomjs.org/">phantomjs.org</a>.</p>
+<p>In addition, Dash also has the ability to browse any API documentation that you have installed through XCode onto your system. (In fact, any files in DocSet format that are located inside the ~/Library/Developer/Shared/Documentation/DocSets directory can be read by Dash.)</p>
 
 
 <p></p></p>
 
-<p>The sample CasperJS scripts adapted from our Testing with Friendly Ghosts presentation are available on GitHub at <a href="https://github.com/ericduran/friendly-ghosts-examples">github.com/ericduran/friendly-ghosts-examples</a>.</p>
+<p>In addition to the freely available DocSets that are available for major open-source technologies, it's easy to make your own DocSets using doxygen. I went ahead and made a DocSet for Drupal 7.x using doxygen. Not every method that's available at api.drupal.org is here, but it's a great start, especially if you want a single offline app where you can query offline documentation.</p>
 
 
 <p></p></p>
 
-<p>Similarly, documentation for both Behat and the Mink browser-testing extension is available at <a href="http://behat.org/">behat.org</a>. </p>
+<p>To start using the Drupal DocSet, download the .tgz file from <a href="https://github.com/phase2/drupal-docset/zipball/master" title="https://github.com/phase2/drupal-docset/zipball/master">https://github.com/phase2/drupal-docset/zipball/master</a>. To use it:</p>
 
 
 <p></p></p>
 
-<p>If you'd like to try out a sample project that uses Behat and Mink and one custom Mink step definition to test some sample assertions on the Phase2 website, it's on GitHub at <a href="https://github.com/phase2/behat-phase2tech/">github.com/phase2/behat-phase2tech/</a>.</p>
-
-
-<p></p></p>
-
-<p>Finally, our set of Drupal-based Behat and Mink step definitions are released as Open Source on GitHub at <a href="https://github.com/phase2/behat-drupal-extension">github.com/phase2/behat-drupal-extension</a>.</p>
-
-
-<p></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Testing Drupal with Ghosts and Gherkins at DrupalCampNJ]]></title>
-    <link href="http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/"/>
-    <updated>2013-02-04T00:00:00-05:00</updated>
-    <id>http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj</id>
-    <content type="html"><![CDATA[<p>This weekend marked the second annual <a href="http://www.drupalcampnj.org/" target="_">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>
-
-
-<p></p></p>
-
-<p>I was happy to fill in when a presenter dropped out and presented a session called "Testing Drupal with Ghosts and Gherkins". In this presentation, I talked about how both CasperJS or Behat could be brought to bear to test a Drupal application and gave some demos of each. The slides are embedded below.</p>
-
-
-<p></p></p>
-
-<!--more-->
-
-
-
-
-<p><iframe src="http://www.slideshare.net/slideshow/embed_code/16322739?rel=0" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen webkitallowfullscreen mozallowfullscreen> </iframe><br /></p>
-
-
-<div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/Phase2Technology/testing-withghostsandgherkins" title="Testing Drupal with Ghosts and Gherkin" target="_blank">Testing Drupal with Ghosts and Gherkin</a> </strong> from <strong><a href="http://www.slideshare.net/Phase2Technology" target="_blank">Phase2 Technology</a></strong> </div>
+<ol>
+<li>Unzip the file</li>
+<li>Move org.drupal.docset to ~/Library/Developer/Shared/Documentation/DocSets/</li>
+<li>Launch Dash and start searching, like so.</li><br />
+</ol>
 
 
 <br />
 
 
-<p></p></p>
-
-<p>Here are some links to the items demoed in the presentation so that you can give them a shot on your own sites.</p>
-
-
-<p></p></p>
-
-<p>Information about CasperJS is available at its website, <a href="http://casperjs.org/">casperjs.org</a>. You can read more about CasperJS's parent project, PhantomJS, at <a href="http://phantomjs.org/">phantomjs.org</a>.</p>
-
-
-<p></p></p>
-
-<p>The sample CasperJS scripts adapted from our Testing with Friendly Ghosts presentation are available on GitHub at <a href="https://github.com/ericduran/friendly-ghosts-examples">github.com/ericduran/friendly-ghosts-examples</a>.</p>
-
-
-<p></p></p>
-
-<p>Similarly, documentation for both Behat and the Mink browser-testing extension is available at <a href="http://behat.org/">behat.org</a>. </p>
-
-
-<p></p></p>
-
-<p>If you'd like to try out a sample project that uses Behat and Mink and one custom Mink step definition to test some sample assertions on the Phase2 website, it's on GitHub at <a href="https://github.com/phase2/behat-phase2tech/">github.com/phase2/behat-phase2tech/</a>.</p>
-
-
-<p></p></p>
-
-<p>Finally, our set of Drupal-based Behat and Mink step definitions are released as Open Source on GitHub at <a href="https://github.com/phase2/behat-drupal-extension">github.com/phase2/behat-drupal-extension</a>.</p>
-
-
-<p></p></p>
+<p><a href="https://skitch.com/00sven/87u44/dash-documentation"><img src="https://img.skitch.com/20120530-rrgw89tfht2g7ie3ejys98xssr.medium.jpg" alt="Dash - Documentation" /></a></p></p>
 ]]></content>
   </entry>
   

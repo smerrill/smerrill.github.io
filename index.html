@@ -113,52 +113,6 @@
 
 
 
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2020-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2020</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2020/01/01/template/">Title</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><p>Teaser</p>
-
-<p>Teaser</p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2020/01/01/template/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-05-26T00:00:00-04:00" pubdate data-updated="true">May 26<span>th</span>, 2014</time>
         
       </p>
@@ -173,7 +127,7 @@
 
   <div class="entry-content clearfix"><p>I was recently asked to help out with a few build steps for a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make. This task in included in a file under the tasks directory in the main repository.</p>
 
-<h6>tasks/drush.js</h6>
+<h4>tasks/drush.js</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -212,7 +166,7 @@
 
 <p>You can see that the task contains a few instances of <em>variable interpolation</em>, such as <code>&lt;%= config.srcPaths.make %&gt;</code>. By convention, the values of these variables go in a file called <code>Gruntconfig.json</code> file and are set using the <code>grunt.initConfig</code> method. In addition, the configuration for the <strong>default</strong> task lives in a file called <code>Gruntfile.js</code>. I have put trimmed examples of each below.</p>
 
-<h6>Gruntfile.js</h6>
+<h4>Gruntfile.js</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -255,7 +209,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h6>Gruntconfig.json</h6>
+<h4>Gruntconfig.json</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -286,7 +240,7 @@
 
 <p>The setup needed to do this in Phing is configured in XML: if an index.php file exists and it is newer than the Makefile, don&rsquo;t run <code>drush make</code>. Otherwise, delete the built site and run <code>drush make</code>. The necessary configuration to do this in a Phing build.xml is below.</p>
 
-<h6>build.xml</h6>
+<h4>build.xml</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -386,491 +340,6 @@
 
 
 <p>I could then invoke <code>newer:drushmake:default</code> in my <code>Gruntfile.js</code> and only delete and rebuild the site when there were changes to the Makefile.</p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/01/ten-lesser-known-things-about-vagrant/">Ten Lesser-Known Things About Vagrant</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><p>I&rsquo;m a huge fan of <a href="http://www.vagrantup.com">Vagrant</a>, a framework for virtualized development environments. We use Vagrant at <a href="http://www.phase2technology.com">Phase2 Technology</a> to model clients&#8217; hosting environments and to develop Puppet manifests in a testing environment before they even hit the production hosting environment.
-I&rsquo;ve had the opportunity recently to sit in #vagrant on Freenode and answer some questions. The #vagrant channel is interesting because the questions end up being a mix of questions on many different topics, but throughout many of them, I&rsquo;ve noticed several things that are generally not well understood, and I thought I&rsquo;d answer them.</p>
-
-<!-- break -->
-
-
-<p>Since Vagrant is a framework for automating VirtualBox to create local development environments using Linux machines that are provisioned (generally) with a configuration management tool, the following topics all come up in #vagrant:</p>
-
-<ul>
-<li>Linux system administration</li>
-<li><a href="http://www.opscode.com/chef/">Chef</a></li>
-<li><a href="http://www.puppetlabs.com">Puppet</a></li>
-<li><a href="https://www.virtualbox.org">VirtualBox</a></li>
-<li><a href="https://github.com/jedi4ever/veewee">Veewee</a></li>
-</ul>
-
-
-<p>Here are 8 facts about Vagrant that are not widely known about Vagrant.</p>
-
-<h2>1. The eth0 interface on a VM is a NAT interface and Vagrant runs commands over it</h2>
-
-<h2>2. You can give a Vagrant VM an address on your local network (with some caveats)</h2>
-
-<h2>3. Host-only networking lets you access the guest from the host</h2>
-
-<ul>
-<li>Explain difference vs port forwarding</li>
-<li>Try and point out vagrant-hostmaster</li>
-<li>Explain that iptables can thwart this</li>
-</ul>
-
-
-<h2>4. You can re-run your provisioners without rebooting</h2>
-
-<ul>
-<li><code>vagrant provision</code></li>
-<li>The provisioners run in order</li>
-<li><code>vagrant reload</code> vs <code>vagrant provision</code></li>
-</ul>
-
-
-<h2>5. Public Vagrant boxes use a public keypair (be careful!)</h2>
-
-<h2>6. Vagrant&rsquo;s box management keeps pristine copies of boxes for you</h2>
-
-<h2>7. Moving and cloning your Vagrant projects</h2>
-
-<ul>
-<li>The <code>.vagrant</code> file and how it tracks VMs</li>
-</ul>
-
-
-<h2>8. You can use the VirtualBox CLI to manage your machines</h2>
-
-<ul>
-<li>A quick <code>VBoxManage</code> primer</li>
-<li>Hard stopping a VM</li>
-<li>Stopping a VM after you delete a Vagrantfile</li>
-</ul>
-
-
-<h2>9. Vagrant runs pretty much everywhere</h2>
-
-<p>This shouldn&rsquo;t really come as a surprise to anyone, but every time I try out a new platform, Vagrant works flawlessly. This is a tribute to VirtualBox: although it has its warts, it runs pretty much everywhere. Mitchell also has to work around various VirtualBox bugs on <a href="https://github.com/mitchellh/vagrant/commit/e367a8cfd6ecd3b194ab694eea948dfd891b76b9">certain versions of OS X</a> <a href="https://github.com/mitchellh/vagrant/commit/6323a8efd433e6e340a262e89fa3aba86f2e9d4f">and on Windows</a>, so the fact that this all just works transparently is pretty awesome.</p>
-
-<p>Any time I set up a new system, one of the first things I do is set up VirtualBox and see if Vagrant can run on it.  Here&rsquo;s a full list of systems that I have used as a Vagrant host:</p>
-
-<ul>
-<li>OS X 10.6 with NFS</li>
-<li>OS X 10.7 with NFS</li>
-<li>Ubuntu 12.04 with NFS</li>
-<li>Ubuntu 12.10 with NFS</li>
-<li>Fedora 17 with NFS</li>
-<li><ul>
-<li>I helped <a href="https://github.com/mitchellh/vagrant/pull/1140">with a patch to make NFS work on Fedora 16+</a>)</li>
-</ul>
-</li>
-<li>Arch Linux with NFS</li>
-<li>OmniOS</li>
-<li><ul>
-<li>I <a href="http://grenadesandwich.com/blog/steven/2012/09/23/omnios-vagrant/">blogged my experience trying this out</a>, and it sounds like <a href="http://omniti.com/">OmniTI</a> is going to make some packages for VirtualBox and Vagrant soon. I am utterly unfamiliar with Illumos/OpenSolaris, so there&rsquo;s probably some work needed here, like an Illumos host class.</li>
-</ul>
-</li>
-<li>Windows 7</li>
-<li><ul>
-<li>Before I reformatted a netbook to Linux, I tried out Vagrant 1.0.5 with Cygwin, and everything worked smoothly.</li>
-</ul>
-</li>
-</ul>
-
-
-<h2>10. Vagrant is not (yet) ready to use non-VirtualBox hypervisors yet</h2>
-
-<p>I&rsquo;m including this as a quick way to end this post. Several people have popped into #vagrant and said, &ldquo;I read that Vagrant supports VMWare, or that it will soon!&rdquo;</p>
-
-<p>It is true that the master branch of the Vagrant repository contains code that aims to decouple Vagrant from VirtualBox, but there&rsquo;s not a firm timeline on when other providers will be ready to use. (In addition, running the code on master will reformat your Vagrantfiles, so you&rsquo;ll want to set up a new user to test this.)</p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/01/setting-up-your-lionamp-stack/">Setting Up Your L(ion)AMP Stack</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><ol>
-<li>Install XCode (or just gcc)</li>
-<li>Install Homebrew</li>
-<li>Brew up some software</li>
-<li>Make the LAMP brighter</li>
-</ol>
-
-
-<!-- break -->
-
-
-<h2>Install XCode (or just gcc)</h2>
-
-<h2>Install Homebrew</h2>
-
-<h2>Brew up some software</h2>
-
-<h2>Make the LAMP brighter</h2>
-
-<h3>Get MySQL configured</h3>
-
-<p>Edit /etc/my.cnf and put the following in:</p>
-
-<p>&#8220;`[mysql]</p>
-
-<h1>Packets.</h1>
-
-<p>max_allowed_packet=16m</p>
-
-<p>[mysqld]</p>
-
-<h1>Packets.</h1>
-
-<p>max_allowed_packet=16m</p>
-
-<h1>Wait timeouts.</h1>
-
-<p>innodb_lock_wait_timeout=600
-wait_timeout=600
-connect_timeout=10</p>
-
-<h1>Set this as high as possible. On a dedicated server, 60% &ndash; 80% of machine RAM.</h1>
-
-<p>innodb_buffer_pool_size=512m</p>
-
-<h1>Set this to the number of logical cores you have on the database server.</h1>
-
-<p>innodb_thread_concurrency=4</p>
-
-<h1>Turn this on dynamically with a Jenkins job.</h1>
-
-<p>slow_query_log=OFF</p>
-
-<h1>Max number of connections allowed.</h1>
-
-<p>max_connections=400</p>
-
-<h1>Don&rsquo;t run out of file descriptors!</h1>
-
-<p>open_files_limit=32768</p>
-
-<h1>If you set the query cache too high, your server risks severly slowing down and taking tens of seconds after an INSERT due to query cache mutex contention.</h1>
-
-<p>query_cache_limit=1M
-query_cache_size=32M</p>
-
-<h1>This allows a long-running query to not hit the network for a while and yet not be killed by MySQL.</h1>
-
-<p>net_read_timeout=3600
-net_write_timeout=3600</p>
-
-<h1>This only works with Percona but allows you to pare down which slow queries go to the log.</h1>
-
-<h1>log_slow_filter=tmp_table_on_disk,filesort_on_disk</h1>
-
-<h1>Use InnoDB as the default engine.</h1>
-
-<h1>default_storage_engine = InnoDB</h1>
-
-<h1>default_character_set = utf8</h1>
-
-<h1>collation_server = utf8_general_ci</h1>
-
-<h1>character_set_server = utf8</h1>
-
-<h1>Smaller InnoDB files mean less disk I/O when a new one is created.</h1>
-
-<p>innodb_log_file_size=512m
-innodb_log_buffer_size=64m
-innodb_file_per_table</p>
-
-<h1>Speed up write performance significantly. You risk losing at most 1 or 2 seconds of data in event of a power loss or other catastrophic failure.</h1>
-
-<p>innodb_flush_log_at_trx_commit=0</p>
-
-<h1>Max temp table size in RAM &ndash; larger can be set in application with a per-session SET.</h1>
-
-<p>max_heap_table_size=64m
-tmp_table_size=64m</p>
-
-<h1>Per-session mem settings for sorts, joins, order by etc</h1>
-
-<p>join_buffer_size=2m
-sort_buffer_size=2m
-read_rnd_buffer_size=2m
-read_buffer_size=2m</p>
-
-<h1>Block size inside query cache &ndash; reduce pruning</h1>
-
-<p>query_cache_min_res_unit=1024&#8220;`</p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/01/setting-up-a-lionamp-stack/">Setting Up Your L(ion)AMP Stack</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><p>Let&rsquo;s say you have upgraded to OS X Lion and you want to set it up to do web development. (I&rsquo;ll assume that you want to do Drupal web development, but this will get you set up for any LAMP application.) There will be a couple of tweaks you&rsquo;ll want to make to get your Lion purring.</p>
-
-<p>In short, here&rsquo;s what you will need to do:</p>
-
-<ol>
-<li>Install XCode (or gcc)</li>
-<li>Install Homebrew</li>
-<li>Brew Some Software</li>
-<li>Tune Apache</li>
-</ol>
-
-
-<!-- break -->
-
-
-<h2>Install XCode (or gcc)</h2>
-
-<h2>Install Homebrew</h2>
-
-<h2>Brew Some Software</h2>
-
-<h2>Tune Apache</h2>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/01/my-most-egregious-varnish-hack/">My Most Egregious Varnish Hack</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><p><a href="http://varnish-cache.org/">Varnish</a> is an amazing piece of open-source software. At <a href="http://treehouseagency.com">Treehouse Agency</a> we use it as a standard part of our hosting stack because of its amazing performance for serving anonymous and static content.</p>
-
-<p>In truth, though, its extreme ease of configuration is another part of its appeal. Perhaps an application that you can&rsquo;t easily change is sending the wrong headers. In that case, just rewrite them on the way back out. Maybe you want to <a href="https://www.varnish-cache.org/trac/wiki/FAQ/Compression#Ithoughtyousaidthiswascomplicated">munge Accept-Encoding headers</a> to get maximum cache hit rates? Varnish handles that with aplomb.</p>
-
-<p>My favorite Varnish story, though, deals with a quick hack I put together to fix what could potentially have been a major PR problem.</p>
-
-<!-- break -->
-
-
-<h2>Shortening Links For Fun and Profit</h2>
-
-<p>We use <a href="http://bit.ly">bit.ly</a> to shorten <a href="http://treehouseagency.com">Treehouse Agency</a>&rsquo;s links. Specifically, we are using bit.ly&rsquo;s &ldquo;Custom short domain&rdquo; feature to use the <u>tha.cm</u> domain for all of our shortened links. We like bit.ly for its analytics and the fact that a custom short domain is free.</p>
-
-<p>Now let&rsquo;s travel back in time a bit.</p>
-
-<p>In the early spring of 2011, Team Treehouse Agency was preparing for <a href="http://chicago2011.drupal.org/">DrupalCon Chicago</a>. We had just printed up new business cards and promotional materials. We had put a number of URLs into our promotional materials and we were fleshing their content in the days leading up to the conference. One by one, we claimed the URLs on our tha.cm domain as we finished pages.</p>
-
-<h2>&hellip;Oops</h2>
-
-<p>We left the easiest page to produce (content-wise) for last: <a href="http://tha.cm/social">tha.cm/social</a>, which was simply a list of all the Treehouse Agency social media links. When we went to claim this link, however, we discovered one thing that we had overlooked.</p>
-
-<p><strong>Using a bit.ly custom domain does not give you your own pool of unique links.</strong></p>
-
-<p>Stated in another way, tha.cm/social is the same as bit.ly/social is the same as (insert other short domain here)/social, and someone had already claimed this. This was a major problem, because thousands of Treehouse Agency business cards had been printed with that exact link on it.</p>
-
-<h2>Varnish to the rescue!</h2>
-
-<p>We looked at other link-shortening services, but many of them cost too much or didn&rsquo;t offer the same level of analytics that we got from bit.ly. Without a simple switch possible, I implemented a quick 10-minute fix with Varnish.</p>
-
-<p>The way that you implement bit.ly custom short domain support is by setting up a DNS <strong>A</strong> record that points to the URL 168.143.174.97. Therefore, I created a tiny <a href="http://www.rackspace.com/cloud/cloud_hosting_products/servers/">Rackspace Cloud Server</a> and set the DNS for tha.cm to resolve to its IP. I then installed Varnish on it, and configured it almost as a straight-up proxy. Here&rsquo;s the VCL I used:</p>
-
-<div class="highlight"><pre><code class="scala"><span class="n">backend</span> <span class="n">default</span> <span class="o">{</span>
-  <span class="o">.</span><span class="n">host</span> <span class="k">=</span> <span class="s">&quot;168.143.174.97&quot;</span><span class="o">;</span>
-  <span class="o">.</span><span class="n">port</span> <span class="k">=</span> <span class="s">&quot;80&quot;</span><span class="o">;</span>
-<span class="o">}</span>
-
-<span class="n">sub</span> <span class="n">vcl_recv</span> <span class="o">{</span>
-  <span class="n">set</span> <span class="n">req</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">host</span> <span class="k">=</span> <span class="s">&quot;tha.cm&quot;</span><span class="o">;</span>
-  <span class="k">if</span> <span class="o">(</span><span class="n">req</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="s">&quot;/social&quot;</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">error</span> <span class="mi">750</span> <span class="s">&quot;Moved Temporarily&quot;</span><span class="o">;</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="n">sub</span> <span class="n">vcl_error</span> <span class="o">{</span>
-  <span class="k">if</span> <span class="o">(</span><span class="n">obj</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">750</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">set</span> <span class="n">obj</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="nc">Location</span> <span class="k">=</span> <span class="s">&quot;http://tha.cm/tha-social&quot;</span><span class="o">;</span>
-    <span class="n">set</span> <span class="n">obj</span><span class="o">.</span><span class="n">status</span> <span class="k">=</span> <span class="mi">302</span><span class="o">;</span>
-    <span class="k">return</span> <span class="o">(</span><span class="n">deliver</span><span class="o">);</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div>
-
-
-<p>It&rsquo;s really pretty simple. If the requested URL is &ldquo;/social&rdquo;, redirect to the real tha.cm/bit.ly link that we ended up getting. Otherwise, it proxies the request through to 168.143.174.97, which is the address that you would normally put into your domain&rsquo;s DNS anyway.</p>
-
-<p>Varnish&rsquo;s primary role is that of a super-fast reverse proxy cache, but hopefully this post has also shown you that its flexibility can also save you from other sorts of issues.</p>
-
-<p>In our case, it meant that we didn&rsquo;t have to reprint lots of business cards. Chalk up another win for Varnish.</p>
-</div>
-  
-  
-
-
-        </article>
-      
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2014-01-01T00:00:00-05:00" pubdate data-updated="true">Jan 1<span>st</span>, 2014</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/01/everything-old-is-new-hotness/">Back to the Future (or, &#8220;a Neckbeard&#8217;s Progress&#8221;)</a></h1>
-    
-  </header>
-
-
-
-
-  <div class="entry-content clearfix"><p>We web developers live in exciting times.</p>
-
-<p>It&rsquo;s hard to believe that <a href="/blog/steven/2009/10/12/everything-old-new-again" title="My last post along these lines.">nearly two years ago</a>
-I wrote a blog post in which I was really starting</p>
-
-<!-- break -->
-
-
-
 </div>
   
   
@@ -1040,6 +509,347 @@ I wrote a blog post in which I was really starting</p>
 
         </article>
       
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-02-10T00:00:00-05:00" pubdate data-updated="true">Feb 10<span>th</span>, 2012</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a></h1>
+    
+  </header>
+
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/coat-your-website-with-varnish-at-drupalcamp-md/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+  <div class="entry-content clearfix"><p>The Drupal community is exploding! I&#8217;ve had the pleasure to speak at two nascent Drupal camps (<a href="http://www.drupalcampnj.org/">New Jersey</a> and <a href="http://drupalcampmd.org/">Maryland</a>) in as many weeks.</p>
+
+
+<p></p></p>
+
+<p>Today I gave a revamped version of my <a href="http://drupalcampmd.org/sessions/coat-your-website-varnish">&#8220;Coat Your Website with Varnish&#8221; session at DrupalCamp MD</a>. I updated some of the information about Drupal configuration and an overview section going over some of the basics of headers and caching.</p>
+
+
+<p></p></p>
+
+<p>The entire presentation is embedded below and is also available <a href="http://prezi.com/lgk2q71ez9iv/coat-your-website-in-varnish-maryland/">on Prezi.com</a>.</p>
+
+
+<p></p></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-02-04T00:00:00-05:00" pubdate data-updated="true">Feb 4<span>th</span>, 2012</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Let&#039;s Be Upfront About Performance at DrupalCamp NJ</a></h1>
+    
+  </header>
+
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/lets-be-upfront-about-performance-at-drupalcamp-nj/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+  <div class="entry-content clearfix"><p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">&#8220;Let&#8217;s Be Upfront About Performance&#8221;</a> as a session at <a href="http://www.drupalcampnj.org/">the inaugural DrupalCamp NJ</a>.</p>
+
+
+<p></p></p>
+
+<p>My presentation is embedded below. Go forth and make fast websites!</p>
+
+
+<p></p></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2012/02/04/lets-be-upfront-about-performance-at-drupalcamp-nj/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2012-01-16T00:00:00-05:00" pubdate data-updated="true">Jan 16<span>th</span>, 2012</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2012/01/16/bonjour-mes-amis/">Bonjour, Mes Amis!</a></h1>
+    
+  </header>
+
+
+
+
+  <div class="entry-content clearfix"><p>Apple&rsquo;s <a href="http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/NetServices/Introduction.html#//apple_ref/doc/uid/10000119i">Bonjour</a> service just saved me a lot of hassle.</p>
+
+<p>I took a little time this MLK Day to get some old electronics ready for sale. One of the machines I decided to clean up was an old Mac Pro. I&rsquo;ve recently replaced it with a <a href="http://www.apple.com/macmini/server/">Mac mini</a> that positively sips power: 10 &ndash; 12 watts at idle instead of the consistent 120 watts that my old Mac Pro would draw. (I&rsquo;ll write more on cutting my setup&rsquo;s power consumption in a later blog post.)</p>
+
+<p>I hooked my Mac Pro up to my router with an Ethernet cable but didn&rsquo;t want to get out a keyboard, mouse, and monitor to do a final set of backups and deauthorize some software. Normally this wouldn&rsquo;t be a problem since the old Mac Pro was set configured to start Apple Remote Desktop at boot.</p>
+
+<p>I forgot that since switching to the Mac Pro, I had reassigned the Mac Pro&rsquo;s IP address (192.168.0.150) to the Mac mini. The Mac Pro booted, but could not get a proper IP address since the address it was configured to use was in use.</p>
+
+<p>I was about to break out my keyboard, mouse, and monitor when I thought I&rsquo;d give Bonjour a try.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2012/01/16/bonjour-mes-amis/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-12-15T00:00:00-05:00" pubdate data-updated="true">Dec 15<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/">Using HipChat Through an IRC Client With BitlBee</a></h1>
+    
+  </header>
+
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/using-hipchat-through-an-irc-client-with-bitlbee/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+  <div class="entry-content clearfix"><p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal community. Still, IRC ports are often blocked, and not everyone is comfortable using IRC. We&#8217;ve recently been using <a href="http://www.hipchat.com/">HipChat</a> to set up chat rooms for certain new clients.</p>
+
+
+<p></p></p>
+
+<p>I already route most of my AIM and GTalk interaction through an IRC gateway using <a href="http://www.bitlbee.org/">BitlBee</a>, and I wanted to hook HipChat up to an IRC client as well. Here&#8217;s a guide on how to do this.</p>
+
+
+<p></p></p>
+
+<p>(Note that I was having trouble joining channels in my LimeChat last night as I was writing this up, but I might just be missing something. Try it out!)</p>
+
+
+<p></p></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/12/15/using-hipchat-through-an-irc-client-with-bitlbee/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-17T00:00:00-05:00" pubdate data-updated="true">Nov 17<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/17/vagrant-and-nfs/">Vagrant and NFS</a></h1>
+    
+  </header>
+
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/vagrant-and-nfs/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+  <div class="entry-content clearfix"><p>One of the most useful features of Vagrant is that it has the ability to share files with the VMs it manages, which lets your team work with the tools they&rsquo;re used to while still getting the benefits of running the full production stack.</p>
+
+<p>It can share those files from the host (the machine running VirtualBox and Vagrant) to the guest (the virtualized Linux machine) via VirtualBox&rsquo;s built-in file sharing on Mac, Windows, or Linux. When run on Linux or Mac hosts, it can also share files to the guest via NFS.  NFS performs much better for sharing large numbers of files on a Linux or Mac host, which is <a href="http://vagrantup.com/docs/nfs.html">well documented in the excellent Vagrant documentation</a>. In addition, remember that the directory with the Vagrantfile in it will be shared with VirtualBox&rsquo;s built-in file sharing, so we probably don&rsquo;t want to put our docroot right in that directory.</p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/11/17/vagrant-and-nfs/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2011-11-14T00:00:00-05:00" pubdate data-updated="true">Nov 14<span>th</span>, 2011</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/14/drush-phpsh-integration-demonstration/">Drush Phpsh Integration Demonstration</a></h1>
+    
+  </header>
+
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/drush-phpsh-integration-demonstration/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+  <div class="entry-content clearfix"><p>I gave a 5-minute lightning presentation at the October 2011 <a href="http://groups.drupal.org/nyc">Drupal NYC</a> meetup about <a href="http://drupal.org/project/phpsh">Roger Lop&eacute;z&#8217;s phpsh plugin for drush</a>.</p>
+
+
+<p></p></p>
+
+<p><a href="http://phpsh.org/">phpsh</a> is a project by Facebook that provides a much more useful REPL (read-eval-print-loop) environment for PHP, similar to <a href="http://ruby-lang.org/">Ruby</a> or <a href="http://www.scala-lang.org/">Scala</a>. The Drush phpsh plugin adds an easy way to generate ctags for code completion in your phpsh (as well as <a href="http://www.vim.org">your favorite editor</a>) and a way to run a persistent PHP session with a fully bootstrapped Drupal instance. It&#8217;s really useful for testing out APIs.</p>
+
+
+<p></p></p>
+
+<p>If you missed it in person, you can watch the video embedded below.</p>
+
+
+<p></p></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2011/11/14/drush-phpsh-integration-demonstration/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
     </div>
 
     <ul class="pager">
@@ -1063,15 +873,15 @@ I wrote a blog post in which I was really starting</p>
   
   <div id="recent_posts" class="list-group">
     
-    <a class="list-group-item " href="/blog/2020/01/01/template/">Title</a>
-    
     <a class="list-group-item " href="/blog/2014/05/26/combining-tasks-with-grunt/">Combining Tasks With Grunt</a>
     
-    <a class="list-group-item " href="/blog/2014/01/01/ten-lesser-known-things-about-vagrant/">Ten Lesser-Known Things About Vagrant</a>
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
     
-    <a class="list-group-item " href="/blog/2014/01/01/setting-up-your-lionamp-stack/">Setting Up Your L(ion)AMP Stack</a>
+    <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
     
-    <a class="list-group-item " href="/blog/2014/01/01/setting-up-a-lionamp-stack/">Setting Up Your L(ion)AMP Stack</a>
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
     
   </div>
 </section>
@@ -1121,7 +931,7 @@ I wrote a blog post in which I was really starting</p>
     
     
     <a class="list-group-item " href="/blog/categories/drupal/index.html">
-      <span class="badge">18</span>
+      <span class="badge">16</span>
       drupal
     </a>
     
@@ -1249,7 +1059,7 @@ I wrote a blog post in which I was really starting</p>
     
     
     <a class="list-group-item " href="/blog/categories/web-development/index.html">
-      <span class="badge">4</span>
+      <span class="badge">2</span>
       web development
     </a>
     
@@ -1388,14 +1198,6 @@ I wrote a blog post in which I was really starting</p>
     
     
     
-    <a class="list-group-item " href="/blog/categories/varnish/index.html">
-      <span class="badge">2</span>
-      varnish
-    </a>
-    
-    
-    
-    
     
     
     
@@ -1425,7 +1227,7 @@ I wrote a blog post in which I was really starting</p>
     
     
     <a class="list-group-item " href="/blog/categories/vagrant/index.html">
-      <span class="badge">6</span>
+      <span class="badge">5</span>
       vagrant
     </a>
     
@@ -1505,7 +1307,7 @@ I wrote a blog post in which I was really starting</p>
     
     
     <a class="list-group-item " href="/blog/categories/virtualization/index.html">
-      <span class="badge">4</span>
+      <span class="badge">3</span>
       virtualization
     </a>
     
@@ -1528,34 +1330,6 @@ I wrote a blog post in which I was really starting</p>
       <span class="badge">2</span>
       php
     </a>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
