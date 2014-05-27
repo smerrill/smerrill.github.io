@@ -143,9 +143,7 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-<span class='line-number'>16</span>
 </pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
 </span><span class='line'>  <span class="cm">/**</span>
 </span><span class='line'><span class="cm">   * Define &quot;drush&quot; tasks.</span>
 </span><span class='line'><span class="cm">   *</span>
@@ -327,7 +325,7 @@
 
 <p>The answer turned out to be to create a composite task using <code>grunt.registerTask</code> and <code>grunt.task.run</code> that combined the three tasks existing tasks and then use the <code>grunt-newer</code> version of that task. The solution looked much like the following.</p>
 
-<h4>tasks/drush.js</h4>
+<h4>tasks/drushmake.js</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -339,16 +337,32 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;drushmake&#39;</span><span class="p">,</span> <span class="s1">&#39;Delete and create the site folder, run Drush make.&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">task</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="s1">&#39;clean:default&#39;</span><span class="p">,</span> <span class="s1">&#39;mkdir:init&#39;</span><span class="p">,</span> <span class="s1">&#39;drush:make&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="p">});</span>
-</span><span class='line'><span class="nx">grunt</span><span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="s1">&#39;drushmake&#39;</span><span class="p">,</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">default</span> <span class="o">:</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// Add src and dest attributes for grunt-newer.</span>
-</span><span class='line'>    <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;&lt;%= config.srcPaths.make %&gt;&#39;</span><span class="p">,</span>
-</span><span class='line'>    <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;&lt;%= config.buildPaths.html %&gt;&#39;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">});</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="cm">/**</span>
+</span><span class='line'><span class="cm">   * Define &quot;drushmake&quot; tasks.</span>
+</span><span class='line'><span class="cm">   *</span>
+</span><span class='line'><span class="cm">   * grunt drushmake</span>
+</span><span class='line'><span class="cm">   *   Remove the existing site directory, make it again, and run Drush make.</span>
+</span><span class='line'><span class="cm">   */</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;drushmake&#39;</span><span class="p">,</span> <span class="s1">&#39;Erase the site and run Drush make.&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">grunt</span><span class="p">.</span><span class="nx">task</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="s1">&#39;clean:default&#39;</span><span class="p">,</span> <span class="s1">&#39;mkdir:init&#39;</span><span class="p">,</span> <span class="s1">&#39;drush:make&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">config</span><span class="p">(</span><span class="s1">&#39;drushmake&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">default</span> <span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// Add src and dest attributes for grunt-newer.</span>
+</span><span class='line'>      <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;&lt;%= config.srcPaths.make %&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;&lt;%= config.buildPaths.html %&gt;&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
