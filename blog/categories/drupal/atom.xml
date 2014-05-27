@@ -4,7 +4,7 @@
   <title><![CDATA[Category: drupal | Grenade Sandwich]]></title>
   <link href="http://smerrill.github.io/blog/categories/drupal/atom.xml" rel="self"/>
   <link href="http://smerrill.github.io/"/>
-  <updated>2014-05-25T11:05:14-04:00</updated>
+  <updated>2014-05-26T21:41:33-04:00</updated>
   <id>http://smerrill.github.io/</id>
   <author>
     <name><![CDATA[Steven W. Merrill]]></name>
@@ -14,6 +14,266 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Combining tasks with Grunt]]></title>
+    <link href="http://smerrill.github.io/blog/2014/05/26/combining-tasks-with-grunt/"/>
+    <updated>2014-05-26T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2014/05/26/combining-tasks-with-grunt</id>
+    <content type="html"><![CDATA[<p>I was recently asked to help out with a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make.</p>
+
+<p>```javascript
+module.exports = function(grunt) {</p>
+
+<p>  /<em>*
+   * Define &ldquo;drush&rdquo; tasks.
+   *
+   * grunt drush:make
+   *   Builds the Drush make file to the build/html directory.
+   </em>/
+  grunt.loadNpmTasks(&lsquo;grunt-drush&rsquo;);
+  grunt.config(&lsquo;drush&rsquo;, {</p>
+
+<pre><code>make: {
+  args: ['make', '&lt;%= config.srcPaths.make %&gt;'],
+  dest: '&lt;%= config.buildPaths.html %&gt;'
+}
+</code></pre>
+
+<p>  });
+};
+```</p>
+
+<p>In addition, the <code>Gruntfile.js</code> has a <code>clean:default</code> task to remove the built site and a <code>mkdir:init</code> task to make the build/html directory.</p>
+
+<h2>A small change</h2>
+
+<p>In Phase2&rsquo;s standard project build setup using <a href="http://www.phing.info/">Phing</a>, we have a task that will run <a href="http://drush.ws/docs/make.txt">drush make</a> when the make file&rsquo;s modified time is newer than the built site. This allows a user to invoke the build tool and only spend the time doing a <code>drush make</code> if the Makefile has indeed changed.</p>
+
+<p>The setup needed to do this in Phing is verbose XML, but it makes sense: if an index.php file exists and it is newer than the Makefile, don&rsquo;t run <code>drush make</code>. Otherwise, delete the built site and run <code>drush make</code>. The necessary configuration to do this in a Phing build.xml is below.</p>
+
+<p>```xml
+<target name="-drush-make-uptodate" depends="init" hidden="true">
+  <if></p>
+
+<pre><code>&lt;available file="${html}/index.php" /&gt;
+&lt;then&gt;
+  &lt;uptodate property="drush.makefile.uptodate"
+    targetfile="${html}/index.php" srcfile="${drush.makefile}" /&gt;
+&lt;/then&gt;
+</code></pre>
+
+<p>  </if>
+</target></p>
+
+<!-- Use drush make to build (or rebuild) the docroot -->
+
+
+<p><target name="drush-make" depends="-drush-make-uptodate, init" hidden="true" unless="drush.makefile.uptodate">
+  <if></p>
+
+<pre><code>&lt;available file="${html}"/&gt;
+&lt;then&gt;
+  &lt;echo level="info" message="Rebuilding ${html}."/&gt;
+  &lt;delete dir="${html}" failonerror="true"/&gt;
+&lt;/then&gt;
+</code></pre>
+
+<p>  </if></p>
+
+<p>  <exec executable="drush" checkreturn="true" passthru="true" level="info"></p>
+
+<pre><code>&lt;arg value="make"/&gt;
+&lt;arg value="${drush.makefile}"/&gt;
+&lt;arg value="${html}"/&gt;
+</code></pre>
+
+<p>  </exec>
+</target>
+```</p>
+
+<h2>A newer grunt</h2>
+
+<p><a href="https://github.com/tschaub/grunt-newer">The grunt-newer plugin</a> appears to be the proper way to handle this. It creates a new task prefixed with <code>newer:</code> to any other defined tasks. If your task has a <code>src</code> and <code>dest</code> parameter, it will check that <code>src</code> is newer than <code>dest</code> before running the task.</p>
+
+<p>In my first quick testing, I added a spurious src parameter to the <code>drush:make</code> task and then invoked the <code>newer:drush:make</code> task.</p>
+
+<p>```javascript
+grunt.config(&lsquo;drush&rsquo;, {
+  make: {</p>
+
+<pre><code>args: ['make', '&lt;%= config.srcPaths.make %&gt;'],
+src: '&lt;%= config.srcPaths.make %&gt;',
+dest: '&lt;%= config.buildPaths.html %&gt;'
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<p>That modification worked properly in concert with <code>grunt-newer</code> (and the <code>drush</code> task from <code>grunt-drush</code> task didn&rsquo;t complain about the extra <code>src</code> parameter,) but I still also needed to conditionally run the <code>clean:default</code> and <code>mkdir:init</code> only if the Makefile was newer than the built site.</p>
+
+<h2>Synchronized grunting</h2>
+
+<p>The answer turned out to be to create a composite task using <code>grunt.registerTask</code> and <code>grunt.task.run</code> that combined the three tasks existing tasks and then use the <code>grunt-newer</code> version of that task. The solution looked much like the following.</p>
+
+<p><code>javascript
+grunt.registerTask('drushmake', 'Delete and create the site folder, run Drush make.', function() {
+  grunt.task.run('clean:default', 'mkdir:init', 'drush:make');
+});
+</code></p>
+
+<p>I could then invoke <code>newer:drushmake:default</code> in my <code>Gruntfile.js</code> and only delete and rebuild the site when there were changes to the Makefile.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up Your L(ion)AMP Stack]]></title>
+    <link href="http://smerrill.github.io/blog/2014/01/01/setting-up-your-lionamp-stack/"/>
+    <updated>2014-01-01T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2014/01/01/setting-up-your-lionamp-stack</id>
+    <content type="html"><![CDATA[<ol>
+<li>Install XCode (or just gcc)</li>
+<li>Install Homebrew</li>
+<li>Brew up some software</li>
+<li>Make the LAMP brighter</li>
+</ol>
+
+
+<!-- break -->
+
+
+<h2>Install XCode (or just gcc)</h2>
+
+<h2>Install Homebrew</h2>
+
+<h2>Brew up some software</h2>
+
+<h2>Make the LAMP brighter</h2>
+
+<h3>Get MySQL configured</h3>
+
+<p>Edit /etc/my.cnf and put the following in:</p>
+
+<p>```[mysql]</p>
+
+<h1>Packets.</h1>
+
+<p>max_allowed_packet=16m</p>
+
+<p>[mysqld]</p>
+
+<h1>Packets.</h1>
+
+<p>max_allowed_packet=16m</p>
+
+<h1>Wait timeouts.</h1>
+
+<p>innodb_lock_wait_timeout=600
+wait_timeout=600
+connect_timeout=10</p>
+
+<h1>Set this as high as possible. On a dedicated server, 60% &ndash; 80% of machine RAM.</h1>
+
+<p>innodb_buffer_pool_size=512m</p>
+
+<h1>Set this to the number of logical cores you have on the database server.</h1>
+
+<p>innodb_thread_concurrency=4</p>
+
+<h1>Turn this on dynamically with a Jenkins job.</h1>
+
+<p>slow_query_log=OFF</p>
+
+<h1>Max number of connections allowed.</h1>
+
+<p>max_connections=400</p>
+
+<h1>Don&rsquo;t run out of file descriptors!</h1>
+
+<p>open_files_limit=32768</p>
+
+<h1>If you set the query cache too high, your server risks severly slowing down and taking tens of seconds after an INSERT due to query cache mutex contention.</h1>
+
+<p>query_cache_limit=1M
+query_cache_size=32M</p>
+
+<h1>This allows a long-running query to not hit the network for a while and yet not be killed by MySQL.</h1>
+
+<p>net_read_timeout=3600
+net_write_timeout=3600</p>
+
+<h1>This only works with Percona but allows you to pare down which slow queries go to the log.</h1>
+
+<h1>log_slow_filter=tmp_table_on_disk,filesort_on_disk</h1>
+
+<h1>Use InnoDB as the default engine.</h1>
+
+<h1>default_storage_engine = InnoDB</h1>
+
+<h1>default_character_set = utf8</h1>
+
+<h1>collation_server = utf8_general_ci</h1>
+
+<h1>character_set_server = utf8</h1>
+
+<h1>Smaller InnoDB files mean less disk I/O when a new one is created.</h1>
+
+<p>innodb_log_file_size=512m
+innodb_log_buffer_size=64m
+innodb_file_per_table</p>
+
+<h1>Speed up write performance significantly. You risk losing at most 1 or 2 seconds of data in event of a power loss or other catastrophic failure.</h1>
+
+<p>innodb_flush_log_at_trx_commit=0</p>
+
+<h1>Max temp table size in RAM &ndash; larger can be set in application with a per-session SET.</h1>
+
+<p>max_heap_table_size=64m
+tmp_table_size=64m</p>
+
+<h1>Per-session mem settings for sorts, joins, order by etc</h1>
+
+<p>join_buffer_size=2m
+sort_buffer_size=2m
+read_rnd_buffer_size=2m
+read_buffer_size=2m</p>
+
+<h1>Block size inside query cache &ndash; reduce pruning</h1>
+
+<p>query_cache_min_res_unit=1024```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up Your L(ion)AMP Stack]]></title>
+    <link href="http://smerrill.github.io/blog/2014/01/01/setting-up-a-lionamp-stack/"/>
+    <updated>2014-01-01T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2014/01/01/setting-up-a-lionamp-stack</id>
+    <content type="html"><![CDATA[<p>Let&rsquo;s say you have upgraded to OS X Lion and you want to set it up to do web development. (I&rsquo;ll assume that you want to do Drupal web development, but this will get you set up for any LAMP application.) There will be a couple of tweaks you&rsquo;ll want to make to get your Lion purring.</p>
+
+<p>In short, here&rsquo;s what you will need to do:</p>
+
+<ol>
+<li>Install XCode (or gcc)</li>
+<li>Install Homebrew</li>
+<li>Brew Some Software</li>
+<li>Tune Apache</li>
+</ol>
+
+
+<!-- break -->
+
+
+<h2>Install XCode (or gcc)</h2>
+
+<h2>Install Homebrew</h2>
+
+<h2>Brew Some Software</h2>
+
+<h2>Tune Apache</h2>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Testing Drupal with Ghosts and Gherkins at DrupalCampNJ]]></title>
     <link href="http://smerrill.github.io/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/"/>
     <updated>2013-02-04T00:00:00-05:00</updated>
@@ -133,177 +393,6 @@
 <p></p></p>
 
 <p>Finally, our set of Drupal-based Behat and Mink step definitions are released as Open Source on GitHub at <a href="https://github.com/phase2/behat-drupal-extension">github.com/phase2/behat-drupal-extension</a>.</p>
-
-
-<p></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash]]></title>
-    <link href="http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/"/>
-    <updated>2012-05-31T00:00:00-04:00</updated>
-    <id>http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash</id>
-    <content type="html"><![CDATA[<p>Wouldn't it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p>
-
-
-<p></p></p>
-
-<p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that's one fewer step you have to perform to have all the docs that matter to you in Dash.</p>
-
-
-<p></p></p>
-
-<!--more-->
-
-
-
-
-<p>There's a free as in beer application called Dash (available on the Mac App Store at <a href="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12" title="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12">http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12</a>) available for Mac OS X. Dash is a nice-looking documentation browser featuring several useful features, such as the ability to query it with a custom URL string (dash://YOURQUERY), which lends itself for use in tools like Alfred.</p>
-
-
-<p></p></p>
-
-<p>Dash can also download additional documentation sets for many open source technologies, including MySQL, PHP, and jQuery. It can be handy to search through the latest PHP API documentation no matter what kind of connection you're on, like so:</p>
-
-
-<br />
-
-
-<p><a href="https://skitch.com/00sven/87u7b/dash-documentation"><img src="https://img.skitch.com/20120530-ttupxms7g3b48xep9yu3qk8rs2.medium.jpg" alt="Dash - Documentation" /></a></p></p>
-
-<p>In addition, Dash also has the ability to browse any API documentation that you have installed through XCode onto your system. (In fact, any files in DocSet format that are located inside the ~/Library/Developer/Shared/Documentation/DocSets directory can be read by Dash.)</p>
-
-
-<p></p></p>
-
-<p>In addition to the freely available DocSets that are available for major open-source technologies, it's easy to make your own DocSets using doxygen. I went ahead and made a DocSet for Drupal 7.x using doxygen. Not every method that's available at api.drupal.org is here, but it's a great start, especially if you want a single offline app where you can query offline documentation.</p>
-
-
-<p></p></p>
-
-<p>To start using the Drupal DocSet, download the .tgz file from <a href="https://github.com/phase2/drupal-docset/zipball/master" title="https://github.com/phase2/drupal-docset/zipball/master">https://github.com/phase2/drupal-docset/zipball/master</a>. To use it:</p>
-
-
-<p></p></p>
-
-<ol>
-<li>Unzip the file</li>
-<li>Move org.drupal.docset to ~/Library/Developer/Shared/Documentation/DocSets/</li>
-<li>Launch Dash and start searching, like so.</li><br />
-</ol>
-
-
-<br />
-
-
-<p><a href="https://skitch.com/00sven/87u44/dash-documentation"><img src="https://img.skitch.com/20120530-rrgw89tfht2g7ie3ejys98xssr.medium.jpg" alt="Dash - Documentation" /></a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac with Dash]]></title>
-    <link href="http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/"/>
-    <updated>2012-05-31T00:00:00-04:00</updated>
-    <id>http://smerrill.github.io/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash</id>
-    <content type="html"><![CDATA[<p>Wouldn't it be great if there was an easy way to access php.net or other documentation offline or on a plane?</p>
-
-
-<p></p></p>
-
-<p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important updates came out that change the usefulness of this blog post. Dash is now ad-supported, and secondly, it ships with a Drupal DocSet available for download, so that's one fewer step you have to perform to have all the docs that matter to you in Dash.</p>
-
-
-<p></p></p>
-
-<!--more-->
-
-
-
-
-<p>There's a free as in beer application called Dash (available on the Mac App Store at <a href="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12" title="http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12">http://itunes.apple.com/us/app/dash/id458034879?ls=1&mt=12</a>) available for Mac OS X. Dash is a nice-looking documentation browser featuring several useful features, such as the ability to query it with a custom URL string (dash://YOURQUERY), which lends itself for use in tools like Alfred.</p>
-
-
-<p></p></p>
-
-<p>Dash can also download additional documentation sets for many open source technologies, including MySQL, PHP, and jQuery. It can be handy to search through the latest PHP API documentation no matter what kind of connection you're on, like so:</p>
-
-
-<br />
-
-
-<p><a href="https://skitch.com/00sven/87u7b/dash-documentation"><img src="https://img.skitch.com/20120530-ttupxms7g3b48xep9yu3qk8rs2.medium.jpg" alt="Dash - Documentation" /></a></p></p>
-
-<p>In addition, Dash also has the ability to browse any API documentation that you have installed through XCode onto your system. (In fact, any files in DocSet format that are located inside the ~/Library/Developer/Shared/Documentation/DocSets directory can be read by Dash.)</p>
-
-
-<p></p></p>
-
-<p>In addition to the freely available DocSets that are available for major open-source technologies, it's easy to make your own DocSets using doxygen. I went ahead and made a DocSet for Drupal 7.x using doxygen. Not every method that's available at api.drupal.org is here, but it's a great start, especially if you want a single offline app where you can query offline documentation.</p>
-
-
-<p></p></p>
-
-<p>To start using the Drupal DocSet, download the .tgz file from <a href="https://github.com/phase2/drupal-docset/zipball/master" title="https://github.com/phase2/drupal-docset/zipball/master">https://github.com/phase2/drupal-docset/zipball/master</a>. To use it:</p>
-
-
-<p></p></p>
-
-<ol>
-<li>Unzip the file</li>
-<li>Move org.drupal.docset to ~/Library/Developer/Shared/Documentation/DocSets/</li>
-<li>Launch Dash and start searching, like so.</li><br />
-</ol>
-
-
-<br />
-
-
-<p><a href="https://skitch.com/00sven/87u44/dash-documentation"><img src="https://img.skitch.com/20120530-rrgw89tfht2g7ie3ejys98xssr.medium.jpg" alt="Dash - Documentation" /></a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Coat Your Website with Varnish at DrupalCamp MD]]></title>
-    <link href="http://smerrill.github.io/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/"/>
-    <updated>2012-02-10T00:00:00-05:00</updated>
-    <id>http://smerrill.github.io/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md</id>
-    <content type="html"><![CDATA[<p>The Drupal community is exploding! I've had the pleasure to speak at two nascent Drupal camps (<a href="http://www.drupalcampnj.org/">New Jersey</a> and <a href="http://drupalcampmd.org/">Maryland</a>) in as many weeks.</p>
-
-
-<p></p></p>
-
-<p>Today I gave a revamped version of my <a href="http://drupalcampmd.org/sessions/coat-your-website-varnish">"Coat Your Website with Varnish" session at DrupalCamp MD</a>. I updated some of the information about Drupal configuration and an overview section going over some of the basics of headers and caching.</p>
-
-
-<p></p></p>
-
-<p>The entire presentation is embedded below and is also available <a href="http://prezi.com/lgk2q71ez9iv/coat-your-website-in-varnish-maryland/">on Prezi.com</a>.</p>
-
-
-<p></p></p>
-
-<!--more-->
-
-
-
-
-<div class="prezi-player">
-<style type="text/css" media="screen">.prezi-player { width: 550px; } .prezi-player-links { text-align: center; }</style><object id="prezi_lgk2q71ez9iv" name="prezi_lgk2q71ez9iv" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="550" height="400"><param name="movie" value="http://prezi.com/bin/preziloader.swf"/><param name="allowfullscreen" value="true"/><param name="allowscriptaccess" value="always"/><param name="bgcolor" value="#ffffff"/><param name="flashvars" value="prezi_id=lgk2q71ez9iv&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"/><embed id="preziEmbed_lgk2q71ez9iv" name="preziEmbed_lgk2q71ez9iv" src="http://prezi.com/bin/preziloader.swf" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="550" height="400" bgcolor="#ffffff" flashvars="prezi_id=lgk2q71ez9iv&lock_to_path=0&color=ffffff&autoplay=no&autohide_ctrls=0"></embed></object>
-<div class="prezi-player-links">
-<p><a title="Coat Your Website in Varnish Maryland" href="http://prezi.com/lgk2q71ez9iv/coat-your-website-in-varnish-maryland/">Coat Your Website in Varnish Maryland</a> on <a href="http://prezi.com">Prezi</a></p><br />
-</div><br />
-</div>
-
-
-<p></p></p>
-
-<p>In addition, if you'd like to get hands-on experience with a number of techniques to make your Drupal site perform like a champion, I'm honored to be co-presenting the <a href="http://denver2012.drupal.org/content/drupal-performance-and-scalability">Drupal Performance and Scalability training</a> alongside <a href="http://denver2012.drupal.org/users/msonnabaum">Mark Sonnabaum from Acquia</a> and <a href="http://drupal.org/user/35821">Nate Haug from Lullabot</a>!</p>
-
-
-<p></p></p>
-
-<p>See you in Denver, and until then, Varnish <u>all</u> the things!</p>
 
 
 <p></p></p>

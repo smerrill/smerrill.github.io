@@ -4,7 +4,7 @@
   <title><![CDATA[Category: virtualization | Grenade Sandwich]]></title>
   <link href="http://smerrill.github.io/blog/categories/virtualization/atom.xml" rel="self"/>
   <link href="http://smerrill.github.io/"/>
-  <updated>2014-05-25T11:05:14-04:00</updated>
+  <updated>2014-05-26T21:41:33-04:00</updated>
   <id>http://smerrill.github.io/</id>
   <author>
     <name><![CDATA[Steven W. Merrill]]></name>
@@ -12,6 +12,110 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ten Lesser-Known Things About Vagrant]]></title>
+    <link href="http://smerrill.github.io/blog/2014/01/01/ten-lesser-known-things-about-vagrant/"/>
+    <updated>2014-01-01T00:00:00-05:00</updated>
+    <id>http://smerrill.github.io/blog/2014/01/01/ten-lesser-known-things-about-vagrant</id>
+    <content type="html"><![CDATA[<p>I&rsquo;m a huge fan of <a href="http://www.vagrantup.com">Vagrant</a>, a framework for virtualized development environments. We use Vagrant at <a href="http://www.phase2technology.com">Phase2 Technology</a> to model clients' hosting environments and to develop Puppet manifests in a testing environment before they even hit the production hosting environment.
+I&rsquo;ve had the opportunity recently to sit in #vagrant on Freenode and answer some questions. The #vagrant channel is interesting because the questions end up being a mix of questions on many different topics, but throughout many of them, I&rsquo;ve noticed several things that are generally not well understood, and I thought I&rsquo;d answer them.</p>
+
+<!-- break -->
+
+
+<p>Since Vagrant is a framework for automating VirtualBox to create local development environments using Linux machines that are provisioned (generally) with a configuration management tool, the following topics all come up in #vagrant:</p>
+
+<ul>
+<li>Linux system administration</li>
+<li><a href="http://www.opscode.com/chef/">Chef</a></li>
+<li><a href="http://www.puppetlabs.com">Puppet</a></li>
+<li><a href="https://www.virtualbox.org">VirtualBox</a></li>
+<li><a href="https://github.com/jedi4ever/veewee">Veewee</a></li>
+</ul>
+
+
+<p>Here are 8 facts about Vagrant that are not widely known about Vagrant.</p>
+
+<h2>1. The eth0 interface on a VM is a NAT interface and Vagrant runs commands over it</h2>
+
+<h2>2. You can give a Vagrant VM an address on your local network (with some caveats)</h2>
+
+<h2>3. Host-only networking lets you access the guest from the host</h2>
+
+<ul>
+<li>Explain difference vs port forwarding</li>
+<li>Try and point out vagrant-hostmaster</li>
+<li>Explain that iptables can thwart this</li>
+</ul>
+
+
+<h2>4. You can re-run your provisioners without rebooting</h2>
+
+<ul>
+<li><code>vagrant provision</code></li>
+<li>The provisioners run in order</li>
+<li><code>vagrant reload</code> vs <code>vagrant provision</code></li>
+</ul>
+
+
+<h2>5. Public Vagrant boxes use a public keypair (be careful!)</h2>
+
+<h2>6. Vagrant&rsquo;s box management keeps pristine copies of boxes for you</h2>
+
+<h2>7. Moving and cloning your Vagrant projects</h2>
+
+<ul>
+<li>The <code>.vagrant</code> file and how it tracks VMs</li>
+</ul>
+
+
+<h2>8. You can use the VirtualBox CLI to manage your machines</h2>
+
+<ul>
+<li>A quick <code>VBoxManage</code> primer</li>
+<li>Hard stopping a VM</li>
+<li>Stopping a VM after you delete a Vagrantfile</li>
+</ul>
+
+
+<h2>9. Vagrant runs pretty much everywhere</h2>
+
+<p>This shouldn&rsquo;t really come as a surprise to anyone, but every time I try out a new platform, Vagrant works flawlessly. This is a tribute to VirtualBox: although it has its warts, it runs pretty much everywhere. Mitchell also has to work around various VirtualBox bugs on <a href="https://github.com/mitchellh/vagrant/commit/e367a8cfd6ecd3b194ab694eea948dfd891b76b9">certain versions of OS X</a> <a href="https://github.com/mitchellh/vagrant/commit/6323a8efd433e6e340a262e89fa3aba86f2e9d4f">and on Windows</a>, so the fact that this all just works transparently is pretty awesome.</p>
+
+<p>Any time I set up a new system, one of the first things I do is set up VirtualBox and see if Vagrant can run on it.  Here&rsquo;s a full list of systems that I have used as a Vagrant host:</p>
+
+<ul>
+<li>OS X 10.6 with NFS</li>
+<li>OS X 10.7 with NFS</li>
+<li>Ubuntu 12.04 with NFS</li>
+<li>Ubuntu 12.10 with NFS</li>
+<li>Fedora 17 with NFS</li>
+<li><ul>
+<li>I helped <a href="https://github.com/mitchellh/vagrant/pull/1140">with a patch to make NFS work on Fedora 16+</a>)</li>
+</ul>
+</li>
+<li>Arch Linux with NFS</li>
+<li>OmniOS</li>
+<li><ul>
+<li>I <a href="http://grenadesandwich.com/blog/steven/2012/09/23/omnios-vagrant/">blogged my experience trying this out</a>, and it sounds like <a href="http://omniti.com/">OmniTI</a> is going to make some packages for VirtualBox and Vagrant soon. I am utterly unfamiliar with Illumos/OpenSolaris, so there&rsquo;s probably some work needed here, like an Illumos host class.</li>
+</ul>
+</li>
+<li>Windows 7</li>
+<li><ul>
+<li>Before I reformatted a netbook to Linux, I tried out Vagrant 1.0.5 with Cygwin, and everything worked smoothly.</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>10. Vagrant is not (yet) ready to use non-VirtualBox hypervisors yet</h2>
+
+<p>I&rsquo;m including this as a quick way to end this post. Several people have popped into #vagrant and said, &ldquo;I read that Vagrant supports VMWare, or that it will soon!&rdquo;</p>
+
+<p>It is true that the master branch of the Vagrant repository contains code that aims to decouple Vagrant from VirtualBox, but there&rsquo;s not a firm timeline on when other providers will be ready to use. (In addition, running the code on master will reformat your Vagrantfiles, so you&rsquo;ll want to set up a new user to test this.)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OmniOS and Vagrant]]></title>

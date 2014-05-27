@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: build tools | Grenade Sandwich]]></title>
+  <link href="http://smerrill.github.io/blog/categories/build-tools/atom.xml" rel="self"/>
+  <link href="http://smerrill.github.io/"/>
+  <updated>2014-05-26T21:41:33-04:00</updated>
+  <id>http://smerrill.github.io/</id>
+  <author>
+    <name><![CDATA[Steven W. Merrill]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Combining tasks with Grunt]]></title>
+    <link href="http://smerrill.github.io/blog/2014/05/26/combining-tasks-with-grunt/"/>
+    <updated>2014-05-26T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2014/05/26/combining-tasks-with-grunt</id>
+    <content type="html"><![CDATA[<p>I was recently asked to help out with a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make.</p>
+
+<p>```javascript
+module.exports = function(grunt) {</p>
+
+<p>  /<em>*
+   * Define &ldquo;drush&rdquo; tasks.
+   *
+   * grunt drush:make
+   *   Builds the Drush make file to the build/html directory.
+   </em>/
+  grunt.loadNpmTasks(&lsquo;grunt-drush&rsquo;);
+  grunt.config(&lsquo;drush&rsquo;, {</p>
+
+<pre><code>make: {
+  args: ['make', '&lt;%= config.srcPaths.make %&gt;'],
+  dest: '&lt;%= config.buildPaths.html %&gt;'
+}
+</code></pre>
+
+<p>  });
+};
+```</p>
+
+<p>In addition, the <code>Gruntfile.js</code> has a <code>clean:default</code> task to remove the built site and a <code>mkdir:init</code> task to make the build/html directory.</p>
+
+<h2>A small change</h2>
+
+<p>In Phase2&rsquo;s standard project build setup using <a href="http://www.phing.info/">Phing</a>, we have a task that will run <a href="http://drush.ws/docs/make.txt">drush make</a> when the make file&rsquo;s modified time is newer than the built site. This allows a user to invoke the build tool and only spend the time doing a <code>drush make</code> if the Makefile has indeed changed.</p>
+
+<p>The setup needed to do this in Phing is verbose XML, but it makes sense: if an index.php file exists and it is newer than the Makefile, don&rsquo;t run <code>drush make</code>. Otherwise, delete the built site and run <code>drush make</code>. The necessary configuration to do this in a Phing build.xml is below.</p>
+
+<p>```xml
+<target name="-drush-make-uptodate" depends="init" hidden="true">
+  <if></p>
+
+<pre><code>&lt;available file="${html}/index.php" /&gt;
+&lt;then&gt;
+  &lt;uptodate property="drush.makefile.uptodate"
+    targetfile="${html}/index.php" srcfile="${drush.makefile}" /&gt;
+&lt;/then&gt;
+</code></pre>
+
+<p>  </if>
+</target></p>
+
+<!-- Use drush make to build (or rebuild) the docroot -->
+
+
+<p><target name="drush-make" depends="-drush-make-uptodate, init" hidden="true" unless="drush.makefile.uptodate">
+  <if></p>
+
+<pre><code>&lt;available file="${html}"/&gt;
+&lt;then&gt;
+  &lt;echo level="info" message="Rebuilding ${html}."/&gt;
+  &lt;delete dir="${html}" failonerror="true"/&gt;
+&lt;/then&gt;
+</code></pre>
+
+<p>  </if></p>
+
+<p>  <exec executable="drush" checkreturn="true" passthru="true" level="info"></p>
+
+<pre><code>&lt;arg value="make"/&gt;
+&lt;arg value="${drush.makefile}"/&gt;
+&lt;arg value="${html}"/&gt;
+</code></pre>
+
+<p>  </exec>
+</target>
+```</p>
+
+<h2>A newer grunt</h2>
+
+<p><a href="https://github.com/tschaub/grunt-newer">The grunt-newer plugin</a> appears to be the proper way to handle this. It creates a new task prefixed with <code>newer:</code> to any other defined tasks. If your task has a <code>src</code> and <code>dest</code> parameter, it will check that <code>src</code> is newer than <code>dest</code> before running the task.</p>
+
+<p>In my first quick testing, I added a spurious src parameter to the <code>drush:make</code> task and then invoked the <code>newer:drush:make</code> task.</p>
+
+<p>```javascript
+grunt.config(&lsquo;drush&rsquo;, {
+  make: {</p>
+
+<pre><code>args: ['make', '&lt;%= config.srcPaths.make %&gt;'],
+src: '&lt;%= config.srcPaths.make %&gt;',
+dest: '&lt;%= config.buildPaths.html %&gt;'
+</code></pre>
+
+<p>  }
+});
+```</p>
+
+<p>That modification worked properly in concert with <code>grunt-newer</code> (and the <code>drush</code> task from <code>grunt-drush</code> task didn&rsquo;t complain about the extra <code>src</code> parameter,) but I still also needed to conditionally run the <code>clean:default</code> and <code>mkdir:init</code> only if the Makefile was newer than the built site.</p>
+
+<h2>Synchronized grunting</h2>
+
+<p>The answer turned out to be to create a composite task using <code>grunt.registerTask</code> and <code>grunt.task.run</code> that combined the three tasks existing tasks and then use the <code>grunt-newer</code> version of that task. The solution looked much like the following.</p>
+
+<p><code>javascript
+grunt.registerTask('drushmake', 'Delete and create the site folder, run Drush make.', function() {
+  grunt.task.run('clean:default', 'mkdir:init', 'drush:make');
+});
+</code></p>
+
+<p>I could then invoke <code>newer:drushmake:default</code> in my <code>Gruntfile.js</code> and only delete and rebuild the site when there were changes to the Makefile.</p>
+]]></content>
+  </entry>
+  
+</feed>
