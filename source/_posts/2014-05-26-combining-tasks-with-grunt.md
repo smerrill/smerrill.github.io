@@ -35,13 +35,12 @@ module.exports = function(grunt) {
 };
 ```
 
-You can see that the task contains a few instances of _variable interpolation_, such as `<%= config.srcPaths.make %>`. By convention, the values of these variables go in a file called `Gruntconfig.json` file and are set using the `grunt.initConfig` method. In addition, the configuration for the **default** task lives in a file called `Gruntfile.js`. I have put trimmed examples of each below.
+You can see that the task contains a few instances of _variable interpolation_, such as `<%= config.srcPaths.make %>`. By convention, the values of these variables go in a file called `Gruntconfig.json` and are set using the `grunt.initConfig` method. In addition, the configuration for the **default** task lives in a file called `Gruntfile.js`. I have put trimmed examples of each below.
 
 #### Gruntfile.js
 
 ```javascript
 module.exports = function(grunt) {
-
   // Initialize global configuration variables.
   var config = grunt.file.readJSON('Gruntconfig.json');
   grunt.initConfig({
@@ -66,7 +65,7 @@ module.exports = function(grunt) {
 ```javascript
 {
   "srcPaths": {
-    "make": "src/mti_cms.make"
+    "make": "src/project.make"
   },
   "buildPaths": {
     "build": "build",
@@ -79,7 +78,7 @@ As you can see, the project's `Gruntfile.js` also has a `clean:default` task to 
 
 ## A small change
 
-In Phase2's standard project build setup using [Phing](http://www.phing.info/), we have a task that will run [drush make](http://drush.ws/docs/make.txt) when the make file's modified time is newer than the built site. This allows a user to invoke the build tool and only spend the time doing a `drush make` if the Makefile has indeed changed.
+In Phase2's build setup using [Phing](http://www.phing.info/) we have a task that will run [drush make](http://drush.ws/docs/make.txt) when the Makefile's modified time is newer than the built site. This allows a user to invoke the build tool and only spend the time doing a `drush make` if the Makefile has indeed changed.
 
 The setup needed to do this in Phing is configured in XML: if an index.php file exists and it is newer than the Makefile, don't run `drush make`. Otherwise, delete the built site and run `drush make`. The necessary configuration to do this in a Phing build.xml is below.
 
@@ -139,10 +138,20 @@ That modification worked properly in concert with `grunt-newer` (and the `drush`
 
 The answer turned out to be to create a composite task using `grunt.registerTask` and `grunt.task.run` that combined the three tasks existing tasks and then use the `grunt-newer` version of that task. The solution looked much like the following.
 
+#### tasks/drush.js
+
 ```javascript
 grunt.registerTask('drushmake', 'Delete and create the site folder, run Drush make.', function() {
   grunt.task.run('clean:default', 'mkdir:init', 'drush:make');
 });
+grunt.config('drushmake', {
+  default : {
+    // Add src and dest attributes for grunt-newer.
+    src: '<%= config.srcPaths.make %>',
+    dest: '<%= config.buildPaths.html %>'
+  }
+});
+
 ```
 
 I could then invoke `newer:drushmake:default` in my `Gruntfile.js` and only delete and rebuild the site when there were changes to the Makefile.
