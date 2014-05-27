@@ -122,6 +122,10 @@
   </header>
 
 
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/blog/combining-tasks-with-grunt/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
 
 
 <div class="entry-content clearfix"><p>I was recently asked to help out with a few build steps for a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make. This task in included in a file under the tasks directory in the main repository.</p>
@@ -159,6 +163,11 @@
 </span><span class='line'>  <span class="p">});</span>
 </span><span class='line'><span class="p">};</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<!--more-->
 
 
 <p>You can see that the task contains a few instances of <em>variable interpolation</em>, such as <code>&lt;%= config.srcPaths.make %&gt;</code>. By convention, the values of these variables go in a file called <code>Gruntconfig.json</code> and are set using the <code>grunt.initConfig</code> method. In addition, the configuration for the <strong>default</strong> task lives in a file called <code>Gruntfile.js</code>. I have put trimmed examples of each below.</p>
