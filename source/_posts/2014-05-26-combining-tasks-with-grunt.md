@@ -1,3 +1,17 @@
+---
+layout: post
+status: publish
+published: true
+title: Combining tasks with Grunt
+categories:
+- phing
+- gruntjs
+- drupal
+- drush make
+- build tools
+comments: []
+---
+
 I was recently asked to help out with a Drupal project using [Grunt](http://gruntjs.com/) as its build system. The project's `Gruntfile.js` has a `drush:make` task that utilizes [the grunt-drush package](https://github.com/nickpack/grunt-drush) to run Drush make.
 
 ```javascript
