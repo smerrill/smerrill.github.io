@@ -10,6 +10,7 @@ categories:
   - drush make
   - build tools
 comments: []
+wordpress_url: http://www.phase2technology.com/blog/combining-tasks-with-grunt/
 ---
 
 I was recently asked to help out with a few build steps for a Drupal project using [Grunt](http://gruntjs.com/) as its build system. The project's `Gruntfile.js` has a `drush:make` task that utilizes [the grunt-drush package](https://github.com/nickpack/grunt-drush) to run Drush make. This task in included in a file under the tasks directory in the main repository.
@@ -33,6 +34,8 @@ module.exports = function(grunt) {
   });
 };
 ```
+
+<!--more-->
 
 You can see that the task contains a few instances of _variable interpolation_, such as `<%= config.srcPaths.make %>`. By convention, the values of these variables go in a file called `Gruntconfig.json` and are set using the `grunt.initConfig` method. In addition, the configuration for the **default** task lives in a file called `Gruntfile.js`. I have put trimmed examples of each below.
 
