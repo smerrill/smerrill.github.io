@@ -14,7 +14,7 @@ comments: []
 
 I was recently asked to help out with a few build steps for a Drupal project using [Grunt](http://gruntjs.com/) as its build system. The project's `Gruntfile.js` has a `drush:make` task that utilizes [the grunt-drush package](https://github.com/nickpack/grunt-drush) to run Drush make. This task in included in a file under the tasks directory in the main repository.
 
-###### tasks/drush.js
+#### tasks/drush.js
 
 ```javascript
 module.exports = function(grunt) {
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 
 You can see that the task contains a few instances of _variable interpolation_, such as `<%= config.srcPaths.make %>`. By convention, the values of these variables go in a file called `Gruntconfig.json` file and are set using the `grunt.initConfig` method. In addition, the configuration for the **default** task lives in a file called `Gruntfile.js`. I have put trimmed examples of each below.
 
-###### Gruntfile.js
+#### Gruntfile.js
 
 ```javascript
 module.exports = function(grunt) {
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 };
 ```
 
-###### Gruntconfig.json
+#### Gruntconfig.json
 
 ```javascript
 {
@@ -83,7 +83,7 @@ In Phase2's standard project build setup using [Phing](http://www.phing.info/), 
 
 The setup needed to do this in Phing is configured in XML: if an index.php file exists and it is newer than the Makefile, don't run `drush make`. Otherwise, delete the built site and run `drush make`. The necessary configuration to do this in a Phing build.xml is below.
 
-###### build.xml
+#### build.xml
 
 ```xml
 <target name="-drush-make-uptodate" depends="init" hidden="true">
