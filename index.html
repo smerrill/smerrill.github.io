@@ -171,7 +171,9 @@
 
 
 
-  <div class="entry-content clearfix"><p>I was recently asked to help out with a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make.</p>
+  <div class="entry-content clearfix"><p>I was recently asked to help out with a few build steps for a Drupal project using <a href="http://gruntjs.com/">Grunt</a> as its build system. The project&rsquo;s <code>Gruntfile.js</code> has a <code>drush:make</code> task that utilizes <a href="https://github.com/nickpack/grunt-drush">the grunt-drush package</a> to run Drush make. This task in included in a file under the tasks directory in the main repository.</p>
+
+<h6>tasks/drush.js</h6>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -208,13 +210,83 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>In addition, the <code>Gruntfile.js</code> has a <code>clean:default</code> task to remove the built site and a <code>mkdir:init</code> task to make the build/html directory.</p>
+<p>You can see that the task contains a few instances of <em>variable interpolation</em>, such as <code>&lt;%= config.srcPaths.make %&gt;</code>. By convention, the values of these variables go in a file called <code>Gruntconfig.json</code> file and are set using the <code>grunt.initConfig</code> method. In addition, the configuration for the <strong>default</strong> task lives in a file called <code>Gruntfile.js</code>. I have put trimmed examples of each below.</p>
+
+<h6>Gruntfile.js</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Initialize global configuration variables.</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">readJSON</span><span class="p">(</span><span class="s1">&#39;Gruntconfig.json&#39;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+</span><span class='line'>    <span class="nx">config</span><span class="o">:</span> <span class="nx">config</span>
+</span><span class='line'>  <span class="p">});</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Load all included tasks.</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadTasks</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/tasks&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Define the default task to fully build and configure the project.</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">tasksDefault</span> <span class="o">=</span> <span class="p">[</span>
+</span><span class='line'>    <span class="s1">&#39;clean:default&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;mkdir:init&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;drush:make&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">];</span>
+</span><span class='line'>  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="nx">tasksDefault</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>Gruntconfig.json</h6>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="s2">&quot;srcPaths&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;make&quot;</span><span class="o">:</span> <span class="s2">&quot;src/mti_cms.make&quot;</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>  <span class="s2">&quot;buildPaths&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;build&quot;</span><span class="o">:</span> <span class="s2">&quot;build&quot;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s2">&quot;html&quot;</span><span class="o">:</span> <span class="s2">&quot;build/html&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see, the project&rsquo;s <code>Gruntfile.js</code> also has a <code>clean:default</code> task to remove the built site and a <code>mkdir:init</code> task to make the build/html directory, and the three tasks are combined with <code>grunt.registerTask</code> to make the <strong>default</strong> task which will be run when you invoke <code>grunt</code> with no arguments.</p>
 
 <h2>A small change</h2>
 
 <p>In Phase2&rsquo;s standard project build setup using <a href="http://www.phing.info/">Phing</a>, we have a task that will run <a href="http://drush.ws/docs/make.txt">drush make</a> when the make file&rsquo;s modified time is newer than the built site. This allows a user to invoke the build tool and only spend the time doing a <code>drush make</code> if the Makefile has indeed changed.</p>
 
-<p>The setup needed to do this in Phing is verbose XML, but it makes sense: if an index.php file exists and it is newer than the Makefile, don&rsquo;t run <code>drush make</code>. Otherwise, delete the built site and run <code>drush make</code>. The necessary configuration to do this in a Phing build.xml is below.</p>
+<p>The setup needed to do this in Phing is configured in XML: if an index.php file exists and it is newer than the Makefile, don&rsquo;t run <code>drush make</code>. Otherwise, delete the built site and run <code>drush make</code>. The necessary configuration to do this in a Phing build.xml is below.</p>
+
+<h6>build.xml</h6>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -242,6 +314,7 @@
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
+<span class='line-number'>27</span>
 </pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;-drush-make-uptodate&quot;</span> <span class="na">depends=</span><span class="s">&quot;init&quot;</span> <span class="na">hidden=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;if&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;available</span> <span class="na">file=</span><span class="s">&quot;${html}/index.php&quot;</span> <span class="nt">/&gt;</span>
@@ -253,7 +326,8 @@
 </span><span class='line'><span class="nt">&lt;/target&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="c">&lt;!-- Use drush make to build (or rebuild) the docroot --&gt;</span>
-</span><span class='line'><span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;drush-make&quot;</span> <span class="na">depends=</span><span class="s">&quot;-drush-make-uptodate, init&quot;</span> <span class="na">hidden=</span><span class="s">&quot;true&quot;</span> <span class="na">unless=</span><span class="s">&quot;drush.makefile.uptodate&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;target</span> <span class="na">name=</span><span class="s">&quot;drush-make&quot;</span> <span class="na">depends=</span><span class="s">&quot;-drush-make-uptodate, init&quot;</span>
+</span><span class='line'>  <span class="na">hidden=</span><span class="s">&quot;true&quot;</span> <span class="na">unless=</span><span class="s">&quot;drush.makefile.uptodate&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;if&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;available</span> <span class="na">file=</span><span class="s">&quot;${html}&quot;</span><span class="nt">/&gt;</span>
 </span><span class='line'>    <span class="nt">&lt;then&gt;</span>
@@ -270,6 +344,8 @@
 </span><span class='line'><span class="nt">&lt;/target&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>You&rsquo;ll note that Phing also uses variable interpolation. The syntax, <code>${html}</code>, is similar to regular PHP string interpolation. By convention, parameters for a Phing build live in a <code>build.properties</code> file.</p>
 
 <h2>A newer grunt</h2>
 
