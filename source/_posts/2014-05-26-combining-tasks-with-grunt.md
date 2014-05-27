@@ -18,7 +18,6 @@ I was recently asked to help out with a few build steps for a Drupal project usi
 
 ```javascript
 module.exports = function(grunt) {
-
   /**
    * Define "drush" tasks.
    *
@@ -138,20 +137,27 @@ That modification worked properly in concert with `grunt-newer` (and the `drush`
 
 The answer turned out to be to create a composite task using `grunt.registerTask` and `grunt.task.run` that combined the three tasks existing tasks and then use the `grunt-newer` version of that task. The solution looked much like the following.
 
-#### tasks/drush.js
+#### tasks/drushmake.js
 
 ```javascript
-grunt.registerTask('drushmake', 'Delete and create the site folder, run Drush make.', function() {
-  grunt.task.run('clean:default', 'mkdir:init', 'drush:make');
-});
-grunt.config('drushmake', {
-  default : {
-    // Add src and dest attributes for grunt-newer.
-    src: '<%= config.srcPaths.make %>',
-    dest: '<%= config.buildPaths.html %>'
-  }
-});
-
+module.exports = function(grunt) {
+  /**
+   * Define "drushmake" tasks.
+   *
+   * grunt drushmake
+   *   Remove the existing site directory, make it again, and run Drush make.
+   */
+  grunt.registerTask('drushmake', 'Erase the site and run Drush make.', function() {
+    grunt.task.run('clean:default', 'mkdir:init', 'drush:make');
+  });
+  grunt.config('drushmake', {
+    default : {
+      // Add src and dest attributes for grunt-newer.
+      src: '<%= config.srcPaths.make %>',
+      dest: '<%= config.buildPaths.html %>'
+    }
+  });
+}
 ```
 
 I could then invoke `newer:drushmake:default` in my `Gruntfile.js` and only delete and rebuild the site when there were changes to the Makefile.
