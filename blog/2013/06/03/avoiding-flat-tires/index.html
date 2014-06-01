@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Avoiding Flat Tires in Your Web Application - Grenade Sandwich</title>
+  <meta name="author" content="Steven W. Merrill">
+
+  
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://smerrill.github.io/blog/2013/06/03/avoiding-flat-tires">
+  <link href="/favicon.png" type="image/png" rel="icon">
+  <link href="/atom.xml" rel="alternate" title="Grenade Sandwich" type="application/atom+xml">
+
+  <!-- Fira stylesheet -->
+<link href="/assets/fonts/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="/javascripts/libs/bootstrap-3.0.0/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"> -->
+<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/readable/bootstrap.min.css" rel="stylesheet" type="text/css">
+<!--<link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/journal/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+<!-- Awesome font. -->
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+  <script src="/javascripts/libs/jquery/jquery-2.0.3.min.js"></script>
+  
+
+</head>
+
+  <body   >
+    <div id="wrap">
+      <header role="banner">
+        <nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <strong>
+              <a class="navbar-brand" href="/">Grenade Sandwich</a>
+            </strong>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="/">Blog</a>
+                </li>
+                <li >
+                    <a href="/blog/archives">Archives</a>
+                </li>
+                <li >
+                    <a href="/about-site/">About this Site</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="subscribe-rss" href="/atom.xml" title="subscribe via RSS">
+                        <span class="visible-xs">RSS</span>
+                        <img class="hidden-xs" src="/images/rss.png" alt="RSS">
+                    </a>
+                </li>
+                
+            </ul>
+            
+                <form class="search navbar-form navbar-right visible-xs visible-md visible-lg" action="http://google.com/search" method="GET">
+                    <input type="hidden" name="q" value="site:smerrill.github.io">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="q" placeholder="Search">
+                    </div>
+                </form>
+            
+        </div>
+    </div>
+</nav>
+
+
+      </header>
+      <div id="main" class="container">
+        <div id="content">
+          <div class="row">
+  <div class="page-content col-md-9">
+    <article class="hentry" role="article">
+      
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-06-03T00:00:00-04:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+    
+    <h1 class="entry-title">
+        Avoiding Flat Tires in Your Web Application
+        
+    </h1>
+    
+  </header>
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/blog/avoiding-flat-tires-in-your-web-application/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+
+<div class="entry-content clearfix"><p>This Monday, the <a href="http://www.citibikenyc.com/?ef_id=IBFQPPF0mFIAAFdi:20130531201408:s">CitiBike bike share</a> launched in New York City. The website was beautiful and responsive, and more than 15,000 registrations were processed through it before the launch happened.</p>
+
+<p>But then, a funny thing happened. The website and the mobile apps&#8217; maps started coming up blank, and they stayed blank for more than 12 hours. What follows should not be characterized as a failing of the technical team. Launches are tough, and I don&rsquo;t mean to pile on what was obviously a tough situation. Instead, I would like to look at a few choices that were made and how the system might have been better architected for scalability.</p>
+
+<!--more-->
+
+
+<h2>Architecture Spelunking</h2>
+
+<p>I have no intimate knowledge of the architecture of the Citi Bike NYC application and hosting infrastructure, but we can find out a couple things very quickly.</p>
+
+<p>The misbehaving path in question was <code>http://www.citibikenyc.com/stations/json</code>. With that information in hand, we can use the <code>dig</code> and <code>curl</code> commands to get a lot of information.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smerrill@lilliputian-resolution [May 30 18:23:35] ~
+</span><span class='line'> dig +short www.citibikenyc.com
+</span><span class='line'>70.32.89.47
+</span><span class='line'>70.32.83.162</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It looks like there&rsquo;s two web servers, and the site is using DNS-based load balancing. Let&rsquo;s take a look at the (now-fixed) JSON feed with <code>curl -v</code>. Using <code>curl -v</code> instead of <code>curl -I</code> ensures that we actually send a GET request instead of a HEAD request, just to make sure that the behavior is as close to a real browser as possible.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smerrill@lilliputian-resolution [May 31 12:11:59] ~
+</span><span class='line'> curl -v www.citibikenyc.com/stations/json &gt; /dev/null
+</span><span class='line'>* About to connect() to www.citibikenyc.com port 80 (#0)
+</span><span class='line'>* Trying 70.32.83.162...
+</span><span class='line'>% Total % Received % Xferd Average Speed Time Time Time Current
+</span><span class='line'>Dload Upload Total Spent Left Speed
+</span><span class='line'>0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0* connected
+</span><span class='line'>* Connected to www.citibikenyc.com (70.32.83.162) port 80 (#0)
+</span><span class='line'>&gt; GET /stations/json HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: www.citibikenyc.com
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Server: nginx
+</span><span class='line'>&lt; Date: Fri, 31 May 2013 16:11:59 GMT
+</span><span class='line'>&lt; Content-Type: text/html
+</span><span class='line'>&lt; Transfer-Encoding: chunked
+</span><span class='line'>&lt; Connection: keep-alive
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Set-Cookie: ci_session=5mh4HirmjGbrsFaoFoNf5I3MOe5%2FgpGTtterFR5ATyZIoSQewcZTqEk8CmTo1Y6A%2Bv29mRsaV7wmtMDot42z3Qo5Om5MBEVIWhVCLsBGjSWWNmyFXc4UVbNpLKIUYM3
+</span><span class='line'>LjeP08uWGQCw642sOgQaaZURYQlUoyBx%2F6KffPECV7IPgT7Lw8G%2FUJYzMDUHXdQDzfRenxAuMZmLpt%2BBWxUEZqCs87VWaYzhQEFnXwxSAcm4VtowNMdZZHfc8Rcw%2FSWzL4z6zJZlDhzYG0Lp%2B%
+</span><span class='line'>2F7rBv1wwBpqsCcSS8cXBNSW0XZc7VHJ2AuB%2BOvXzoLWwKMMH%2FHd%2FTI%2B%2BIH5Ec4O8Jjup%2Bg%3D%3D; expires=Fri, 31-May-2013 16:21:54 GMT; path=/
+</span><span class='line'>&lt; Vary: Accept-Encoding,User-Agent
+</span><span class='line'>&lt; X-Apache-Server: www1.citibikenyc.com
+</span><span class='line'>&lt; MS-Author-Via: DAV
+</span><span class='line'>&lt;
+</span><span class='line'>{ [data not shown]
+</span><span class='line'>100 116k 0 116k 0 0 853k 0 --:--:-- --:--:-- --:--:-- 993k
+</span><span class='line'>* Connection #0 to host www.citibikenyc.com left intact
+</span><span class='line'>* Closing connection #0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just based on that, it looks like we can deduce several salient points about the architecture:</p>
+
+<ul>
+<li>There are two DNS addresses for the backend web servers, www1.citibikenyc.com and www2.citibikenyc.com.</li>
+<li>The www.citibikenyc.com DNS entry contains both the www1 and www2 addresses.</li>
+<li>The servers appear to be running nginx on port 80 and then connecting to a local Apache server based on the <code>X-Apache-Server</code> header.</li>
+<li>The site is built using the CodeIgniter PHP framework (the main site appears to be using the Fuel CMS atop CodeIgniter.)</li>
+<li>A quick trip to <a href="http://whois.arin.net/">arin</a> lets us know that those two IP addresses point to machines in a MediaTemple datacenter, so no CDN is in play.</li>
+<li>Each request to the <code>/stations/json</code> path returns a Set-Cookie header that sets a CodeIgniter session cookie with a 10 minute lifetime.
+For comparison, this is what the response looked like during the outage. The main differences are that during the outage, the feed was still returning a 200 HTTP response code, but the Content-Length was 0, and indeed the response body was blank, like so:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smerrill@lilliputian-resolution [May 27 11:34:46] ~
+</span><span class='line'> curl -v www.citibikenyc.com/stations/json &gt; /dev/null
+</span><span class='line'>* About to connect() to www.citibikenyc.com port 80 (#0)
+</span><span class='line'>* Trying 70.32.83.162...
+</span><span class='line'>% Total % Received % Xferd Average Speed Time Time Time Current
+</span><span class='line'>Dload Upload Total Spent Left Speed
+</span><span class='line'>0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0* connected
+</span><span class='line'>* Connected to www.citibikenyc.com (70.32.83.162) port 80 (#0)
+</span><span class='line'>&gt; GET /stations/json HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: www.citibikenyc.com
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Server: nginx
+</span><span class='line'>&lt; Date: Mon, 27 May 2013 15:34:47 GMT
+</span><span class='line'>&lt; Content-Type: text/html
+</span><span class='line'>&lt; Content-Length: 0
+</span><span class='line'>&lt; Connection: keep-alive
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Set-Cookie: ci_session=x7ymouLWLEeY6%2Fo%2BudFoQHOixWyP3b9Ygp8Ocv94roUESql6Gwet1nuCVBcILmqt9DQzbFsSLLkXyOZ5qL%2Fl%2FD88F0Q0uXeLptE3zlGHxP0EISPGk5gW91SVscxi1klVRYv5Mt5zTO0KzB4obwc%2FY1AUFEodhplKXeaSURPXAw7roZVumXkmM1ALGbWQx5FF6LKm%2FtzudHm8NQPJYXDx3s3sUdVNWvWQpWe3iKEE5Su0TzqCKZcBxWYcssuPNVGEx8c5SpijHw6iR7sqnTMBnMdv7m4jsuj9ZweGk6JfGEp3G5%2BXAMqdsWfE%2Fa8449o92%2BlLug0NCFRdxH7ViZHXBA%3D%3D; expires=Mon, 27-May-2013 15:44:47 GMT; path=/
+</span><span class='line'>&lt; Vary: Accept-Encoding,User-Agent
+</span><span class='line'>&lt; X-Apache-Server: www1.citibikenyc.com
+</span><span class='line'>&lt; MS-Author-Via: DAV
+</span><span class='line'>&lt;
+</span><span class='line'>{ [data not shown]
+</span><span class='line'>0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0
+</span><span class='line'>* Connection #0 to host www.citibikenyc.com left intact
+</span><span class='line'>* Closing connection #0&lt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The Case of the Missing JSON</h2>
+
+<p>It seems the root of the problem was that the Apache server behind the nginx server was overloaded. It appears that at one point, the <code>/stations/json</code> endpoint was throwing errors based on this tweet:</p>
+
+<blockquote><p>@<a href="https://twitter.com/stevenmerrill">stevenmerrill</a> That @<a href="https://twitter.com/citibikenyc">citibikenyc</a> feed has been returning Apache &ldquo;too many connections&rdquo; errors for a couple of hrs.Shows strong demand.</p>
+
+<p> codeline telemetry (@codelinegeekery) <a href="https://twitter.com/codelinegeekery/status/339033281687343105">May 27, 2013</a>
+&nbsp;</p></blockquote>
+
+<p>And then it was changed to this odd 200 response with no data after that. Naturally, that lead me to a simple question.</p>
+
+<h2>Y u no cache?</h2>
+
+<p>Why not cache or pre-generate the JSON? Even with a TTL of 60 or 30 seconds, caching the rendered JSON instead of going back to a dynamic application for every visitor could help protect the backend LAMP stack from spikes in traffic.</p>
+
+<p>I can only speculate, but I imagine that the design of this feed went something like the following:</p>
+
+<p>&ldquo;Our CitiBike stations will be pinging in every 30 seconds with new information about how many bikes and docks are available, so we have to be sure that the information we send to our mobile apps is as fresh as possible.&rdquo;</p>
+
+<p>Keeping your customers up to date about if they&rsquo;ll be able to get or return a bike is certainly of paramount importance to a system like this, but that doesn&rsquo;t have to translate into dynamically generating JSON data on every request.</p>
+
+<h2>Cache Rules Everything Around Me</h2>
+
+<p>My first thought upon seeing this situation was hasty tweet:</p>
+
+<blockquote><p>Oddly, the misbehaving @<a href="https://twitter.com/citibikenyc">citibikenyc</a> JSON feed returns a 200 and an empty body. Maybe the team should have written flat files and used a CDN.</p>
+
+<p> Steven Merrill (@stevenmerrill) <a href="https://twitter.com/stevenmerrill/status/339031661952004096">May 27, 2013</a>
+&nbsp;</p></blockquote>
+
+<p>There are several possible ways that the JSON response could be cached to lower the load on the backend web servers.</p>
+
+<p>The lowest-risk option would be to have an out-of-band process like cron or Jenkins generate a static JSON file on the filesystem every 30 or 60 seconds. Then have nginx deliver that static JSON file to clients when they visit the <code>/stations/json</code> URL. This is a great option, since the load generated to service that endpoint would be both consistently timed (every 30 or 60 seconds) and predictable. For even more scalability beyond the two nginx servers, this file could then be pushed to a CDN, or the file could be served from <a href="http://www.fastly.com/">Fastly</a>, a Varnish-powered CDN with instant purging.</p>
+
+<p>Another option that would allow for more finely-tuned updates is to use a message queueing system. With this design, running a task on cron or with Jenkins would not be needed. Instead, the bike docking stations would send messages to the queue whenever an action occurred that changed the number of bikes at the station (bike checked out or bike returned.) In a naive version of the system, each of these state-change messages would regenerate the whole JSON file. In a smarter version, the state-change messages would update a single cached JSON fragment representing the station, and the new JSON file could be generated from this cache so that database load would be lowered when the file had to be regenerated.</p>
+
+<p>Both of these approaches are much preferred because the system load is controllable and is not tied to how many requests for the JSON file are coming in. A third server that didn&rsquo;t respond to web requests could do this processing.</p>
+
+<p>Finally, since the application already has nginx at the frontend, another option is to use nginx&rsquo;s <code>proxy_cache</code> and <code>proxy_cache_use_stale</code> directives and cache the output of <code>/stations/json</code> for a certain TTL. This is not quite as ideal, as the potential exists to have TTL drift between the two web servers, such that someone might get data that was a few seconds stale based on which server they hit, but the business would probably agree that that is better than outright downtime.</p>
+
+<p>For this to work, the Set-Cookie header must be removed. As far as I can tell, there is no personalized data being sent from that endpoint, so this session cookie does not serve a useful purpose.</p>
+
+<h2>In Summary</h2>
+
+<p>The launch of a web application can be tough. Load patterns emerge in the real world that your load testing didn&rsquo;t take into account. Regardless, if you know that any part of your system may get a lot of traffic or very bursty traffic, you can engineer your application for resilience by moving data generation out of uncached web requests and into cron- or queue-backed update processes.</p>
+
+<p>Phase2 recently experienced a challenge like this in helping the <a href="//www.phase2technology.com/client/robin-hood-foundation/">Robin Hood Foundation</a> architect a website for the 12-12-12 Concert for Hurricane Sandy. If you&rsquo;re interested in learning more about that you can listen to the <a href="http://www.youtube.com/watch?v=itKY_lO7_Us&amp;amp;feature=youtu.be">panel talk we just gave at Drupalcon Portland</a>.</p>
+</div>
+
+
+      <footer>
+        <p class="meta text-muted">
+          
+  
+
+<span class="glyphicon glyphicon-user"></span> <span class="byline author vcard">Posted by <span class="fn">Steven Merrill</span></span>
+
+          
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2013-06-03T00:00:00-04:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2013</time>
+          
+
+<span class="glyphicon glyphicon-tags"></span>&nbsp;
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/caching/'>caching</a>, <a class='category' href='/blog/categories/cdn/'>cdn</a>, <a class='category' href='/blog/categories/scalability/'>scalability</a>
+  
+</span>
+
+
+        </p>
+        
+          <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://smerrill.github.io/blog/2013/06/03/avoiding-flat-tires/" data-via="stevenmerrill" data-counturl="http://smerrill.github.io/blog/2013/06/03/avoiding-flat-tires/" >Tweet</a>
+  
+  
+  
+</div>
+
+        
+        
+          <ul class="meta text-muted pager">
+            
+            <li class="previous"><a href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/" title="Previous Post: Testing Drupal with Ghosts and Gherkins at DrupalCampNJ">&laquo; Testing Drupal with Ghosts and Gherkins at DrupalCampNJ</a></li>
+            
+            
+            <li class="next"><a href="/blog/2014/05/26/combining-tasks-with-grunt/" title="Next Post: Combining tasks with Grunt">Combining tasks with Grunt &raquo;</a></li>
+            
+          </ul>
+        
+      </footer>
+    </article>
+    
+  </div>
+
+  
+  <aside class="sidebar col-md-3">
+    
+      <section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Posts</h3>
+  </div>
+  
+  <div id="recent_posts" class="list-group">
+    
+    <a class="list-group-item " href="/blog/2014/05/26/combining-tasks-with-grunt/">Combining Tasks With Grunt</a>
+    
+    <a class="list-group-item active" href="/blog/2013/06/03/avoiding-flat-tires/">Avoiding Flat Tires in Your Web Application</a>
+    
+    <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
+    
+    <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
+    
+    <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
+    
+  </div>
+</section>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Popular Categories</h3>
+  </div>
+  <div class="list-group">
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/conference/index.html">
+      <span class="badge">2</span>
+      conference
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/theming/index.html">
+      <span class="badge">2</span>
+      theming
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal/index.html">
+      <span class="badge">16</span>
+      drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/planet-drupal/index.html">
+      <span class="badge">4</span>
+      planet drupal
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/development/index.html">
+      <span class="badge">9</span>
+      development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/performance/index.html">
+      <span class="badge">6</span>
+      performance
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/views/index.html">
+      <span class="badge">2</span>
+      views
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/treehouse-agency/index.html">
+      <span class="badge">3</span>
+      treehouse agency
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/presentations/index.html">
+      <span class="badge">8</span>
+      presentations
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/web-development/index.html">
+      <span class="badge">2</span>
+      web development
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/cdn/index.html">
+      <span class="badge">2</span>
+      cdn
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/centos/index.html">
+      <span class="badge">2</span>
+      centos
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala/index.html">
+      <span class="badge">3</span>
+      scala
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scala-2.7/index.html">
+      <span class="badge">3</span>
+      scala 2.7
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/browsers/index.html">
+      <span class="badge">2</span>
+      browsers
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/caching/index.html">
+      <span class="badge">2</span>
+      caching
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scalability/index.html">
+      <span class="badge">2</span>
+      scalability
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/vagrant/index.html">
+      <span class="badge">5</span>
+      vagrant
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualbox/index.html">
+      <span class="badge">2</span>
+      virtualbox
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/irc/index.html">
+      <span class="badge">2</span>
+      irc
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/veewee/index.html">
+      <span class="badge">2</span>
+      veewee
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/drupal-planet/index.html">
+      <span class="badge">3</span>
+      drupal planet
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/virtualization/index.html">
+      <span class="badge">3</span>
+      virtualization
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/php/index.html">
+      <span class="badge">2</span>
+      php
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </div>
+</section>
+
+<section class="panel panel-default clearfix">
+  <div class="panel-heading">
+      <h3 class="panel-title">GitHub Repos</h3>
+  </div>
+  <div class="list-group" id="gh_repos">
+    <p class="loading">Status updating...</p>
+  </div>
+  
+    <div class="gh-profile-link pull-right text-muted">
+      <a href="https://github.com/smerrill">@smerrill</a> on GitHub
+    </div>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'smerrill',
+            count: 5,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+    
+  </aside>
+  
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer role="contentinfo"><div class="container">
+    <p class="text-muted credits">
+  Copyright &copy; 2009 - 2014 by Steven W. Merrill<br>
+  <small>
+      <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>,
+      <span class="credit">customized with <a href="https://github.com/kAworu/octostrap3">octostrap3</a></span>.
+  </small>
+</p>
+
+</div>
+</footer>
+    <script src="/javascripts/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+<script src="/javascripts/modernizr-2.0.js"></script>
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+  </body>
+</html>

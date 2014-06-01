@@ -113,6 +113,67 @@
 
 
 
+<span class="glyphicon glyphicon-calendar"></span> <time datetime="2010-11-16T00:00:00-05:00" pubdate data-updated="true">Nov 16<span>th</span>, 2010</time>
+        
+      </p>
+    
+    
+      <h1 class="entry-title"><a href="/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal/">Fix Common Windows Segmentation Faults With Drupal</a></h1>
+    
+  </header>
+
+
+
+<div class="entry-content clearfix">
+  <p><em><a href="http://www.phase2technology.com/fix-common-windows-segmentation-faults-with-drupal/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
+</div>
+
+
+  <div class="entry-content clearfix"><p>At Treehouse Agency, we often work with internal development teams, and enterprise software being what it is, they often run Windows. This has been the primary driver behind some of our technology choices (using Mercurial rather than Git on these sorts of projects) and it also occasionally necessitates some extra debugging when something doesn&#8217;t quite work right on Windows.</p>
+
+
+<p></p></p>
+
+<p>In work on a recent project, the client developers were using WampServer, but upon the site reaching a certain size, developers on Windows noted that their Apache processes were quitting after a cache clear. We debugged and tracked the errors down to occuring during CSS preprocessing.  The Apache processes were segmentation faulting, resulting in an error dialog.</p>
+
+
+<p></p></p>
+
+<p>In an initial assessment of the problem, it appeared that others were having the same problem, such as in <a href="http://drupal.org/node/424136" title="http://drupal.org/node/424136">http://drupal.org/node/424136</a>. We advised the developers to add a line to their settings.php to disable css preprocessing, like so:</p>
+
+
+<p></p></p>
+
+</div>
+  
+  
+    <footer>
+      <a class="btn btn-default" rel="full-article" href="/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal/">Read on &rarr;</a>
+    </footer>
+  
+
+
+        </article>
+      
+      
+        <article class="post">
+          
+  <header class="page-header">
+    
+      <p class="meta text-muted text-uppercase">
+        
+
+
+
+
+
+
+
+
+
+
+
+
 <span class="glyphicon glyphicon-calendar"></span> <time datetime="2010-07-08T00:00:00-04:00" pubdate data-updated="true">Jul 8<span>th</span>, 2010</time>
         
       </p>
@@ -523,75 +584,6 @@
 
         </article>
       
-      
-        <article class="post">
-          
-  <header class="page-header">
-    
-      <p class="meta text-muted text-uppercase">
-        
-
-
-
-
-
-
-
-
-
-
-
-
-<span class="glyphicon glyphicon-calendar"></span> <time datetime="2009-03-12T00:00:00-04:00" pubdate data-updated="true">Mar 12<span>th</span>, 2009</time>
-        
-      </p>
-    
-    
-      <h1 class="entry-title"><a href="/blog/2009/03/12/scaling-drupal-not-if-how/">Scaling Drupal: Not if&#8230; HOW</a></h1>
-    
-  </header>
-
-
-
-<div class="entry-content clearfix">
-  <p><em><a href="http://www.phase2technology.com/scaling-drupal-not-if-how/">This content was initially published</a> on the <a href="http://www.phase2technology.com/blog-list/">Phase2 blog</a>.</em></p>
-</div>
-
-
-  <div class="entry-content clearfix"><p>Thanks to all those that braved the early morning to attend our session at Drupalcon DC.  We think it was a good warm-up for the full track of excellent performance and scaling sessions on Thursday.  See you next year!</p>
-
-
-<p></p></p>
-
-<p class="rteindent1"><em><strong>Abstract</strong></em><br /><br />
-What do Fast Company, The Big Money, The Onion, Lifetime Television, SonyBMG, Flex.org, DressupChallenge.com, and NowPublic have in common?</p>
-
-
-<p></p></p>
-
-<div class="field-items">
-<div class="field-item odd">
-<p class="rteindent1">All are popular sites, some with traffic of a million or more pageviews a day.  But there&#8217;s more.</p></p>
-<p class="rteindent1">They all run on Drupal.</p></p>
-<p class="rteindent1">Some people still ask if Drupal can scale. We say, &#8220;It&#8217;s not a question of IF, but HOW&#8221;.</p></p>
-<p class="rteindent1">Come and hear how we scale sites like myLifetime.com, TheBigMoney.com, and DressUpChallenge.com.</p><br />
-</div><br />
-</div>
-
-
-<p></p></p>
-
-</div>
-  
-  
-    <footer>
-      <a class="btn btn-default" rel="full-article" href="/blog/2009/03/12/scaling-drupal-not-if-how/">Read on &rarr;</a>
-    </footer>
-  
-
-
-        </article>
-      
     </div>
 
     <ul class="pager">
@@ -617,13 +609,13 @@ What do Fast Company, The Big Money, The Onion, Lifetime Television, SonyBMG, Fl
     
     <a class="list-group-item " href="/blog/2014/05/26/combining-tasks-with-grunt/">Combining Tasks With Grunt</a>
     
+    <a class="list-group-item " href="/blog/2013/06/03/avoiding-flat-tires/">Avoiding Flat Tires in Your Web Application</a>
+    
     <a class="list-group-item " href="/blog/2013/02/04/testing-drupal-with-ghosts-and-gherkins-at-drupalcampnj/">Testing Drupal With Ghosts and Gherkins at DrupalCampNJ</a>
     
     <a class="list-group-item " href="/blog/2012/09/23/omnios-vagrant/">OmniOS and Vagrant</a>
     
     <a class="list-group-item " href="/blog/2012/05/31/access-php-mysql-jquery-and-drupal-documentation-offline-on-your-mac-with-dash/">Access PHP, MySQL, jQuery, and Drupal Documentation Offline on Your Mac With Dash</a>
-    
-    <a class="list-group-item " href="/blog/2012/02/10/coat-your-website-with-varnish-at-drupalcamp-md/">Coat Your Website With Varnish at DrupalCamp MD</a>
     
   </div>
 </section>
@@ -836,6 +828,14 @@ What do Fast Company, The Big Money, The Onion, Lifetime Television, SonyBMG, Fl
     
     
     
+    <a class="list-group-item " href="/blog/categories/cdn/index.html">
+      <span class="badge">2</span>
+      cdn
+    </a>
+    
+    
+    
+    
     
     
     
@@ -932,6 +932,22 @@ What do Fast Company, The Big Money, The Onion, Lifetime Television, SonyBMG, Fl
     
     
     
+    <a class="list-group-item " href="/blog/categories/caching/index.html">
+      <span class="badge">2</span>
+      caching
+    </a>
+    
+    
+    
+    
+    
+    
+    
+    
+    <a class="list-group-item " href="/blog/categories/scalability/index.html">
+      <span class="badge">2</span>
+      scalability
+    </a>
     
     
     

@@ -4,7 +4,7 @@
   <title><![CDATA[Grenade Sandwich]]></title>
   <link href="http://smerrill.github.io/atom.xml" rel="self"/>
   <link href="http://smerrill.github.io/"/>
-  <updated>2014-06-01T11:25:10-04:00</updated>
+  <updated>2014-06-01T12:16:49-04:00</updated>
   <id>http://smerrill.github.io/</id>
   <author>
     <name><![CDATA[Steven W. Merrill]]></name>
@@ -266,6 +266,223 @@
 
 
 <p>I could then invoke <code>newer:drushmake:default</code> in my <code>Gruntfile.js</code> and only delete and rebuild the site when there were changes to the Makefile.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Avoiding Flat Tires in Your Web Application]]></title>
+    <link href="http://smerrill.github.io/blog/2013/06/03/avoiding-flat-tires/"/>
+    <updated>2013-06-03T00:00:00-04:00</updated>
+    <id>http://smerrill.github.io/blog/2013/06/03/avoiding-flat-tires</id>
+    <content type="html"><![CDATA[<p>This Monday, the <a href="http://www.citibikenyc.com/?ef_id=IBFQPPF0mFIAAFdi:20130531201408:s">CitiBike bike share</a> launched in New York City. The website was beautiful and responsive, and more than 15,000 registrations were processed through it before the launch happened.</p>
+
+<p>But then, a funny thing happened. The website and the mobile apps&#8217; maps started coming up blank, and they stayed blank for more than 12 hours. What follows should not be characterized as a failing of the technical team. Launches are tough, and I don&rsquo;t mean to pile on what was obviously a tough situation. Instead, I would like to look at a few choices that were made and how the system might have been better architected for scalability.</p>
+
+<!--more-->
+
+
+<h2>Architecture Spelunking</h2>
+
+<p>I have no intimate knowledge of the architecture of the Citi Bike NYC application and hosting infrastructure, but we can find out a couple things very quickly.</p>
+
+<p>The misbehaving path in question was <code>http://www.citibikenyc.com/stations/json</code>. With that information in hand, we can use the <code>dig</code> and <code>curl</code> commands to get a lot of information.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smerrill@lilliputian-resolution [May 30 18:23:35] ~
+</span><span class='line'> dig +short www.citibikenyc.com
+</span><span class='line'>70.32.89.47
+</span><span class='line'>70.32.83.162</span></code></pre></td></tr></table></div></figure>
+
+
+<p>It looks like there&rsquo;s two web servers, and the site is using DNS-based load balancing. Let&rsquo;s take a look at the (now-fixed) JSON feed with <code>curl -v</code>. Using <code>curl -v</code> instead of <code>curl -I</code> ensures that we actually send a GET request instead of a HEAD request, just to make sure that the behavior is as close to a real browser as possible.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smerrill@lilliputian-resolution [May 31 12:11:59] ~
+</span><span class='line'> curl -v www.citibikenyc.com/stations/json &gt; /dev/null
+</span><span class='line'>* About to connect() to www.citibikenyc.com port 80 (#0)
+</span><span class='line'>* Trying 70.32.83.162...
+</span><span class='line'>% Total % Received % Xferd Average Speed Time Time Time Current
+</span><span class='line'>Dload Upload Total Spent Left Speed
+</span><span class='line'>0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0* connected
+</span><span class='line'>* Connected to www.citibikenyc.com (70.32.83.162) port 80 (#0)
+</span><span class='line'>&gt; GET /stations/json HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: www.citibikenyc.com
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Server: nginx
+</span><span class='line'>&lt; Date: Fri, 31 May 2013 16:11:59 GMT
+</span><span class='line'>&lt; Content-Type: text/html
+</span><span class='line'>&lt; Transfer-Encoding: chunked
+</span><span class='line'>&lt; Connection: keep-alive
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Set-Cookie: ci_session=5mh4HirmjGbrsFaoFoNf5I3MOe5%2FgpGTtterFR5ATyZIoSQewcZTqEk8CmTo1Y6A%2Bv29mRsaV7wmtMDot42z3Qo5Om5MBEVIWhVCLsBGjSWWNmyFXc4UVbNpLKIUYM3
+</span><span class='line'>LjeP08uWGQCw642sOgQaaZURYQlUoyBx%2F6KffPECV7IPgT7Lw8G%2FUJYzMDUHXdQDzfRenxAuMZmLpt%2BBWxUEZqCs87VWaYzhQEFnXwxSAcm4VtowNMdZZHfc8Rcw%2FSWzL4z6zJZlDhzYG0Lp%2B%
+</span><span class='line'>2F7rBv1wwBpqsCcSS8cXBNSW0XZc7VHJ2AuB%2BOvXzoLWwKMMH%2FHd%2FTI%2B%2BIH5Ec4O8Jjup%2Bg%3D%3D; expires=Fri, 31-May-2013 16:21:54 GMT; path=/
+</span><span class='line'>&lt; Vary: Accept-Encoding,User-Agent
+</span><span class='line'>&lt; X-Apache-Server: www1.citibikenyc.com
+</span><span class='line'>&lt; MS-Author-Via: DAV
+</span><span class='line'>&lt;
+</span><span class='line'>{ [data not shown]
+</span><span class='line'>100 116k 0 116k 0 0 853k 0 --:--:-- --:--:-- --:--:-- 993k
+</span><span class='line'>* Connection #0 to host www.citibikenyc.com left intact
+</span><span class='line'>* Closing connection #0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just based on that, it looks like we can deduce several salient points about the architecture:</p>
+
+<ul>
+<li>There are two DNS addresses for the backend web servers, www1.citibikenyc.com and www2.citibikenyc.com.</li>
+<li>The www.citibikenyc.com DNS entry contains both the www1 and www2 addresses.</li>
+<li>The servers appear to be running nginx on port 80 and then connecting to a local Apache server based on the <code>X-Apache-Server</code> header.</li>
+<li>The site is built using the CodeIgniter PHP framework (the main site appears to be using the Fuel CMS atop CodeIgniter.)</li>
+<li>A quick trip to <a href="http://whois.arin.net/">arin</a> lets us know that those two IP addresses point to machines in a MediaTemple datacenter, so no CDN is in play.</li>
+<li>Each request to the <code>/stations/json</code> path returns a Set-Cookie header that sets a CodeIgniter session cookie with a 10 minute lifetime.
+For comparison, this is what the response looked like during the outage. The main differences are that during the outage, the feed was still returning a 200 HTTP response code, but the Content-Length was 0, and indeed the response body was blank, like so:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>smerrill@lilliputian-resolution [May 27 11:34:46] ~
+</span><span class='line'> curl -v www.citibikenyc.com/stations/json &gt; /dev/null
+</span><span class='line'>* About to connect() to www.citibikenyc.com port 80 (#0)
+</span><span class='line'>* Trying 70.32.83.162...
+</span><span class='line'>% Total % Received % Xferd Average Speed Time Time Time Current
+</span><span class='line'>Dload Upload Total Spent Left Speed
+</span><span class='line'>0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0* connected
+</span><span class='line'>* Connected to www.citibikenyc.com (70.32.83.162) port 80 (#0)
+</span><span class='line'>&gt; GET /stations/json HTTP/1.1
+</span><span class='line'>&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+</span><span class='line'>&gt; Host: www.citibikenyc.com
+</span><span class='line'>&gt; Accept: */*
+</span><span class='line'>&gt;
+</span><span class='line'>&lt; HTTP/1.1 200 OK
+</span><span class='line'>&lt; Server: nginx
+</span><span class='line'>&lt; Date: Mon, 27 May 2013 15:34:47 GMT
+</span><span class='line'>&lt; Content-Type: text/html
+</span><span class='line'>&lt; Content-Length: 0
+</span><span class='line'>&lt; Connection: keep-alive
+</span><span class='line'>&lt; Vary: Accept-Encoding
+</span><span class='line'>&lt; Set-Cookie: ci_session=x7ymouLWLEeY6%2Fo%2BudFoQHOixWyP3b9Ygp8Ocv94roUESql6Gwet1nuCVBcILmqt9DQzbFsSLLkXyOZ5qL%2Fl%2FD88F0Q0uXeLptE3zlGHxP0EISPGk5gW91SVscxi1klVRYv5Mt5zTO0KzB4obwc%2FY1AUFEodhplKXeaSURPXAw7roZVumXkmM1ALGbWQx5FF6LKm%2FtzudHm8NQPJYXDx3s3sUdVNWvWQpWe3iKEE5Su0TzqCKZcBxWYcssuPNVGEx8c5SpijHw6iR7sqnTMBnMdv7m4jsuj9ZweGk6JfGEp3G5%2BXAMqdsWfE%2Fa8449o92%2BlLug0NCFRdxH7ViZHXBA%3D%3D; expires=Mon, 27-May-2013 15:44:47 GMT; path=/
+</span><span class='line'>&lt; Vary: Accept-Encoding,User-Agent
+</span><span class='line'>&lt; X-Apache-Server: www1.citibikenyc.com
+</span><span class='line'>&lt; MS-Author-Via: DAV
+</span><span class='line'>&lt;
+</span><span class='line'>{ [data not shown]
+</span><span class='line'>0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0
+</span><span class='line'>* Connection #0 to host www.citibikenyc.com left intact
+</span><span class='line'>* Closing connection #0&lt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>The Case of the Missing JSON</h2>
+
+<p>It seems the root of the problem was that the Apache server behind the nginx server was overloaded. It appears that at one point, the <code>/stations/json</code> endpoint was throwing errors based on this tweet:</p>
+
+<blockquote><p>@<a href="https://twitter.com/stevenmerrill">stevenmerrill</a> That @<a href="https://twitter.com/citibikenyc">citibikenyc</a> feed has been returning Apache &ldquo;too many connections&rdquo; errors for a couple of hrs.Shows strong demand.</p>
+
+<p> codeline telemetry (@codelinegeekery) <a href="https://twitter.com/codelinegeekery/status/339033281687343105">May 27, 2013</a>
+&nbsp;</p></blockquote>
+
+<p>And then it was changed to this odd 200 response with no data after that. Naturally, that lead me to a simple question.</p>
+
+<h2>Y u no cache?</h2>
+
+<p>Why not cache or pre-generate the JSON? Even with a TTL of 60 or 30 seconds, caching the rendered JSON instead of going back to a dynamic application for every visitor could help protect the backend LAMP stack from spikes in traffic.</p>
+
+<p>I can only speculate, but I imagine that the design of this feed went something like the following:</p>
+
+<p>&ldquo;Our CitiBike stations will be pinging in every 30 seconds with new information about how many bikes and docks are available, so we have to be sure that the information we send to our mobile apps is as fresh as possible.&rdquo;</p>
+
+<p>Keeping your customers up to date about if they&rsquo;ll be able to get or return a bike is certainly of paramount importance to a system like this, but that doesn&rsquo;t have to translate into dynamically generating JSON data on every request.</p>
+
+<h2>Cache Rules Everything Around Me</h2>
+
+<p>My first thought upon seeing this situation was hasty tweet:</p>
+
+<blockquote><p>Oddly, the misbehaving @<a href="https://twitter.com/citibikenyc">citibikenyc</a> JSON feed returns a 200 and an empty body. Maybe the team should have written flat files and used a CDN.</p>
+
+<p> Steven Merrill (@stevenmerrill) <a href="https://twitter.com/stevenmerrill/status/339031661952004096">May 27, 2013</a>
+&nbsp;</p></blockquote>
+
+<p>There are several possible ways that the JSON response could be cached to lower the load on the backend web servers.</p>
+
+<p>The lowest-risk option would be to have an out-of-band process like cron or Jenkins generate a static JSON file on the filesystem every 30 or 60 seconds. Then have nginx deliver that static JSON file to clients when they visit the <code>/stations/json</code> URL. This is a great option, since the load generated to service that endpoint would be both consistently timed (every 30 or 60 seconds) and predictable. For even more scalability beyond the two nginx servers, this file could then be pushed to a CDN, or the file could be served from <a href="http://www.fastly.com/">Fastly</a>, a Varnish-powered CDN with instant purging.</p>
+
+<p>Another option that would allow for more finely-tuned updates is to use a message queueing system. With this design, running a task on cron or with Jenkins would not be needed. Instead, the bike docking stations would send messages to the queue whenever an action occurred that changed the number of bikes at the station (bike checked out or bike returned.) In a naive version of the system, each of these state-change messages would regenerate the whole JSON file. In a smarter version, the state-change messages would update a single cached JSON fragment representing the station, and the new JSON file could be generated from this cache so that database load would be lowered when the file had to be regenerated.</p>
+
+<p>Both of these approaches are much preferred because the system load is controllable and is not tied to how many requests for the JSON file are coming in. A third server that didn&rsquo;t respond to web requests could do this processing.</p>
+
+<p>Finally, since the application already has nginx at the frontend, another option is to use nginx&rsquo;s <code>proxy_cache</code> and <code>proxy_cache_use_stale</code> directives and cache the output of <code>/stations/json</code> for a certain TTL. This is not quite as ideal, as the potential exists to have TTL drift between the two web servers, such that someone might get data that was a few seconds stale based on which server they hit, but the business would probably agree that that is better than outright downtime.</p>
+
+<p>For this to work, the Set-Cookie header must be removed. As far as I can tell, there is no personalized data being sent from that endpoint, so this session cookie does not serve a useful purpose.</p>
+
+<h2>In Summary</h2>
+
+<p>The launch of a web application can be tough. Load patterns emerge in the real world that your load testing didn&rsquo;t take into account. Regardless, if you know that any part of your system may get a lot of traffic or very bursty traffic, you can engineer your application for resilience by moving data generation out of uncached web requests and into cron- or queue-backed update processes.</p>
+
+<p>Phase2 recently experienced a challenge like this in helping the <a href="http://smerrill.github.io//www.phase2technology.com/client/robin-hood-foundation/">Robin Hood Foundation</a> architect a website for the 12-12-12 Concert for Hurricane Sandy. If you&rsquo;re interested in learning more about that you can listen to the <a href="http://www.youtube.com/watch?v=itKY_lO7_Us&amp;amp;feature=youtu.be">panel talk we just gave at Drupalcon Portland</a>.</p>
 ]]></content>
   </entry>
   
@@ -1235,96 +1452,6 @@ Nonetheless, the only answer I could muster was, <strong>&ldquo;far too much.&rd
 <p>But please, Google, for the love of the sanity of web developers who routinely type long URLs that may not come up near the top of a Google search, make Chrome more <a href="http://blog.mozilla.com/blog/2008/04/21/a-little-something-awesome-about-firefox-3/">awesome</a>.</p>
 
 <p>Until then, I&rsquo;ll be trying out <a href="http://www.getfirefox.com">Firefox 5</a>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Fix Common Windows Segmentation Faults with Drupal]]></title>
-    <link href="http://smerrill.github.io/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal/"/>
-    <updated>2010-11-16T00:00:00-05:00</updated>
-    <id>http://smerrill.github.io/blog/2010/11/16/fix-common-windows-segmentation-faults-with-drupal</id>
-    <content type="html"><![CDATA[<p>At Treehouse Agency, we often work with internal development teams, and enterprise software being what it is, they often run Windows. This has been the primary driver behind some of our technology choices (using Mercurial rather than Git on these sorts of projects) and it also occasionally necessitates some extra debugging when something doesn&#8217;t quite work right on Windows.</p>
-
-
-<p></p></p>
-
-<p>In work on a recent project, the client developers were using WampServer, but upon the site reaching a certain size, developers on Windows noted that their Apache processes were quitting after a cache clear. We debugged and tracked the errors down to occuring during CSS preprocessing.  The Apache processes were segmentation faulting, resulting in an error dialog.</p>
-
-
-<p></p></p>
-
-<p>In an initial assessment of the problem, it appeared that others were having the same problem, such as in <a href="http://drupal.org/node/424136" title="http://drupal.org/node/424136">http://drupal.org/node/424136</a>. We advised the developers to add a line to their settings.php to disable css preprocessing, like so:</p>
-
-
-<p></p></p>
-
-<!--more-->
-
-
-
-
-<p>
-<div class="geshifilter">
-<div class="php geshifilter-php"><span class="re0">$conf</span> <span class="sy0">=</span> <a href="http://www.php.net/array"><span class="kw3">array</span></a><span class="br0">(</span><br /><br />
-  <span class="st_h">&#8216;preprocess_css&#8217;</span> <span class="sy0">=></span> <span class="kw4">FALSE</span><span class="sy0">,</span><br /><br />
-<span class="br0">)</span><span class="sy0">;</span></div></div></p>
-
-
-<p></p></p>
-
-<p>This worked fine for awhile, but then the same problem came back in a different situation. Developers on Windows began to see the same segmentation faults on the main Features administration page or when reverting all Features. This led me to the real cause of these segmentation faults - stack overflows.  Both CSS preprocessing and Features reversion result in a number of recursive calls that will overflow a small stack, and therein lies a solution.</p>
-
-
-<p></p></p>
-
-<p>By default, Mac OS X allocates 8 megabytes of stack space for processes, while Windows allocates a much smaller amount (which looks to be closer to 1 megabyte.)  By changing the Apache configuration to allocate the same 8 megabytes of stack space per Apache thread, developers on Windows no longer experienced segmentation faults when optimizing CSS files or when reverting Features.</p>
-
-
-<p></p></p>
-
-<p>In order to set the stack size back up to 8 megabytes, you need to set the <code>ThreadStackSize</code> parameter in your Apache configuration files to <code>8388608</code>.  (The value is expressed in bytes.)</p>
-
-
-<p></p></p>
-
-<p>If this issue is affecting you on Windows, here are the two changes that you will need to make to your Windows configuration under WampServer.</p>
-
-
-<p></p></p>
-
-<p>In your main apache configuration file, uncomment the line that includes the httpd-mpm.conf file, like so:</p>
-
-
-<p></p></p>
-
-<p>
-<div class="geshifilter">
-<div class="php geshifilter-php"><span class="co2"># Server-pool management (MPM specific)<br /><br />
-</span><span class="kw1">Include</span> conf<span class="sy0">/</span>extra<span class="sy0">/</span>httpd<span class="sy0">-</span>mpm<span class="sy0">.</span>conf</div></div></p>
-
-
-<p></p></p>
-
-<p>And then in the httpd-mpm.conf file, add a line to set the stack size up to 8 MB (as it is on Mac and Linux Apache by default.) Specifically, add the third line in:</p>
-
-
-<p></p></p>
-
-<p>
-<div class="geshifilter">
-<div class="php geshifilter-php"><span class="sy0"><</span>IfModule mpm_winnt_module<span class="sy0">></span><br /><br />
-    ThreadsPerChild      <span class="nu0">150</span><br /><br />
-    MaxRequestsPerChild    <span class="nu0">0</span><br /><br />
-    ThreadStackSize  <span class="nu0">8388608</span><br /><br />
-<span class="sy0"></</span>IfModule<span class="sy0">></span></div></div></p>
-
-
-<p></p></p>
-
-<p>Once Apache is restarted, you should be free of segmentation faults (or at least you shouldn&#8217;t run into problems until your colleagues on Linux and Mac OS do.)</p>
-
-
-<p></p></p>
 ]]></content>
   </entry>
   
