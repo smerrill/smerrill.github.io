@@ -35,32 +35,32 @@ It looks like there's two web servers, and the site is using DNS-based load bala
 
 ```
 ┌┤smerrill@lilliputian-resolution [May 31 12:11:59] ~
-└╼ curl -v www.citibikenyc.com/stations/json &gt; /dev/null
+└╼ curl -v www.citibikenyc.com/stations/json > /dev/null
 * About to connect() to www.citibikenyc.com port 80 (#0)
 * Trying 70.32.83.162...
 % Total % Received % Xferd Average Speed Time Time Time Current
 Dload Upload Total Spent Left Speed
 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0* connected
 * Connected to www.citibikenyc.com (70.32.83.162) port 80 (#0)
-&gt; GET /stations/json HTTP/1.1
-&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
-&gt; Host: www.citibikenyc.com
-&gt; Accept: */*
-&gt;
-&lt; HTTP/1.1 200 OK
-&lt; Server: nginx
-&lt; Date: Fri, 31 May 2013 16:11:59 GMT
-&lt; Content-Type: text/html
-&lt; Transfer-Encoding: chunked
-&lt; Connection: keep-alive
-&lt; Vary: Accept-Encoding
-&lt; Set-Cookie: ci_session=5mh4HirmjGbrsFaoFoNf5I3MOe5%2FgpGTtterFR5ATyZIoSQewcZTqEk8CmTo1Y6A%2Bv29mRsaV7wmtMDot42z3Qo5Om5MBEVIWhVCLsBGjSWWNmyFXc4UVbNpLKIUYM3
+> GET /stations/json HTTP/1.1
+> User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+> Host: www.citibikenyc.com
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Fri, 31 May 2013 16:11:59 GMT
+< Content-Type: text/html
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+< Vary: Accept-Encoding
+< Set-Cookie: ci_session=5mh4HirmjGbrsFaoFoNf5I3MOe5%2FgpGTtterFR5ATyZIoSQewcZTqEk8CmTo1Y6A%2Bv29mRsaV7wmtMDot42z3Qo5Om5MBEVIWhVCLsBGjSWWNmyFXc4UVbNpLKIUYM3
 LjeP08uWGQCw642sOgQaaZURYQlUoyBx%2F6KffPECV7IPgT7Lw8G%2FUJYzMDUHXdQDzfRenxAuMZmLpt%2BBWxUEZqCs87VWaYzhQEFnXwxSAcm4VtowNMdZZHfc8Rcw%2FSWzL4z6zJZlDhzYG0Lp%2B%
 2F7rBv1wwBpqsCcSS8cXBNSW0XZc7VHJ2AuB%2BOvXzoLWwKMMH%2FHd%2FTI%2B%2BIH5Ec4O8Jjup%2Bg%3D%3D; expires=Fri, 31-May-2013 16:21:54 GMT; path=/
-&lt; Vary: Accept-Encoding,User-Agent
-&lt; X-Apache-Server: www1.citibikenyc.com
-&lt; MS-Author-Via: DAV
-&lt;
+< Vary: Accept-Encoding,User-Agent
+< X-Apache-Server: www1.citibikenyc.com
+< MS-Author-Via: DAV
+<
 { [data not shown]
 100 116k 0 116k 0 0 853k 0 --:--:-- --:--:-- --:--:-- 993k
 * Connection #0 to host www.citibikenyc.com left intact
@@ -79,30 +79,30 @@ For comparison, this is what the response looked like during the outage. The mai
 
 ```
 ┌┤smerrill@lilliputian-resolution [May 27 11:34:46] ~
-└╼ curl -v www.citibikenyc.com/stations/json &gt; /dev/null
+└╼ curl -v www.citibikenyc.com/stations/json > /dev/null
 * About to connect() to www.citibikenyc.com port 80 (#0)
 * Trying 70.32.83.162...
 % Total % Received % Xferd Average Speed Time Time Time Current
 Dload Upload Total Spent Left Speed
 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0* connected
 * Connected to www.citibikenyc.com (70.32.83.162) port 80 (#0)
-&gt; GET /stations/json HTTP/1.1
-&gt; User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
-&gt; Host: www.citibikenyc.com
-&gt; Accept: */*
-&gt;
-&lt; HTTP/1.1 200 OK
-&lt; Server: nginx
-&lt; Date: Mon, 27 May 2013 15:34:47 GMT
-&lt; Content-Type: text/html
-&lt; Content-Length: 0
-&lt; Connection: keep-alive
-&lt; Vary: Accept-Encoding
-&lt; Set-Cookie: ci_session=x7ymouLWLEeY6%2Fo%2BudFoQHOixWyP3b9Ygp8Ocv94roUESql6Gwet1nuCVBcILmqt9DQzbFsSLLkXyOZ5qL%2Fl%2FD88F0Q0uXeLptE3zlGHxP0EISPGk5gW91SVscxi1klVRYv5Mt5zTO0KzB4obwc%2FY1AUFEodhplKXeaSURPXAw7roZVumXkmM1ALGbWQx5FF6LKm%2FtzudHm8NQPJYXDx3s3sUdVNWvWQpWe3iKEE5Su0TzqCKZcBxWYcssuPNVGEx8c5SpijHw6iR7sqnTMBnMdv7m4jsuj9ZweGk6JfGEp3G5%2BXAMqdsWfE%2Fa8449o92%2BlLug0NCFRdxH7ViZHXBA%3D%3D; expires=Mon, 27-May-2013 15:44:47 GMT; path=/
-&lt; Vary: Accept-Encoding,User-Agent
-&lt; X-Apache-Server: www1.citibikenyc.com
-&lt; MS-Author-Via: DAV
-&lt;
+> GET /stations/json HTTP/1.1
+> User-Agent: curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5
+> Host: www.citibikenyc.com
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Mon, 27 May 2013 15:34:47 GMT
+< Content-Type: text/html
+< Content-Length: 0
+< Connection: keep-alive
+< Vary: Accept-Encoding
+< Set-Cookie: ci_session=x7ymouLWLEeY6%2Fo%2BudFoQHOixWyP3b9Ygp8Ocv94roUESql6Gwet1nuCVBcILmqt9DQzbFsSLLkXyOZ5qL%2Fl%2FD88F0Q0uXeLptE3zlGHxP0EISPGk5gW91SVscxi1klVRYv5Mt5zTO0KzB4obwc%2FY1AUFEodhplKXeaSURPXAw7roZVumXkmM1ALGbWQx5FF6LKm%2FtzudHm8NQPJYXDx3s3sUdVNWvWQpWe3iKEE5Su0TzqCKZcBxWYcssuPNVGEx8c5SpijHw6iR7sqnTMBnMdv7m4jsuj9ZweGk6JfGEp3G5%2BXAMqdsWfE%2Fa8449o92%2BlLug0NCFRdxH7ViZHXBA%3D%3D; expires=Mon, 27-May-2013 15:44:47 GMT; path=/
+< Vary: Accept-Encoding,User-Agent
+< X-Apache-Server: www1.citibikenyc.com
+< MS-Author-Via: DAV
+<
 { [data not shown]
 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0
 * Connection #0 to host www.citibikenyc.com left intact
