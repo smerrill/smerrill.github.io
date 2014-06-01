@@ -1,6 +1,23 @@
+---
+layout: post
+status: publish
+published: true
+title: Avoiding Flat Tires in Your Web Application
+author: Steven Merrill
+author_login: smerrill
+author_email: "info@phase2technology.com"
+wordpress_url: "http://www.phase2technology.com/blog/avoiding-flat-tires-in-your-web-application/"
+categories: 
+- caching
+- cdn
+- scalability
+comments: []
+---
 This Monday, the [CitiBike bike share](http://www.citibikenyc.com/?ef_id=IBFQPPF0mFIAAFdi:20130531201408:s) launched in New York City. The website was beautiful and responsive, and more than 15,000 registrations were processed through it before the launch happened.
 
 But then, a funny thing happened. The website and the mobile apps' maps started coming up blank, and they stayed blank for more than 12 hours. What follows should not be characterized as a failing of the technical team. Launches are tough, and I don't mean to pile on what was obviously a tough situation. Instead, I would like to look at a few choices that were made and how the system might have been better architected for scalability.
+
+<!--more-->
 
 ## Architecture Spelunking
 
