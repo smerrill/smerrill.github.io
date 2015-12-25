@@ -2,11 +2,11 @@
 layout: post
 status: publish
 published: true
-title: ! 'Version Your Views: D5 Reminder'
+title: 'Version Your Views: D5 Reminder'
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/11/05/speed-and-version-your-views">a
+excerpt: '<p>In <a href="http://treehouseagency.com/blog/steven-merrill/2008/11/05/speed-and-version-your-views">a
   previous article</a> I extolled the virtues of keeping your Views in code, which
   lets you deploy or change them as easily as uploading or updating a module on your
   production site. In the article, I wrote about using Drupal 6 and Views2 to do so.</p>

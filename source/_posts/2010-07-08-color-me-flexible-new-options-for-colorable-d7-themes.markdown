@@ -2,11 +2,11 @@
 layout: post
 status: publish
 published: true
-title: ! 'Color Me Flexible: New options for colorable D7 themes'
+title: 'Color Me Flexible: New options for colorable D7 themes'
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>In case you haven''t heard: the <a href="http://drupal.org/project/bartik">Bartik
+excerpt: '<p>In case you haven''t heard: the <a href="http://drupal.org/project/bartik">Bartik
   theme</a> is now <a href="http://drupal.org/node/683026">in core</a> and, after
   some refinement, <a href="http://drupal.org/node/845742">will be the default
   theme for Drupal 7</a>. This is thanks to the phenomenal effort of many contributors

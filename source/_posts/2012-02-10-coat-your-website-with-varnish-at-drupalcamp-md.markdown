@@ -6,7 +6,7 @@ title: Coat Your Website with Varnish at DrupalCamp MD
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>The Drupal community is exploding! I''ve had the pleasure to speak
+excerpt: '<p>The Drupal community is exploding! I''ve had the pleasure to speak
   at two nascent Drupal camps (<a href="http://www.drupalcampnj.org/">New Jersey</a>
   and <a href="http://drupalcampmd.org/">Maryland</a>) in as many weeks.</p>
 

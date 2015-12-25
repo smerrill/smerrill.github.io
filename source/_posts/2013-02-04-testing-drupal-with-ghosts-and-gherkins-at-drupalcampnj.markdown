@@ -6,7 +6,7 @@ title: Testing Drupal with Ghosts and Gherkins at DrupalCampNJ
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! "<p>This weekend marked the second annual <a href=\"http://www.drupalcampnj.org/\"
+excerpt: "<p>This weekend marked the second annual <a href=\"http://www.drupalcampnj.org/\"
   target=\"_\">DrupalCamp New Jersey</a> at beautiful Princeton University.</p>\r\n<p>I
   was happy to fill in when a presenter dropped out and presented a session called
   \"Testing Drupal with Ghosts and Gherkins\". In this presentation, I talked about

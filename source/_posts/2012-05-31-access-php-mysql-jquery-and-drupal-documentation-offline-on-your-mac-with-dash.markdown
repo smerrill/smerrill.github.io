@@ -7,7 +7,7 @@ title: Access PHP, MySQL, jQuery, and Drupal documentation offline on your Mac w
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>Wouldn''t it be great if there was an easy way to access php.net or
+excerpt: '<p>Wouldn''t it be great if there was an easy way to access php.net or
   other documentation offline or on a plane?</p>
 
   <p><strong>UPDATE:</strong> Sadly, as this blog post went to press, two important

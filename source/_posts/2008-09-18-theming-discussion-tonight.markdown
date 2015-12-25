@@ -6,7 +6,7 @@ title: Theming Discussion Tonight
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>If you got to our talk at Web 2.0 Expo today, or even if you didn''t
+excerpt: '<p>If you got to our talk at Web 2.0 Expo today, or even if you didn''t
   and still have some questions about what theming is, don''t fret!  We''ll be having
   a Birds of a Feather meeting to talk all things theming.</p>
 

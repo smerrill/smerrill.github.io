@@ -6,7 +6,7 @@ title: Using HipChat through an IRC client with BitlBee
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal
+excerpt: '<p>Here at Treehouse Agency, we love IRC, as does the rest of the Drupal
   community. Still, IRC ports are often blocked, and not everyone is comfortable using
   IRC. We''ve recently been using <a href="http://www.hipchat.com/">HipChat</a> to
   set up chat rooms for certain new clients.</p>

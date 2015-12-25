@@ -6,7 +6,7 @@ title: Let&#039;s Be Upfront About Performance at DrupalCamp NJ
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">"Let''s
+excerpt: '<p>I just presented <a href="http://www.drupalcampnj.org/sessions/lets-be-upfront-about-performance">"Let''s
   Be Upfront About Performance"</a> as a session at <a href="http://www.drupalcampnj.org/">the
   inaugural DrupalCamp NJ</a>.</p>
 

@@ -6,7 +6,7 @@ title: Speed Up and Version Your Views
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>Since getting started with Drupal over two years ago, the sites I&rsquo;ve
+excerpt: '<p>Since getting started with Drupal over two years ago, the sites I&rsquo;ve
   built with it have naturally gotten bigger and bigger in scope. As your sites get
   bigger and bigger, you always look for ways to keep your site running as smoothly
   as possible, and this usually ends up meaning getting rid of queries wherever you

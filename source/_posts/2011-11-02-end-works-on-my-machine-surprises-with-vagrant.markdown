@@ -6,7 +6,7 @@ title: End "Works on My Machine" Surprises with Vagrant
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>How many times have the following issues happened on a project you''ve
+excerpt: '<p>How many times have the following issues happened on a project you''ve
   worked on?</p>
 
   <ul>

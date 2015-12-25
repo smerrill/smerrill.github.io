@@ -2,11 +2,11 @@
 layout: post
 status: publish
 published: true
-title: ! 'Scaling Drupal: Not IF... HOW'
+title: 'Scaling Drupal: Not IF... HOW'
 author: Steven Merrill
 author_login: smerrill
 author_email: info@phase2technology.com
-excerpt: ! '<p>Thanks to all those that braved the early morning to attend our session
+excerpt: '<p>Thanks to all those that braved the early morning to attend our session
   at Drupalcon DC.  We think it was a good warm-up for the full track of excellent
   performance and scaling sessions on Thursday.  See you next year!</p>
 
